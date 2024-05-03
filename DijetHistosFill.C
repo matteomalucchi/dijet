@@ -2153,9 +2153,9 @@ for (Long64_t jentry = 0; jentry < nentries; jentry++)
   for (int i = 0; i != njet; ++i)
   {
     #ifdef PNET_REG
-    Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtRawCorrNeutrino[i];
+    double Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtRawCorrNeutrino[i];
     #else
-    Jet_PNetRegPtRawCorrTotal = 1.;
+    double Jet_PNetRegPtRawCorrTotal = 1.;
     #endif
     if i==0{
       cout << "Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;

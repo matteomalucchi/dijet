@@ -12,12 +12,12 @@ doMC = False
 IOV_list_of_lists = [
 #    ['2022C_JME', '2022C_ZB', '2022C'],
 #    ['2022D_JME', '2022D_ZB', '2022D'],
-#    ['2022CD_JME', '2022C_JME','2022D_JME'],    
-#    ['2022E_JME', '2022E_ZB', '2022E'], 
+#    ['2022CD_JME', '2022C_JME','2022D_JME'],
+#    ['2022E_JME', '2022E_ZB', '2022E'],
 #    ['2022F_JME', '2022F_ZB', '2022F'],
 #    ['2022G_JME', '2022G_ZB', '2022G'],
-#    ['2022FG_JME', '2022F_JME','2022G_JME'],    
-#    ['2023BCv123_JME', '2023BCv123_ZB', '2023BCv123'], 
+#    ['2022FG_JME', '2022F_JME','2022G_JME'],
+#    ['2023BCv123_JME', '2023BCv123_ZB', '2023BCv123'],
     ['2023Cv123_JME', '2023Cv123_ZB', '2023Cv123'],
     ['2023Cv4_JME', '2023Cv4_ZB', '2023Cv4'],
     ['2023D_JME', '2023D_ZB', '2023D'],
@@ -30,8 +30,10 @@ MC_list_of_lists = [
 #    ['Run2QCD','2016QCD','2016QCDAPV','2017QCD','2018QCD'],
 #    ['Summer22MG','Summer22MG1', 'Summer22MG2'],
 #    ['Summer22EEMG','Summer22EEMG1', 'Summer22EEMG2','Summer22EEMG3', 'Summer22EEMG4'],
-    ['Summer23MG', 'Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4'],
-    ['Summer23MGBPix', 'Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
+    # ['Summer23MG', 'Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4'],
+    # ['Summer23MGBPix', 'Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
+    ['Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4', 'Summer23MG_5', 'Summer23MG_6'],
+    ['Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
     ]
 
 if not includeZB:
@@ -41,7 +43,7 @@ if not includeZB:
             if '_ZB' in IOV_list[i]:
                 IOV_list.remove(IOV_list[i])
                 break
-            
+
 # os.system("ls rootfiles/"+version+"/jmenano_data_out_*_"+version+".root")
 for IOV_list in IOV_list_of_lists:
     command = "hadd -f "

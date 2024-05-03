@@ -2289,13 +2289,13 @@ void DijetHistosFill::Loop()
 
 
       #ifdef PNET_REG
-      Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtRawCorrNeutrino[i];
+      double Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtRawCorrNeutrino[i];
       #else
-      Jet_PNetRegPtRawCorrTotal = 1.;
+      double Jet_PNetRegPtRawCorrTotal = 1.;
       #endif
-      if i==0{
-      cout << "src Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
-      }
+      // if (i==0){
+      // cout << "src double Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
+      // }
 
       if (redoJEC)
       {

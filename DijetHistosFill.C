@@ -21,6 +21,8 @@
 #include <unordered_map>
 #include <array>
 
+#define PNET_REG
+
 // MC triggers (slow) or not (faster)
 bool doMCtrigOnly = true;
 
@@ -485,6 +487,13 @@ void DijetHistosFill::Loop()
   fChain->SetBranchStatus("Jet_jetId", 1);
 
   fChain->SetBranchStatus("Jet_rawFactor", 1);
+
+  #ifdef PNET_REG
+  cout << "USING PNET REGRESSION" << endl;
+  fChain->SetBranchStatus("Jet_PNetRegPtRawCorr", 1);
+  fChain->SetBranchStatus("Jet_PNetRegPtRawCorrNeutrino", 1);
+  #endif
+
   if (isRun2)
     fChain->SetBranchStatus("Jet_area", 1);
 
@@ -1846,7 +1855,6 @@ void DijetHistosFill::Loop()
       h->lumsum2 = new TH1D("lumsum2", "", 1, 0, 1);
       h->hlumi_vstrpu = new TH2D("hlumi_vstrpu", "", 100, 0, 100, 100, 0, 100);
     }
-  
 
 } // for itrg
 
@@ -2144,7 +2152,7 @@ for (Long64_t jentry = 0; jentry < nentries; jentry++)
   int njet = nJet;
   for (int i = 0; i != njet; ++i)
   {
-    double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i]);
+    double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal[i];
     double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
     jec->setJetPt(rawJetPt);
     jec->setJetEta(Jet_eta[i]);
@@ -2157,6 +2165,14 @@ for (Long64_t jentry = 0; jentry < nentries; jentry++)
       jecl1rc->setJetA(Jet_area[i]);
       jecl1rc->setRho(Rho_fixedGridRhoFastjetAll);
     }
+    #ifdef PNET_REG
+    Jet_PNetRegPtRawCorrTotal[i] = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtCorrNeutrino[i];
+    #else
+    Jet_PNetRegPtRawCorrTotal[i] = 1.;
+    #endif
+    if i==0{
+      cout << "Jet_PNetRegPtRawCorrTotal[i] = " << Jet_PNetRegPtRawCorrTotal[i] << endl;
+    }
     // double corr = jec->getCorrection();
     vector<float> v = jec->getSubCorrections();
     double corr = v.back();
@@ -2165,7 +2181,7 @@ for (Long64_t jentry = 0; jentry < nentries; jentry++)
     Jet_deltaJES[i] = (1. / corr) / (1.0 - Jet_rawFactor[i]);
     Jet_pt[i] = corr * rawJetPt;
     Jet_mass[i] = corr * rawJetMass;
-    Jet_rawFactor[i] = (1.0 - 1.0 / corr);
+    Jet_rawFactor[i] = (1.0 - (1.0 / corr)); // * Jet_PNetRegPtRawCorrTotal[i]);
     // pt*(1-l1rcFactor)=ptl1rc => l1rcFactor = 1 - ptl1rc/pt
     Jet_l1rcFactor[i] = (isRun2 ? (1.0 - jecl1rc->getCorrection() / corr) : Jet_rawFactor[i]);
 
@@ -3160,7 +3176,7 @@ for (Long64_t jentry = 0; jentry < nentries; jentry++)
           // h->lums[run][luminosityBlock] = 1;
 
           h->hlumi_vstrpu->Fill(trpu, lum); //  / prescale
-          
+
         }
       mrunls[run][luminosityBlock] = 1;
   } // doLumi

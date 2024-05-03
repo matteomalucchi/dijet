@@ -55,8 +55,8 @@ public :
    Bool_t HLT_MC = kTRUE;
    Bool_t Jet_jetveto[100];
 
-   
-  
+
+
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
@@ -292,6 +292,8 @@ public :
    //   Float_t         Jet_qgl_axis2[nJetMax];   //[nJet]
    //   Float_t         Jet_qgl_ptD[nJetMax];   //[nJet]
    Float_t         Jet_rawFactor[nJetMax];   //[nJet]
+   Float_t         PNetRegPtRawCorr[nJetMax];   //[nJet]
+   Float_t         PNetRegPtRawCorrNeutrino[nJetMax];   //[nJet]
    Int_t           Jet_electronIdx1[nJetMax];   //[nJet]
    Int_t           Jet_electronIdx2[nJetMax];   //[nJet]
    Int_t           Jet_hfadjacentEtaStripsSize[nJetMax];   //[nJet]
@@ -2037,6 +2039,8 @@ public :
    //   TBranch        *b_Jet_qgl_axis2;   //!
    //   TBranch        *b_Jet_qgl_ptD;   //!
    TBranch        *b_Jet_rawFactor;   //!
+   TBranch        *PNetRegPtRawCorr;   //!
+   TBranch        *PNetRegPtResCorrNeutrino;   //!
    TBranch        *b_Jet_electronIdx1;   //!
    TBranch        *b_Jet_electronIdx2;   //!
    TBranch        *b_Jet_hfadjacentEtaStripsSize;   //!
@@ -3538,7 +3542,7 @@ public :
    bool LoadJSON(string json);
    bool LoadLumi();
 
-   
+
 };
 
 #endif
@@ -3566,7 +3570,7 @@ DijetHistosFill::DijetHistosFill(TTree *tree, int itype, string datasetname, str
   assert(!(isRun2 && isRun3));
   isZB = (TString(datasetname.c_str()).Contains("_ZB"));
   isMG = (isMC==2);
-  
+
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
@@ -4077,7 +4081,7 @@ void DijetHistosFill::Init(TTree *tree)
      // Find the HT from file name
 
    HT_bins["40to70"] = std::make_pair(2, std::make_pair(40, 70));
-   HT_bins["70to100"] = std::make_pair(3, std::make_pair(70, 100)); 
+   HT_bins["70to100"] = std::make_pair(3, std::make_pair(70, 100));
    HT_bins["100to200"] = std::make_pair(4, std::make_pair(100, 200));
    HT_bins["200to400"] = std::make_pair(5, std::make_pair(200, 400));
    HT_bins["400to600"] = std::make_pair(6, std::make_pair(400, 600));
@@ -4324,6 +4328,8 @@ void DijetHistosFill::Init(TTree *tree)
    //   fChain->SetBranchAddress("Jet_qgl_axis2", Jet_qgl_axis2, &b_Jet_qgl_axis2);
    //   fChain->SetBranchAddress("Jet_qgl_ptD", Jet_qgl_ptD, &b_Jet_qgl_ptD);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
+   fChain->SetBranchAddress("PNetRegPtRawCorr", PNetRegPtRawCorr, &b_PNetRegPtRawCorr);
+   fChain->SetBranchAddress("PNetRegPtRawCorrNeutrino", PNetRegPtRawCorrNeutrino, &b_PNetRegPtRawCorrNeutrino);
    fChain->SetBranchAddress("Jet_electronIdx1", Jet_electronIdx1, &b_Jet_electronIdx1);
    fChain->SetBranchAddress("Jet_electronIdx2", Jet_electronIdx2, &b_Jet_electronIdx2);
    fChain->SetBranchAddress("Jet_hfadjacentEtaStripsSize", Jet_hfadjacentEtaStripsSize, &b_Jet_hfadjacentEtaStripsSize);
@@ -5322,7 +5328,7 @@ void DijetHistosFill::Init(TTree *tree)
      fChain->SetBranchAddress("HLT_AK8PFJet400", &HLT_AK8PFJet400, &b_HLT_AK8PFJet400);
      fChain->SetBranchAddress("HLT_AK8PFJet450", &HLT_AK8PFJet450, &b_HLT_AK8PFJet450);
      fChain->SetBranchAddress("HLT_AK8PFJet500", &HLT_AK8PFJet500, &b_HLT_AK8PFJet500);
-     if (isRun2>2) 
+     if (isRun2>2)
        fChain->SetBranchAddress("HLT_AK8PFJet550", &HLT_AK8PFJet550, &b_HLT_AK8PFJet550);
      //fChain->SetBranchAddress("HLT_PFJet15", &HLT_PFJet15, &b_HLT_PFJet15);
      //fChain->SetBranchAddress("HLT_PFJet25", &HLT_PFJet25, &b_HLT_PFJet25);
@@ -5851,7 +5857,7 @@ void DijetHistosFill::Init(TTree *tree)
      mtrg["HLT_DiPFJetAve320"] = &HLT_DiPFJetAve320;
      mtrg["HLT_DiPFJetAve400"] = &HLT_DiPFJetAve400;
      mtrg["HLT_DiPFJetAve500"] = &HLT_DiPFJetAve500;
-     
+
      mtrg["HLT_PFJet40"] = &HLT_PFJet40;
      mtrg["HLT_PFJet60"] = &HLT_PFJet60;
      mtrg["HLT_PFJet80"] = &HLT_PFJet80;
@@ -5864,7 +5870,7 @@ void DijetHistosFill::Init(TTree *tree)
      mtrg["HLT_PFJet450"] = &HLT_PFJet450;
      mtrg["HLT_PFJet500"] = &HLT_PFJet500;
      mtrg["HLT_PFJet550"] = &HLT_PFJet550;
-     
+
      mtrg["HLT_DiPFJetAve60_HFJEC"] = &HLT_DiPFJetAve60_HFJEC;
      mtrg["HLT_DiPFJetAve80_HFJEC"] = &HLT_DiPFJetAve80_HFJEC;
      mtrg["HLT_DiPFJetAve100_HFJEC"] = &HLT_DiPFJetAve100_HFJEC;
@@ -5885,7 +5891,7 @@ void DijetHistosFill::Init(TTree *tree)
      mtrg["HLT_PFJetFwd450"] = &HLT_PFJetFwd450;
      mtrg["HLT_PFJetFwd500"] = &HLT_PFJetFwd500;
    }
-   
+
    Notify();
 }
 

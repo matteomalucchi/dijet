@@ -22,6 +22,8 @@
 #include <array>
 #include <string_view>
 
+#define PNET_REG
+
 // Recalculate JECs
 bool redoJEC = true;
 
@@ -127,7 +129,7 @@ constexpr const char *getLumifile(const char* dataset, std::size_t index = 0)
 
     if (std::strcmp(lumifiles[index].first, dataset) == 0)
         return lumifiles[index].second;
-    
+
     return getLumifile(dataset, index + 1);
 }
 
@@ -516,6 +518,13 @@ void DijetHistosFill::Loop()
   fChain->SetBranchStatus("Jet_jetId", 1);
 
   fChain->SetBranchStatus("Jet_rawFactor", 1);
+
+  #ifdef PNET_REG
+  cout << "USING PNET REGRESSION" << endl;
+  fChain->SetBranchStatus("Jet_PNetRegPtRawCorr", 1);
+  fChain->SetBranchStatus("Jet_PNetRegPtRawCorrNeutrino", 1);
+  #endif
+
   if (isRun2)
     fChain->SetBranchStatus("Jet_area", 1);
 
@@ -859,11 +868,11 @@ void DijetHistosFill::Loop()
     if (TString(dataset.c_str()).Contains("Summer23MGBPix")) {
       jec = getFJC("",
                   "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI",
-                  "");                                             
+                  "");
     } else {
-      jec = getFJC("", 
+      jec = getFJC("",
                   "Summer23Run3_V1_MC_L2Relative_AK4PUPPI",
-                  ""); 
+                  "");
     }
     //jec = getFJC("", // Winter23Prompt23_V2_MC_L1FastJet_AK4PFPuppi",
     //             "Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi",
@@ -882,7 +891,7 @@ void DijetHistosFill::Loop()
         cout << "Pileup ratio mean = " << pileupRatio->GetMean() << endl;
         cout << "Pileup ratio min = " << pileupRatio->GetMinimum() << endl;
         cout << "Pileup ratio max = " << pileupRatio->GetMaximum() << endl;
-  
+
       } else {
         TFile f("luminosityscripts/PUWeights/Summer23_PUWeight.root");
         pileupRatio = (TH1D *)f.Get("pileup");
@@ -891,7 +900,7 @@ void DijetHistosFill::Loop()
         cout << "Pileup ratio mean = " << pileupRatio->GetMean() << endl;
         cout << "Pileup ratio min = " << pileupRatio->GetMinimum() << endl;
         cout << "Pileup ratio max = " << pileupRatio->GetMaximum() << endl;
-  
+
       }
     }
   }
@@ -903,7 +912,7 @@ void DijetHistosFill::Loop()
   //		  "Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
   // }
 
-  if (dataset == "2023B" || dataset == "2023B_ZB" || dataset == "2023BCv123" || 
+  if (dataset == "2023B" || dataset == "2023B_ZB" || dataset == "2023BCv123" ||
       dataset == "2023BCv123_ZB" || dataset == "2023Cv123" || dataset == "2023Cv123_ZB")
   {
     jec = getFJC("",                                                               // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
@@ -1006,7 +1015,7 @@ void DijetHistosFill::Loop()
   {
     h_trgvspu->GetXaxis()->SetBinLabel(i, vtrg[i - 1].c_str());
   }
-              
+
   if (debug)
     cout << "Setting up histograms" << endl
          << flush;
@@ -2204,9 +2213,9 @@ void DijetHistosFill::Loop()
       hLHE_HT->Fill(LHE_HT);     // cross-check hnevt afterwards
       hLHE_HTw->Fill(LHE_HT, w); // cross-check hnwgt afterwards
       hHT->Fill(LHE_HT, w);      // cross-check HT spectrum smoothness afterwards
-      hHT_Now->Fill(LHE_HT); 
-      hHT_MCw->Fill(LHE_HT, genWeight); 
-      hHT_w->Fill(genWeight); 
+      hHT_Now->Fill(LHE_HT);
+      hHT_MCw->Fill(LHE_HT, genWeight);
+      hHT_w->Fill(genWeight);
     }
     double rho = Rho_fixedGridRhoFastjetAll;
 
@@ -2279,10 +2288,18 @@ void DijetHistosFill::Loop()
     {
 
 
+      #ifdef PNET_REG
+      Jet_PNetRegPtRawCorrTotal[i] = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtCorrNeutrino[i];
+      #else
+      Jet_PNetRegPtRawCorrTotal[i] = 1.;
+      #endif
+
       if (redoJEC)
       {
-        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i]);
+        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal[i];
         double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
+
+
         jec->setJetPt(rawJetPt);
         jec->setJetEta(Jet_eta[i]);
         jec->setJetPhi(Jet_phi[i]);
@@ -2303,7 +2320,7 @@ void DijetHistosFill::Loop()
         Jet_deltaJES[i] = (1. / corr) / (1.0 - Jet_rawFactor[i]);
         Jet_pt[i] = corr * rawJetPt;
         Jet_mass[i] = corr * rawJetMass;
-        Jet_rawFactor[i] = (1.0 - 1.0 / corr);
+        Jet_rawFactor[i] = (1.0 - (1.0 / corr));
         // pt*(1-l1rcFactor)=ptl1rc => l1rcFactor = 1 - ptl1rc/pt
         Jet_l1rcFactor[i] = (isRun2 ? (1.0 - jecl1rc->getCorrection() / corr) : Jet_rawFactor[i]);
       }
@@ -2312,8 +2329,11 @@ void DijetHistosFill::Loop()
         Jet_RES[i] = 1.;
         Jet_deltaJES[i] = 1.;
         Jet_l1rcFactor[i] = Jet_rawFactor[i];
+        #ifdef PNET_REG
+        Jet_pt[i] = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal[i]; //??
+        #endif
       }
-      
+
       if (true)
       { // check jet veto
         int i1 = h2jv->GetXaxis()->FindBin(Jet_eta[i]);

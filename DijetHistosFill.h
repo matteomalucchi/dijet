@@ -2035,8 +2035,8 @@ public :
    //   TBranch        *b_Jet_qgl_axis2;   //!
    //   TBranch        *b_Jet_qgl_ptD;   //!
    TBranch        *b_Jet_rawFactor;   //!
-   TBranch        *PNetRegPtRawCorr;   //!
-   TBranch        *PNetRegPtResCorrNeutrino;   //!
+   TBranch        *b_PNetRegPtRawCorr;   //!
+   TBranch        *b_PNetRegPtResCorrNeutrino;   //!
    TBranch        *b_Jet_electronIdx1;   //!
    TBranch        *b_Jet_electronIdx2;   //!
    TBranch        *b_Jet_hfadjacentEtaStripsSize;   //!

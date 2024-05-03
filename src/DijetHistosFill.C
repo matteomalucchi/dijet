@@ -2289,14 +2289,17 @@ void DijetHistosFill::Loop()
 
 
       #ifdef PNET_REG
-      Jet_PNetRegPtRawCorrTotal[i] = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtCorrNeutrino[i];
+      Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtCorrNeutrino[i];
       #else
-      Jet_PNetRegPtRawCorrTotal[i] = 1.;
+      Jet_PNetRegPtRawCorrTotal = 1.;
       #endif
+      if i==0{
+      cout << "src Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
+      }
 
       if (redoJEC)
       {
-        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal[i];
+        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
         double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
 
 
@@ -2330,7 +2333,7 @@ void DijetHistosFill::Loop()
         Jet_deltaJES[i] = 1.;
         Jet_l1rcFactor[i] = Jet_rawFactor[i];
         #ifdef PNET_REG
-        Jet_pt[i] = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal[i]; //??
+        Jet_pt[i] = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal; //??
         #endif
       }
 

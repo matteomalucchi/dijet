@@ -2289,7 +2289,7 @@ void DijetHistosFill::Loop()
 
 
       #ifdef PNET_REG
-      Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtCorrNeutrino[i];
+      Jet_PNetRegPtRawCorrTotal = Jet_PNetRegPtRawCorr[i]*Jet_PNetRegPtRawCorrNeutrino[i];
       #else
       Jet_PNetRegPtRawCorrTotal = 1.;
       #endif

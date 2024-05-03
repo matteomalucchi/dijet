@@ -292,8 +292,8 @@ public :
    //   Float_t         Jet_qgl_axis2[nJetMax];   //[nJet]
    //   Float_t         Jet_qgl_ptD[nJetMax];   //[nJet]
    Float_t         Jet_rawFactor[nJetMax];   //[nJet]
-   Float_t         PNetRegPtRawCorr[nJetMax];   //[nJet]
-   Float_t         PNetRegPtRawCorrNeutrino[nJetMax];   //[nJet]
+   Float_t         Jet_PNetRegPtRawCorr[nJetMax];   //[nJet]
+   Float_t         Jet_PNetRegPtRawCorrNeutrino[nJetMax];   //[nJet]
    Int_t           Jet_electronIdx1[nJetMax];   //[nJet]
    Int_t           Jet_electronIdx2[nJetMax];   //[nJet]
    Int_t           Jet_hfadjacentEtaStripsSize[nJetMax];   //[nJet]
@@ -2039,8 +2039,8 @@ public :
    //   TBranch        *b_Jet_qgl_axis2;   //!
    //   TBranch        *b_Jet_qgl_ptD;   //!
    TBranch        *b_Jet_rawFactor;   //!
-   TBranch        *PNetRegPtRawCorr;   //!
-   TBranch        *PNetRegPtResCorrNeutrino;   //!
+   TBranch        *b_Jet_PNetRegPtRawCorr;   //!
+   TBranch        *b_Jet_PNetRegPtRawCorrNeutrino;   //!
    TBranch        *b_Jet_electronIdx1;   //!
    TBranch        *b_Jet_electronIdx2;   //!
    TBranch        *b_Jet_hfadjacentEtaStripsSize;   //!
@@ -4328,8 +4328,8 @@ void DijetHistosFill::Init(TTree *tree)
    //   fChain->SetBranchAddress("Jet_qgl_axis2", Jet_qgl_axis2, &b_Jet_qgl_axis2);
    //   fChain->SetBranchAddress("Jet_qgl_ptD", Jet_qgl_ptD, &b_Jet_qgl_ptD);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
-   fChain->SetBranchAddress("PNetRegPtRawCorr", PNetRegPtRawCorr, &b_PNetRegPtRawCorr);
-   fChain->SetBranchAddress("PNetRegPtRawCorrNeutrino", PNetRegPtRawCorrNeutrino, &b_PNetRegPtRawCorrNeutrino);
+   fChain->SetBranchAddress("Jet_PNetRegPtRawCorr", Jet_PNetRegPtRawCorr, &b_Jet_PNetRegPtRawCorr);
+   fChain->SetBranchAddress("Jet_PNetRegPtRawCorrNeutrino", Jet_PNetRegPtRawCorrNeutrino, &b_Jet_PNetRegPtRawCorrNeutrino);
    fChain->SetBranchAddress("Jet_electronIdx1", Jet_electronIdx1, &b_Jet_electronIdx1);
    fChain->SetBranchAddress("Jet_electronIdx2", Jet_electronIdx2, &b_Jet_electronIdx2);
    fChain->SetBranchAddress("Jet_hfadjacentEtaStripsSize", Jet_hfadjacentEtaStripsSize, &b_Jet_hfadjacentEtaStripsSize);

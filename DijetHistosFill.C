@@ -2157,9 +2157,12 @@ for (Long64_t jentry = 0; jentry < nentries; jentry++)
     #else
     double Jet_PNetRegPtRawCorrTotal = 1.;
     #endif
-    if i==0{
-      cout << "Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
+    if (Jet_PNetRegPtRawCorrTotal==0){
+      Jet_PNetRegPtRawCorrTotal = 1.;
     }
+    // if i==0{
+    //   cout << "Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
+    // }
 
     double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
     double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);

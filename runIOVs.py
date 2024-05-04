@@ -1,10 +1,7 @@
 #! /usr/bin/python
 import os
 import argparse
-import ROOT
 
-# batch mode
-ROOT.gROOT.SetBatch(True)
 
 max_files = 9999
 
@@ -110,9 +107,6 @@ for iov in IOV_input:
     # os.system(f"ls -ltrh rootfiles/jmenano_mc_out_{iov}_{version}.root")
     # os.system(f"ls -ltrh rootfiles/jmenano_data_out_{iov}_{version}.root")
     # os.system(f"ls -ltrh logs/log_{iov}_{version}.txt")
-
-    # ROOT.gInterpreter.ProcessLine(".L CondFormats/JetMETObjects/src/Utilities.cc+")
-    # ROOT.gInterpreter.ProcessLine(f'.x make/mk_DijetHistosFill.C(\"{iov}\",\"{version}\",{max_files})')
 
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc.d", True)
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc.so")

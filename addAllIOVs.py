@@ -4,9 +4,10 @@ import os
 # Purpose: hadd files together automatically, either JetMET+ZB and/or
 #           IOVs-in-parts. Update the list_of_lists below and set version.
 
-version = 'v36_Summer23MG_L2L3Res_v1'
+version = 'v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2'
 includeZB = True
-doMC = False
+doMC = True
+doData = False
 
 # Merge files into a bigger one. First one is the target
 IOV_list_of_lists = [
@@ -18,9 +19,12 @@ IOV_list_of_lists = [
 #    ['2022G_JME', '2022G_ZB', '2022G'],
 #    ['2022FG_JME', '2022F_JME','2022G_JME'],
 #    ['2023BCv123_JME', '2023BCv123_ZB', '2023BCv123'],
-    ['2023Cv123_JME', '2023Cv123_ZB', '2023Cv123'],
-    ['2023Cv4_JME', '2023Cv4_ZB', '2023Cv4'],
-    ['2023D_JME', '2023D_ZB', '2023D'],
+    # ['2023Cv123_JME', '2023Cv123_ZB', '2023Cv123'],
+    # ['2023Cv4_JME', '2023Cv4_ZB', '2023Cv4'],
+    # ['2023D_JME', '2023D_ZB', '2023D'],
+    [ '2023Cv123_ZB', '2023Cv123'],
+    ['2023Cv4_ZB', '2023Cv4'],
+    ['2023D_ZB', '2023D'],
 #    ['Run3_JME', '2022C_JME','2022D_JME', '2022E_JME', '2022F_JME', '2022G_JME',
 #     '2023BCv123_JME', '2023Cv4_JME','2023D_JME']
     ]
@@ -32,7 +36,7 @@ MC_list_of_lists = [
 #    ['Summer22EEMG','Summer22EEMG1', 'Summer22EEMG2','Summer22EEMG3', 'Summer22EEMG4'],
     # ['Summer23MG', 'Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4'],
     # ['Summer23MGBPix', 'Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
-    ['Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4', 'Summer23MG_5', 'Summer23MG_6'],
+    ['Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4'] ,#, 'Summer23MG_5', 'Summer23MG_6'],
     ['Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
     ]
 
@@ -45,19 +49,20 @@ if not includeZB:
                 break
 
 # os.system("ls rootfiles/"+version+"/jmenano_data_out_*_"+version+".root")
-for IOV_list in IOV_list_of_lists:
-    command = "hadd -f "
-    for iov in IOV_list:
-        command = command + "rootfiles/"+version+"/jmenano_data_out_"+iov+"_"+version+".root "
-    print("\""+command+"\"...")
-    os.system(command)
+if doData:
+    for IOV_list in IOV_list_of_lists:
+        command = "hadd " +"rootfiles/"+version+"/jmenano_data_cmb_"+IOV_list[0]+"_"+version+".root "
+        for iov in IOV_list:
+            command = command + "rootfiles/"+version+"/jmenano_data_out_"+iov+"_"+version+".root "
+        print("\""+command+"\"...")
+        os.system(command)
 
 if doMC:
     os.system("ls rootfiles/"+version+"/jmenano_mc_out_*_"+version+".root")
     for MC_list in MC_list_of_lists:
-        command = "hadd "
+        command = "hadd " +"rootfiles/"+version+"/jmenano_mc_cmb_"+MC_list[0]+"_"+version+".root "
         for mc in MC_list:
-            command = command + "rootfiles/"+version+"/jmenano_mc_out_"+mc+"_v36_Summer23DT_NoL2L3Res.root "
+            command = command + "rootfiles/"+version+"/jmenano_mc_out_"+mc+"_"+version+".root "
         print("\""+command+"\"...")
         os.system(command)
 

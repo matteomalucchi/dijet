@@ -52,12 +52,6 @@ namespace JME {
 #endif
     }
 
-    const bimap<Binning, std::string> JetParameters::binning_to_string = {
-        {Binning::JetPt, "JetPt"}, {Binning::JetEta, "JetEta"},
-        {Binning::JetAbsEta, "JetAbsEta"}, {Binning::JetE, "JetE"},
-        {Binning::JetArea, "JetArea"}, {Binning::Mu, "Mu"},
-        {Binning::Rho, "Rho"}, {Binning::NPV, "NPV"}
-    };
 
     JetParameters::JetParameters(JetParameters&& rhs) {
         m_values = std::move(rhs.m_values);
@@ -122,12 +116,19 @@ namespace JME {
     }
 
     std::vector<float> JetParameters::createVector(const std::vector<Binning>& binning) const {
+        const bimap<Binning, std::string> binning_to_string = {
+            {Binning::JetPt, "JetPt"}, {Binning::JetEta, "JetEta"},
+            {Binning::JetAbsEta, "JetAbsEta"}, {Binning::JetE, "JetE"},
+            {Binning::JetArea, "JetArea"}, {Binning::Mu, "Mu"},
+            {Binning::Rho, "Rho"}, {Binning::NPV, "NPV"}
+        };
+
         std::vector<float> values;
         for (const auto& bin: binning) {
             const auto& it = m_values.find(bin);
             if (it == m_values.cend()) {
                 throwException(edm::errors::NotFound, "JER parametrisation depends on '" +
-                        JetParameters::binning_to_string.left.at(bin) +
+                        binning_to_string.left.at(bin) +
                         "' but no value for this parameter has been specified. Please call the appropriate 'set' function of the JME::JetParameters object");
             }
 
@@ -179,6 +180,13 @@ namespace JME {
     }
 
     void JetResolutionObject::Definition::init() {
+        const bimap<Binning, std::string> binning_to_string = {
+            {Binning::JetPt, "JetPt"}, {Binning::JetEta, "JetEta"},
+            {Binning::JetAbsEta, "JetAbsEta"}, {Binning::JetE, "JetE"},
+            {Binning::JetArea, "JetArea"}, {Binning::Mu, "Mu"},
+            {Binning::Rho, "Rho"}, {Binning::NPV, "NPV"}
+        };
+
         if (!m_formula_str.empty())
 #ifndef STANDALONE
             m_formula = std::make_shared<reco::FormulaEvaluator>(m_formula_str);
@@ -186,16 +194,16 @@ namespace JME {
             m_formula = std::make_shared<TFormula>("jet_resolution_formula", m_formula_str.c_str());
 #endif
         for (const auto& bin: m_bins_name) {
-            const auto& b = JetParameters::binning_to_string.right.find(bin);
-            if (b == JetParameters::binning_to_string.right.cend()) {
+            const auto& b = binning_to_string.right.find(bin);
+            if (b == binning_to_string.right.cend()) {
                 throwException(edm::errors::UnimplementedFeature, "Bin name not supported: '" + bin + "'");
             }
             m_bins.push_back(b->second);
         }
 
         for (const auto& v: m_variables_name) {
-            const auto& var = JetParameters::binning_to_string.right.find(v);
-            if (var == JetParameters::binning_to_string.right.cend()) {
+            const auto& var = binning_to_string.right.find(v);
+            if (var == binning_to_string.right.cend()) {
                 throwException(edm::errors::UnimplementedFeature, "Variable name not supported: '" + v + "'");
             }
             m_variables.push_back(var->second);

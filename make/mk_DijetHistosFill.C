@@ -31,7 +31,7 @@ char hostname[_POSIX_HOST_NAME_MAX];
 
 #include <unordered_set>
 
-//#define GPU
+// #define GPU
 // #define LOCAL
 
 #ifdef LOCAL

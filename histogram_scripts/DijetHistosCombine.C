@@ -8,8 +8,9 @@
 #include "TProfile2D.h"
 #include <iostream>
 
+string version = "tot_23_pnetreg_ok";
+
 int debug = 1; // 1=trg, 2=dir, 3=all
-string version = "v38_Summer23MG_NoL2L3Res_OnReWPU_OffJet";
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 			 string trg, string folder);
 //void mergeDijet(TDirectory *dir, TDirectory *dout);
@@ -19,11 +20,18 @@ void DijetHistosCombines(string file = "rootfiles/"+version+"/jmenano_data_out.r
 
 void DijetHistosCombine() {
 
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
+
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_data_out_2023D_ZB_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_data_out_2023Cv4_ZB_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_data_out_2023Cv123_ZB_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
-  DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_mc_out_Summer23MG_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
-  DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_mc_out_Summer23MGBPix_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
+  // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_mc_out_Summer23MG_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
+  // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_mc_out_Summer23MGBPix_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
+
 
   //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022C_JME_"+version+".root");
   //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022D_JME_"+version+".root");

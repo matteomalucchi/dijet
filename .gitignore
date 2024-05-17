@@ -13,3 +13,4 @@ foo/
 .vscode/
 badfiles_tmp
 *.nfs*
+*log*

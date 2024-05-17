@@ -25,7 +25,7 @@
 #define PNET_REG
 
 // Recalculate JECs
-bool redoJEC = true;
+bool redoJEC = false; //HERE true
 
 // MC triggers (slow) or not (faster)
 bool doMCtrigOnly = true;
@@ -2295,6 +2295,8 @@ void DijetHistosFill::Loop()
       #endif
       if (Jet_PNetRegPtRawCorrTotal==0){
         Jet_PNetRegPtRawCorrTotal = 1.;
+        // exite loop
+        continue;
       }
       // if (i==0){
       // cout << "src double Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
@@ -2302,7 +2304,7 @@ void DijetHistosFill::Loop()
 
       if (redoJEC)
       {
-        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
+        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i]); //* Jet_PNetRegPtRawCorrTotal;
         double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
 
 
@@ -2328,18 +2330,26 @@ void DijetHistosFill::Loop()
         Jet_mass[i] = corr * rawJetMass;
         Jet_rawFactor[i] = (1.0 - (1.0 / corr));
         // pt*(1-l1rcFactor)=ptl1rc => l1rcFactor = 1 - ptl1rc/pt
+        #ifdef PNET_REG
+        Jet_pt[i]= Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
+        Jet_mass[i]= Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
+        // Jet_l1rcFactor[i]=0;
+        Jet_rawFactor[i]=0;
+        #endif
         Jet_l1rcFactor[i] = (isRun2 ? (1.0 - jecl1rc->getCorrection() / corr) : Jet_rawFactor[i]);
+
       }
       else
       {
         Jet_RES[i] = 1.;
         Jet_deltaJES[i] = 1.;
-        Jet_l1rcFactor[i] = Jet_rawFactor[i];
         #ifdef PNET_REG
-        if (Jet_PNetRegPtRawCorrTotal!=1.){
-          Jet_pt[i] = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal; //??
-        }
+        Jet_pt[i] = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
+        Jet_mass[i]= Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
+        // Jet_l1rcFactor[i]=0;
+        Jet_rawFactor[i]=0;
         #endif
+        Jet_l1rcFactor[i] = Jet_rawFactor[i];
       }
 
       if (true)

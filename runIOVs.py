@@ -186,9 +186,12 @@ for iov in IOV_input:
 
     # os.system(f"nohup time root -l -b -q 'make/mk_DijetHistosFill.C(\"{iov}\",\"{version}\",{max_files})' > logs/{version}/log_{iov}_{version}.txt &")
     # print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.txt'")
-    os.system(
-        f'time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\''
-    )
+    # os.system(
+    #     f'time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\''
+    # )
+
+    os.system(f"sbatch submit_slurm.sh {iov} {version} {max_files}")
+
 
 #    os.system("fs flush")
 #    wait()

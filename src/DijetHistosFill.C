@@ -25,7 +25,7 @@
 #define PNET_REG
 
 // Recalculate JECs
-bool redoJEC = false; //HERE true
+bool redoJEC = true; //HERE true
 
 // MC triggers (slow) or not (faster)
 bool doMCtrigOnly = true;
@@ -866,13 +866,25 @@ void DijetHistosFill::Loop()
       dataset == "Summer23BPIXFlat" || dataset == "Summer23BPIXMG" || TString(dataset.c_str()).Contains("Summer23"))
   {
     if (TString(dataset.c_str()).Contains("Summer23MGBPix")) {
+      #ifdef PNET_REG
+      jec = getFJC("",
+                  "Summer23BPixRun3_PNETREG_MC_L2Relative_AK4PUPPI",
+                  "");
+      #else
       jec = getFJC("",
                   "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI",
                   "");
+      #endif
     } else {
+      #ifdef PNET_REG
+      jec = getFJC("",
+                  "Summer23Run3_PNETREG_MC_L2Relative_AK4PUPPI",
+                  "");
+      #else
       jec = getFJC("",
                   "Summer23Run3_V1_MC_L2Relative_AK4PUPPI",
                   "");
+      #endif
     }
     //jec = getFJC("", // Winter23Prompt23_V2_MC_L1FastJet_AK4PFPuppi",
     //             "Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi",
@@ -915,29 +927,47 @@ void DijetHistosFill::Loop()
   if (dataset == "2023B" || dataset == "2023B_ZB" || dataset == "2023BCv123" ||
       dataset == "2023BCv123_ZB" || dataset == "2023Cv123" || dataset == "2023Cv123_ZB")
   {
+    #ifdef PNET_REG
+    jec = getFJC("",
+                "Summer23Run3_PNETREG_MC_L2Relative_AK4PUPPI",
+                "Summer23Prompt23_Run2023Cv123_V1_DATA_L2L3Residual_AK4PFPuppi");
+    #else
     jec = getFJC("",                                                               // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                    //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer23Run3_V1_MC_L2Relative_AK4PUPPI",                         // Mikel
                                                                                    // "Run23C123-Prompt_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer23Prompt23_Run2023Cv123_V1_DATA_L2L3Residual_AK4PFPuppi"); //"Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
 
   if (dataset == "2023Cv4" || dataset == "2023Cv4_ZB")
   {
+    #ifdef PNET_REG
+    jec = getFJC("",
+                "Summer23Run3_PNETREG_MC_L2Relative_AK4PUPPI",
+                "Summer23Prompt23_Run2023Cv4_V1_DATA_L2L3Residual_AK4PFPuppi");
+    #else
     jec = getFJC("",                                                             // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                  //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer23Run3_V1_MC_L2Relative_AK4PUPPI",                       // Mikel
                                                                                  //"Run23C4-Prompt_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer23Prompt23_Run2023Cv4_V1_DATA_L2L3Residual_AK4PFPuppi"); //"Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
 
   if (dataset == "2023D" || dataset == "2023D_ZB")
   {
+    #ifdef PNET_REG
+    jec = getFJC("",
+                "Summer23BPixRun3_PNETREG_MC_L2Relative_AK4PUPPI",
+                "Summer23Prompt23_Run2023D_V1_DATA_L2L3Residual_AK4PFPuppi");
+    #else
     jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI",                     // Mikel
                                                                                //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer23Prompt23_Run2023D_V1_DATA_L2L3Residual_AK4PFPuppi"); //"Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
 
   if ((isRun2 && (!jec || !jecl1rc)) || (isRun3 && !jec))
@@ -2296,7 +2326,7 @@ void DijetHistosFill::Loop()
       if (Jet_PNetRegPtRawCorrTotal==0){
         Jet_PNetRegPtRawCorrTotal = 1.;
         // exite loop
-        continue;
+        // continue;
       }
       // if (i==0){
       // cout << "src double Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
@@ -2304,7 +2334,7 @@ void DijetHistosFill::Loop()
 
       if (redoJEC)
       {
-        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i]); //* Jet_PNetRegPtRawCorrTotal;
+        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
         double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
 
 
@@ -2325,22 +2355,26 @@ void DijetHistosFill::Loop()
         double corr = v.back();
         double res = (v.size() > 1 ? v[v.size() - 1] / v[v.size() - 2] : 1.);
         Jet_RES[i] = 1. / res;
-        Jet_deltaJES[i] = (1. / corr) / (1.0 - Jet_rawFactor[i]);
+        Jet_deltaJES[i] = (1. / corr) / (1.0 - Jet_rawFactor[i]);//HERE ?
         Jet_pt[i] = corr * rawJetPt;
-        Jet_mass[i] = corr * rawJetMass;
+        Jet_mass[i] = corr * rawJetMass; //HERE ?
         Jet_rawFactor[i] = (1.0 - (1.0 / corr));
         // pt*(1-l1rcFactor)=ptl1rc => l1rcFactor = 1 - ptl1rc/pt
-        #ifdef PNET_REG
-        Jet_pt[i]= Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
-        Jet_mass[i]= Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
-        // Jet_l1rcFactor[i]=0;
-        Jet_rawFactor[i]=0;
-        #endif
+
+        // #ifdef PNET_REG
+        // Jet_pt[i]= Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
+        // Jet_mass[i]= Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
+        // // Jet_l1rcFactor[i]=0;
+        // Jet_rawFactor[i]=0;
+        // #endif
+
         Jet_l1rcFactor[i] = (isRun2 ? (1.0 - jecl1rc->getCorrection() / corr) : Jet_rawFactor[i]);
 
       }
       else
       {
+        assert(false);
+        //this is wrong!
         Jet_RES[i] = 1.;
         Jet_deltaJES[i] = 1.;
         #ifdef PNET_REG

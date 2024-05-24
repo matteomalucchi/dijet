@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH --job-name=dijet_analysis         # Job name
-#SBATCH -p long
-#SBATCH --time=3-00:00:00                     # Time limit hrs:min:sec
-#SBATCH --account=t3
-#SBATCH --ntasks=1                          # Run a single task
-#SBATCH --cpus-per-task=1                   # Number of CPU cores per task; Example of  submitting  8-core parallel SMP job
-#SBATCH --mem=5gb                           # Job memory request
-#SBATCH --output=log_slurm/zb_analysis_%j.log                 # Standard output and error log
+#/ #SBATCH --job-name=dijet_analysis         # Job name
+#/ #SBATCH -p long
+#/ #SBATCH --time=3-00:00:00                     # Time limit hrs:min:sec
+#/ #SBATCH --account=t3
+#/ #SBATCH --ntasks=1                          # Run a single task
+#/ #SBATCH --cpus-per-task=1                   # Number of CPU cores per task; Example of  submitting  8-core parallel SMP job
+#/ #SBATCH --mem=5gb                           # Job memory request
+#/ #SBATCH --output=logs/$2/dijet_analysis_$1_$2_%j.log                 # Standard output and error log
 
 
 

@@ -89,7 +89,6 @@ IOV_list = [
 ]
 
 IOV_list = [
-    # das samples
     "2023Cv4",
     "2023D",
     "2023Cv123",
@@ -107,6 +106,26 @@ IOV_list = [
     "Summer23MGBPix_3",
     "Summer23MGBPix_4",
 ]
+
+res_iovs = {
+    # dataset: [memory, hours, days]
+    "2023Cv4": [1, 8, ""],
+    "2023D": [5, 0, "2-"],
+    "2023Cv123": [5, 6, ""],
+    "2023Cv123_ZB": [5, 0, "2-"],
+    "2023Cv4_ZB": [5, 0, "2-"],
+    "2023D_ZB": [5, 0, "2-"],
+    "Summer23MG_1": [5, 0, "2-"],
+    "Summer23MG_2": [5, 0, "2-"],
+    "Summer23MG_3": [5, 0, "2-"],
+    "Summer23MG_4": [5, 0, "2-"],
+    "Summer23MG_5": [5, 0, "2-"],
+    "Summer23MG_6": [5, 0, "2-"],
+    "Summer23MGBPix_1": [5, 0, "2-"],
+    "Summer23MGBPix_2": [5, 0, "2-"],
+    "Summer23MGBPix_3": [5, 0, "2-"],
+    "Summer23MGBPix_4": [5, 0, "2-"],
+}
 
 # Run 3 is all samples with year 2023 and 2022 from the full IOV_list
 run3_IOV_list = [x for x in IOV_list if "2023" in x or "2022" in x or "Summer22" in x]
@@ -184,13 +203,17 @@ for iov in IOV_input:
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc.so")
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc_ACLiC_dict_rdict.pcm")
 
-    # os.system(f"nohup time root -l -b -q 'make/mk_DijetHistosFill.C(\"{iov}\",\"{version}\",{max_files})' > logs/{version}/log_{iov}_{version}.txt &")
-    # print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.txt'")
+    os.system(f"nohup time root -l -b -q 'make/mk_DijetHistosFill.C(\"{iov}\",\"{version}\",{max_files})' > logs/{version}/log_{iov}_{version}.txt &")
+    print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.txt'")
+
     # os.system(
     #     f'time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\''
     # )
+    # os.system(f"sbatch submit_slurm.sh {iov} {version} {max_files}")
 
-    os.system(f"sbatch submit_slurm.sh {iov} {version} {max_files}")
+    # os.system(
+    #     f"sbatch --job-name=dijet_analysis -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/dijet_analysis_{iov}_{version}_%j.log submit_slurm.sh {iov} {version} {max_files}"
+    # )
 
 
 #    os.system("fs flush")

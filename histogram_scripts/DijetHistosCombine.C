@@ -8,7 +8,7 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "tot_23_pnetreg_ok";
+string version = "pnetreg_tot23_l2rel";
 
 int debug = 1; // 1=trg, 2=dir, 3=all
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
@@ -20,9 +20,9 @@ void DijetHistosCombines(string file = "rootfiles/"+version+"/jmenano_data_out.r
 
 void DijetHistosCombine() {
 
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
 

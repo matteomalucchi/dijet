@@ -7,7 +7,7 @@ import argparse
 version = "tot_23_pnetreg_ok"
 includeZB = True
 doMC = True
-doData = False
+doData = True
 
 
 parser = argparse.ArgumentParser(description='Run all IOVs')

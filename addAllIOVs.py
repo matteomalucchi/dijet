@@ -1,6 +1,7 @@
 #! /usr/bin/python
 import os
 import argparse
+
 # Purpose: hadd files together automatically, either JetMET+ZB and/or
 #           IOVs-in-parts. Update the list_of_lists below and set version.
 
@@ -10,11 +11,12 @@ doMC = True
 doData = True
 
 
-parser = argparse.ArgumentParser(description='Run all IOVs')
+parser = argparse.ArgumentParser(description="Run all IOVs")
 
 # The user can pass the IOV list, version, max number of files as an argument
 # parser.add_argument("-i", '--IOV_list', nargs='+', default=IOV_input)
-parser.add_argument("-v", '--version', default=version)
+parser.add_argument("-v", "--version", default=version)
+parser.add_argument("-f", "--force", default=False, action="store_true")
 args = parser.parse_args()
 
 version = args.version
@@ -34,7 +36,7 @@ IOV_list_of_lists = [
     # ['2023D_JME', '2023D_ZB', '2023D'],
     ["2023Cv123_ZB", "2023Cv123"],
     ["2023Cv4_ZB", "2023Cv4"],
-    ["2023D_ZB", "2023D"],
+    # ["2023D_ZB", "2023D"],
     #    ['Run3_JME', '2022C_JME','2022D_JME', '2022E_JME', '2022F_JME', '2022G_JME',
     #     '2023BCv123_JME', '2023Cv4_JME','2023D_JME']
 ]
@@ -46,7 +48,7 @@ MC_list_of_lists = [
     #    ['Summer22EEMG','Summer22EEMG1', 'Summer22EEMG2','Summer22EEMG3', 'Summer22EEMG4'],
     # ['Summer23MG', 'Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4'],
     # ['Summer23MGBPix', 'Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
-    ["Summer23MGBPix_1", "Summer23MGBPix_2", "Summer23MGBPix_3", "Summer23MGBPix_4"],
+    # ["Summer23MGBPix_1", "Summer23MGBPix_2", "Summer23MGBPix_3", "Summer23MGBPix_4"],
     [
         "Summer23MG_1",
         "Summer23MG_2",
@@ -78,6 +80,7 @@ if doData:
             + "_"
             + version
             + ".root "
+            + ("-f " if args.force else "")
         )
         for iov in IOV_list:
             command = (
@@ -96,9 +99,7 @@ if doData:
 if doMC:
     os.system("ls rootfiles/" + version + "/jmenano_mc_out_*_" + version + ".root")
     for MC_list in MC_list_of_lists:
-        iov_string = (
-            "QCD" if "Summer23MG_" in MC_list[0] else "QCD-BPix"
-        )
+        iov_string = "QCD" if "Summer23MG_" in MC_list[0] else "QCD-BPix"
         command = (
             "hadd "
             + "rootfiles/"
@@ -108,6 +109,7 @@ if doMC:
             + "_"
             + version
             + ".root "
+            + ("-f " if args.force else "")
         )
         for mc in MC_list:
             command = (

@@ -6,125 +6,42 @@ import argparse
 max_files = 9999
 
 IOV_list = [
-    "UL2016BCD",
-    "UL2016EF",
-    "UL2016GH",
-    "UL2017B",
-    "UL2017C",
-    "UL2017D",
-    "UL2017E",
-    "UL2017F",
-    "UL2018A",
-    "UL2018B",
-    "UL2018C",
-    "UL2018D",
-    "UL2018D1",
-    "UL2018D2",
-    "UL2016APVMG",
-    "UL2016MG",
-    "UL2017MG",
-    "UL2018MG",
-    "UL2016BCD_ZB",
-    "UL2016EF_ZB",
-    "UL2016GH_ZB",
-    "UL2017B_ZB",
-    "UL2017C_ZB",
-    "UL2017D_ZB",
-    "UL2017E_ZB",
-    "UL2017F_ZB",
-    "UL2018A_ZB",
-    "UL2018B_ZB",
-    "UL2018C_ZB",
-    "UL2018D_ZB",
-    "2022C",
-    "2022D",
-    "2022E",
-    "2022F",
-    "2022G",  # '2022F1','2022F2',
-    "2022C_ZB",
-    "2022D_ZB",
-    "2022E_ZB",
-    "2022F_ZB",
-    "2022G_ZB",
-    "2022C_das",
-    "2022D_das",
-    "2022E_das",
-    "2022F_das",
-    "2022G_das",  # '2022F1_das','2022F2_das',
-    "2022C_ZB_das",
-    "2022D_ZB_das",
-    "2022E_ZB_das",
-    "2022F_ZB_das",
-    "2022G_ZB_das",
-    "2023Cv4",
-    "2023D",
-    "2023BCv123",
-    "2023Cv123",
-    "2023Cv123_ZB",
-    "2023BCv123_ZB",
-    "2023Cv4_ZB",
-    "2023D_ZB",
-    "Summer22MG1",
-    "Summer22MG2",
-    "Summer22EEMG1",
-    "Summer22EEMG2",
-    "Summer22EEMG3",
-    "Summer22EEMG4",
-    "Summer23MG_1",
-    "Summer23MG_2",
-    "Summer23MG_3",
-    "Summer23MG_4",
-    "Summer23MG",
-    "Summer23MGBPix_1",
-    "Summer23MGBPix_2",
-    "Summer23MGBPix_3",
-    "Summer23MGBPix_4",
-    "Summer23MGBPix",
-    "Summer23MG_test",
-    "Summer23MGBPix_test",
-    "Summer23MG_new_1",
-    "Summer23MG_new_2",
-    "Summer23MG_new_3",
-    "Summer23MG_new_4",
-]
-
-IOV_list = [
-    "2023Cv4",
-    "2023D",
-    "2023Cv123",
-    "2023Cv123_ZB",
-    "2023Cv4_ZB",
-    "2023D_ZB",
-    "Summer23MG_1",
-    "Summer23MG_2",
-    "Summer23MG_3",
-    "Summer23MG_4",
-    "Summer23MG_5",
+    # "2023Cv4",
+    # "2023D",
+    # "2023Cv123",
+    # "2023Cv123_ZB",
+    # "2023Cv4_ZB",
+    # "2023D_ZB",
+    # "Summer23MG_1",
+    # "Summer23MG_2",
+    # "Summer23MG_3",
+    # "Summer23MG_4",
+    # "Summer23MG_5",
     "Summer23MG_6",
-    "Summer23MGBPix_1",
-    "Summer23MGBPix_2",
-    "Summer23MGBPix_3",
-    "Summer23MGBPix_4",
+    # "Summer23MGBPix_1",
+    # "Summer23MGBPix_2",
+    # "Summer23MGBPix_3",
+    # "Summer23MGBPix_4",
 ]
 
 res_iovs = {
     # dataset: [memory, hours, days]
     "2023Cv4": [1, 8, ""],
-    "2023D": [5, 0, "2-"],
+    "2023D": [5, 12, ""],#[5, 0, "2-"],
     "2023Cv123": [5, 6, ""],
-    "2023Cv123_ZB": [5, 0, "2-"],
-    "2023Cv4_ZB": [5, 0, "2-"],
-    "2023D_ZB": [5, 0, "2-"],
+    "2023Cv123_ZB": [5, 12, ""],#[5, 0, "2-"],
+    "2023Cv4_ZB": [5, 12, ""],#[5, 0, "2-"],
+    "2023D_ZB": [5, 12, ""],#[5, 0, "2-"],
     "Summer23MG_1": [5, 0, "2-"],
     "Summer23MG_2": [5, 0, "2-"],
-    "Summer23MG_3": [5, 0, "2-"],
-    "Summer23MG_4": [5, 0, "2-"],
-    "Summer23MG_5": [5, 0, "2-"],
-    "Summer23MG_6": [5, 0, "2-"],
-    "Summer23MGBPix_1": [5, 0, "2-"],
-    "Summer23MGBPix_2": [5, 0, "2-"],
-    "Summer23MGBPix_3": [5, 0, "2-"],
-    "Summer23MGBPix_4": [5, 0, "2-"],
+    "Summer23MG_3": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MG_4": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MG_5": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MG_6": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MGBPix_1": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MGBPix_2": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MGBPix_3": [5, 12, ""],#[5, 0, "2-"],
+    "Summer23MGBPix_4": [5, 12, ""],#[5, 0, "2-"],
 }
 
 # Run 3 is all samples with year 2023 and 2022 from the full IOV_list
@@ -144,6 +61,7 @@ parser = argparse.ArgumentParser(description="Run all IOVs")
 # The user can pass the IOV list, version, max number of files as an argument
 parser.add_argument("-i", "--IOV_list", nargs="+", default=IOV_input)
 parser.add_argument("-v", "--version", default=version)
+parser.add_argument("-l", "--local", default=False, action="store_true")
 parser.add_argument("--max_files", default=9999)
 args = parser.parse_args()
 
@@ -197,23 +115,27 @@ for iov in IOV_input:
     print(f"Process DijetHistosFill.C+g for IOV {iov}")
     # os.system(f"ls -ltrh rootfiles/jmenano_mc_out_{iov}_{version}.root")
     # os.system(f"ls -ltrh rootfiles/jmenano_data_out_{iov}_{version}.root")
-    # os.system(f"ls -ltrh logs/log_{iov}_{version}.txt")
+    # os.system(f"ls -ltrh logs/log_{iov}_{version}.log")
 
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc.d", True)
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc.so")
     # os.remove("CondFormats/JetMETObjects/src/Utilities_cc_ACLiC_dict_rdict.pcm")
-
-    os.system(f"nohup time root -l -b -q 'make/mk_DijetHistosFill.C(\"{iov}\",\"{version}\",{max_files})' > logs/{version}/log_{iov}_{version}.txt &")
-    print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.txt'")
 
     # os.system(
     #     f'time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\''
     # )
     # os.system(f"sbatch submit_slurm.sh {iov} {version} {max_files}")
 
-    # os.system(
-    #     f"sbatch --job-name=dijet_analysis -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/dijet_analysis_{iov}_{version}_%j.log submit_slurm.sh {iov} {version} {max_files}"
-    # )
+    if args.local:
+        os.system(
+            f'nohup time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\' > logs/{version}/log_{iov}_{version}.log &'
+        )
+    else:
+        os.system(
+            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
+        )
+
+    print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.log'")
 
 
 #    os.system("fs flush")

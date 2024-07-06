@@ -32,8 +32,8 @@ bool redoJEC = true; //HERE true
 bool doMCtrigOnly = true;
 
 // JER smearing (JER SF)
-bool smearJets = true;
-bool useJERSFvsPt = true; // new file format
+bool smearJets = false;
+bool useJERSFvsPt = false; // new file format
 int smearNMax = 3;
 std::uint32_t _seed;
 std::mt19937 _mersennetwister;

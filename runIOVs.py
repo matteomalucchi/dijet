@@ -5,44 +5,55 @@ import argparse
 
 max_files = 9999
 
-IOV_list = [
-    "2023Cv4",
-    # "2023D",
-    # "2023Cv123",
-    # "2023Cv123_ZB",
-    # "2023Cv4_ZB",
-    # "2023D_ZB",
-    "Summer23MG_1",
-    "Summer23MG_2",
-    # "Summer23MG_3",
-    # "Summer23MG_4",
-    # "Summer23MG_5",
-    "Summer23MG_6",
-    # "Summer23MGBPix_1",
-    # "Summer23MGBPix_2",
-    # "Summer23MGBPix_3",
-    # "Summer23MGBPix_4",
-]
+IOV_list = (
+    [
+        "2023Cv4",
+        "2023D",
+        "2023Cv123",
+        "2023Cv123_ZB",
+        "2023Cv4_ZB",
+        "2023D_ZB",
+        # "Summer23MG_1",
+        # "Summer23MG_2",
+        # "Summer23MG_3",
+        # "Summer23MG_4",
+        # "Summer23MG_5",
+        # "Summer23MG_6",
+        # "Summer23MGBPix_1",
+        # "Summer23MGBPix_2",
+        # "Summer23MGBPix_3",
+        # "Summer23MGBPix_4",
+    ]
+    + [file for file in os.listdir("inputfiles/") if "Summer23MG_" in file]
+    + [file for file in os.listdir("inputfiles/") if "Summer23MGBPix_" in file],
+)
 
 res_iovs = {
     # dataset: [memory, hours, days]
     "2023Cv4": [1, 8, ""],
-    "2023D": [5, 12, ""],#[5, 0, "2-"],
+    "2023D": [5, 12, ""],  # [5, 0, "2-"],
     "2023Cv123": [5, 6, ""],
-    "2023Cv123_ZB": [5, 12, ""],#[5, 0, "2-"],
-    "2023Cv4_ZB": [5, 12, ""],#[5, 0, "2-"],
-    "2023D_ZB": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MG_1": [5, 0, "2-"],
-    "Summer23MG_2": [5, 0, "2-"],
-    "Summer23MG_3": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MG_4": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MG_5": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MG_6": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MGBPix_1": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MGBPix_2": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MGBPix_3": [5, 12, ""],#[5, 0, "2-"],
-    "Summer23MGBPix_4": [5, 12, ""],#[5, 0, "2-"],
+    "2023Cv123_ZB": [5, 12, ""],  # [5, 0, "2-"],
+    "2023Cv4_ZB": [5, 12, ""],  # [5, 0, "2-"],
+    "2023D_ZB": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MG_1": [5, 0, "2-"],
+    # "Summer23MG_2": [5, 0, "2-"],
+    # "Summer23MG_3": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MG_4": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MG_5": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MG_6": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MGBPix_1": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MGBPix_2": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MGBPix_3": [5, 12, ""],  # [5, 0, "2-"],
+    # "Summer23MGBPix_4": [5, 12, ""],  # [5, 0, "2-"],
 }
+res_iovs.update(
+    {
+        file: [5, 12, ""]
+        for file in os.listdir("inputfiles/")
+        if "Summer23MG_" in file or "Summer23MGBPix_" in file
+    }
+)
 
 # Run 3 is all samples with year 2023 and 2022 from the full IOV_list
 run3_IOV_list = [x for x in IOV_list if "2023" in x or "2022" in x or "Summer22" in x]

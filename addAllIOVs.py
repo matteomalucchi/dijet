@@ -34,11 +34,16 @@ IOV_list_of_lists = [
     # ['2023Cv123_JME', '2023Cv123_ZB', '2023Cv123'],
     # ['2023Cv4_JME', '2023Cv4_ZB', '2023Cv4'],
     # ['2023D_JME', '2023D_ZB', '2023D'],
-    ["2023Cv123_ZB", "2023Cv123"],
-    ["2023Cv4_ZB", "2023Cv4"],
-    # ["2023D_ZB", "2023D"],
     #    ['Run3_JME', '2022C_JME','2022D_JME', '2022E_JME', '2022F_JME', '2022G_JME',
     #     '2023BCv123_JME', '2023Cv4_JME','2023D_JME']
+
+    # ["2023Cv123_ZB", "2023Cv123"],
+    # ["2023Cv4_ZB", "2023Cv4"],
+    # ["2023D_ZB", "2023D"],
+    [file for file in os.listdir("rootfiles/" + version) if "2023Cv123" in file],
+    [file for file in os.listdir("rootfiles/" + version) if "2023Cv4" in file],
+    [file for file in os.listdir("rootfiles/" + version) if "2023D" in file],
+
 ]
 
 MC_list_of_lists = [
@@ -48,15 +53,18 @@ MC_list_of_lists = [
     #    ['Summer22EEMG','Summer22EEMG1', 'Summer22EEMG2','Summer22EEMG3', 'Summer22EEMG4'],
     # ['Summer23MG', 'Summer23MG_1', 'Summer23MG_2', 'Summer23MG_3', 'Summer23MG_4'],
     # ['Summer23MGBPix', 'Summer23MGBPix_1', 'Summer23MGBPix_2', 'Summer23MGBPix_3', 'Summer23MGBPix_4'],
+    
     # ["Summer23MGBPix_1", "Summer23MGBPix_2", "Summer23MGBPix_3", "Summer23MGBPix_4"],
-    [
-        "Summer23MG_1",
-        "Summer23MG_2",
-        "Summer23MG_3",
-        "Summer23MG_4",
-        "Summer23MG_5",
-        "Summer23MG_6",
-    ],
+    # [
+    #     "Summer23MG_1",
+    #     "Summer23MG_2",
+    #     "Summer23MG_3",
+    #     "Summer23MG_4",
+    #     "Summer23MG_5",
+    #     "Summer23MG_6",
+    # ],
+    [file for file in os.listdir("rootfiles/" + version) if "Summer23MG_" in file],
+    [file for file in os.listdir("rootfiles/" + version) if "Summer23MGBPix_" in file],
 ]
 
 if not includeZB:

@@ -24,9 +24,19 @@ IOV_list = (
         # "Summer23MGBPix_3",
         # "Summer23MGBPix_4",
     ]
-    + [file for file in os.listdir("inputfiles/") if "Summer23MG_" in file]
-    + [file for file in os.listdir("inputfiles/") if "Summer23MGBPix_" in file],
+    + [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Summer23MG_" in file and "all" not in file
+    ]
+    + [
+        file.replace(".txt", "")
+        for file in os.listdir("input_files/")
+        if "Summer23MGBPix_" in file and "all" not in file
+    ],
 )
+
+IOV_list = ["Summer23MG_7"]
 
 res_iovs = {
     # dataset: [memory, hours, days]
@@ -49,11 +59,12 @@ res_iovs = {
 }
 res_iovs.update(
     {
-        file: [5, 12, ""]
-        for file in os.listdir("inputfiles/")
-        if "Summer23MG_" in file or "Summer23MGBPix_" in file
+        file.replace(".txt", "").replace("mcFiles_", ""): [5, 12, ""]
+        for file in os.listdir("input_files/")
+        if ("Summer23MG_" in file or "Summer23MGBPix_" in file) and "all" not in file
     }
 )
+print(res_iovs)
 
 # Run 3 is all samples with year 2023 and 2022 from the full IOV_list
 run3_IOV_list = [x for x in IOV_list if "2023" in x or "2022" in x or "Summer22" in x]

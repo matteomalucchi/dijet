@@ -22,8 +22,8 @@
 #include <array>
 #include <string_view>
 
-// #define PNETREG
-#define PNETREGNEUTRINO
+#define PNETREG
+// #define PNETREGNEUTRINO
 
 // Recalculate JECs
 bool redoJEC = true; //HERE true

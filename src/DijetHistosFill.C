@@ -875,11 +875,11 @@ void DijetHistosFill::Loop()
     if (TString(dataset.c_str()).Contains("Summer23MGBPix")) {
       #ifdef PNETREG
       jec = getFJC("",
-                  "Summer23BPixRun3_PNETREG_MC_L2Relative_AK4PUPPI",
+                  "Summer23BPixRun3_V3_MC_L2Relative_AK4PFPNet",
                   "");
       #elif defined PNETREGNEUTRINO
       jec = getFJC("",
-                  "Summer23BPixRun3_PNETREGNEUTRINO_MC_L2Relative_AK4PUPPI",
+                  "Summer23BPixRun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                   "");
       #else
       jec = getFJC("",
@@ -889,11 +889,11 @@ void DijetHistosFill::Loop()
     } else {
       #ifdef PNETREG
       jec = getFJC("",
-                  "Summer23Run3_PNETREG_MC_L2Relative_AK4PUPPI",
+                  "Summer23Run3_V3_MC_L2Relative_AK4PFPNet",
                   "");
       #elif defined PNETREGNEUTRINO
       jec = getFJC("",
-                  "Summer23Run3_PNETREGNEUTRINO_MC_L2Relative_AK4PUPPI",
+                  "Summer23Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
                   "");
       #else
       jec = getFJC("",
@@ -944,12 +944,12 @@ void DijetHistosFill::Loop()
   {
     #ifdef PNETREG
     jec = getFJC("",
-                "Summer23Run3_PNETREG_MC_L2Relative_AK4PUPPI",
-                "Summer23Prompt23_Run2023Cv123_V1_DATA_L2L3Residual_AK4PFPuppi");
+                "Summer23Run3_V3_MC_L2Relative_AK4PFPNet",
+                "");
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
-                "Summer23Run3_PNETREGNEUTRINO_MC_L2Relative_AK4PUPPI",
-                "Summer23Prompt23_Run2023Cv123_V1_DATA_L2L3Residual_AK4PFPuppi");
+                "Summer23Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                "");
     #else
     jec = getFJC("",                                                               // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                    //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
@@ -963,12 +963,12 @@ void DijetHistosFill::Loop()
   {
     #ifdef PNETREG
     jec = getFJC("",
-                "Summer23Run3_PNETREG_MC_L2Relative_AK4PUPPI",
-                "Summer23Prompt23_Run2023Cv4_V1_DATA_L2L3Residual_AK4PFPuppi");
+                "Summer23Run3_V3_MC_L2Relative_AK4PFPNet",
+                "");
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
-                "Summer23Run3_PNETREGNEUTRINO_MC_L2Relative_AK4PUPPI",
-                "Summer23Prompt23_Run2023Cv4_V1_DATA_L2L3Residual_AK4PFPuppi");
+                "Summer23Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                "");
     #else
     jec = getFJC("",                                                             // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                  //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
@@ -982,12 +982,12 @@ void DijetHistosFill::Loop()
   {
     #ifdef PNETREG
     jec = getFJC("",
-                "Summer23BPixRun3_PNETREG_MC_L2Relative_AK4PUPPI",
-                "Summer23Prompt23_Run2023D_V1_DATA_L2L3Residual_AK4PFPuppi");
+                "Summer23BPixRun3_V3_MC_L2Relative_AK4PFPNet",
+                "");
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
-                "Summer23BPixRun3_PNETREGNEUTRINO_MC_L2Relative_AK4PUPPI",
-                "Summer23Prompt23_Run2023D_V1_DATA_L2L3Residual_AK4PFPuppi");
+                "Summer23BPixRun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                "");
     #else
     jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
@@ -2239,7 +2239,7 @@ void DijetHistosFill::Loop()
 
 
     if (debugevent)
-      cout << "Read in entry" << endl
+      cout << "Read in entry" << jentry<< endl
            << flush;
 
     // Read rest of the event before trigger decision
@@ -2353,13 +2353,17 @@ void DijetHistosFill::Loop()
       double Jet_PNetRegPtRawCorrTotal = 1.;
       #endif
 
-      if (Jet_PNetRegPtRawCorrTotal==0){
+      if ((Jet_PNetRegPtRawCorrTotal==0) && (fabs(Jet_eta[i])>4.7)){
         Jet_PNetRegPtRawCorrTotal = 1.;
-        // exite loop
-        // continue;
       }
+
+      if ((Jet_PNetRegPtRawCorrTotal==0) && (Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.5)){
+        // exit loop
+        continue;
+      }
+
       // if (i==0){
-      // cout << "src double Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
+      // cout << " Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
       // }
 
       if (redoJEC)
@@ -2387,7 +2391,15 @@ void DijetHistosFill::Loop()
         Jet_RES[i] = 1. / res;
         Jet_deltaJES[i] = (1. / corr) / (1.0 - Jet_rawFactor[i]);//HERE ?
         Jet_pt[i] = corr * rawJetPt;
-        Jet_mass[i] = corr * rawJetMass; //HERE ?
+
+        #ifdef PNETREG
+        Jet_mass[i] = rawJetMass;
+        #elif defined PNETREGNEUTRINO
+        Jet_mass[i] = rawJetMass;
+        #else
+        Jet_mass[i] = corr * rawJetMass;
+        #endif
+
         Jet_rawFactor[i] = (1.0 - (1.0 / corr));
         // pt*(1-l1rcFactor)=ptl1rc => l1rcFactor = 1 - ptl1rc/pt
 

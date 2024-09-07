@@ -1,7 +1,7 @@
 #! /usr/bin/python
 import os
 import argparse
-
+import time
 
 max_files = 9999
 
@@ -13,6 +13,7 @@ IOV_list = (
         "2023Cv123_ZB",
         "2023Cv4_ZB",
         "2023D_ZB",
+        #
         # "Summer23MG_1",
         # "Summer23MG_2",
         # "Summer23MG_3",
@@ -30,13 +31,12 @@ IOV_list = (
         if "Summer23MG_" in file and "all" not in file
     ]
     + [
-        file.replace(".txt", "")
+        file.replace(".txt", "").replace("mcFiles_", "")
         for file in os.listdir("input_files/")
         if "Summer23MGBPix_" in file and "all" not in file
-    ],
+    ]
 )
 
-IOV_list = ["Summer23MG_7"]
 
 res_iovs = {
     # dataset: [memory, hours, days]
@@ -84,6 +84,8 @@ parser = argparse.ArgumentParser(description="Run all IOVs")
 parser.add_argument("-i", "--IOV_list", nargs="+", default=IOV_input)
 parser.add_argument("-v", "--version", default=version)
 parser.add_argument("-l", "--local", default=False, action="store_true")
+parser.add_argument("-n", "--neutrino", default=False, action="store_true")
+parser.add_argument("-f", "--fast", default=False, action="store_true")
 parser.add_argument("--max_files", default=9999)
 args = parser.parse_args()
 
@@ -132,6 +134,64 @@ if not os.path.exists("rootfiles/" + version):
 
 if not os.path.exists("logs/" + version):
     os.makedirs("logs/" + version)
+
+if not args.fast:
+
+    print("Setting up PNetReg with or without neutrino")
+
+    #choose is pnetreg or pnetregneutrino
+    with open("src/DijetHistosFill.C", "r") as file:
+        filedata = file.read()
+
+    if not args.neutrino:
+        if "// #define PNETREG\n" in filedata:
+            print("uncommenting PNETREG")
+            filedata = filedata.replace("// #define PNETREG\n", "#define PNETREG\n")
+        if not "// #define PNETREGNEUTRINO\n" in filedata:
+            print("commenting PNETREGNEUTRINO")
+            filedata = filedata.replace("#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n")
+    else:
+        if "// #define PNETREGNEUTRINO\n" in filedata:
+            print("uncommenting PNETREGNEUTRINO")
+            filedata = filedata.replace("// #define PNETREGNEUTRINO\n", "#define PNETREGNEUTRINO\n")
+        if not "// #define PNETREG\n" in filedata:
+            print("commenting PNETREG")
+            filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
+
+    with open("src/DijetHistosFill.C", "w") as file:
+        file.write(filedata)
+
+    time.sleep(10)
+
+    #uncomment GPU
+    with open("make/mk_DijetHistosFill.C", "r") as file:
+        filedata = file.read()
+
+    if "// #define GPU" in filedata:
+        print("uncommenting GPU")
+        filedata = filedata.replace("// #define GPU", "#define GPU")
+
+    with open("make/mk_DijetHistosFill.C", "w") as file:
+        file.write(filedata)
+
+    time.sleep(10)
+
+    #clean and make
+    os.system("make clean")
+    os.system("make")
+
+    #comment GPU
+    with open("make/mk_DijetHistosFill.C", "r") as file:
+        filedata = file.read()
+
+    filedata = filedata.replace("#define GPU", "// #define GPU")
+    print("commenting GPU")
+
+    with open("make/mk_DijetHistosFill.C", "w") as file:
+        file.write(filedata)
+    time.sleep(10)
+
+
 
 for iov in IOV_input:
     print(f"Process DijetHistosFill.C+g for IOV {iov}")

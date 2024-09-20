@@ -13,17 +13,6 @@ IOV_list = (
         "2023Cv123_ZB",
         "2023Cv4_ZB",
         "2023D_ZB",
-        #
-        # "Summer23MG_1",
-        # "Summer23MG_2",
-        # "Summer23MG_3",
-        # "Summer23MG_4",
-        # "Summer23MG_5",
-        # "Summer23MG_6",
-        # "Summer23MGBPix_1",
-        # "Summer23MGBPix_2",
-        # "Summer23MGBPix_3",
-        # "Summer23MGBPix_4",
     ]
     + [
         file.replace(".txt", "").replace("mcFiles_", "")
@@ -36,7 +25,7 @@ IOV_list = (
         if "Summer23MGBPix_" in file and "all" not in file
     ]
 )
-
+IOV_list = ["2023Cv123"]
 
 res_iovs = {
     # dataset: [memory, hours, days]

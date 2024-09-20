@@ -41,17 +41,17 @@ IOV_list_of_lists = [
     # ["2023D_ZB", "2023D"],
     [
         file.replace(".txt", "").replace("dataFiles_", "")
-        for file in os.listdir("input_files/" + version)
+        for file in os.listdir("input_files/")
         if "2023Cv123" in file
     ],
     [
         file.replace(".txt", "").replace("dataFiles_", "")
-        for file in os.listdir("input_files/" + version)
+        for file in os.listdir("input_files/")
         if "2023Cv4" in file
     ],
     [
         file.replace(".txt", "").replace("dataFiles_", "")
-        for file in os.listdir("input_files/" + version)
+        for file in os.listdir("input_files/")
         if "2023D" in file
     ],
 ]
@@ -78,7 +78,7 @@ MC_list_of_lists = [
         if "Summer23MG_" in file and "all" not in file
     ],
     [
-        file.replace(".txt", "")
+        file.replace(".txt", "").replace("mcFiles_", "")
         for file in os.listdir("input_files/")
         if "Summer23MGBPix_" in file and "all" not in file
     ],

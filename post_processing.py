@@ -24,4 +24,5 @@ filedata = filedata.replace(line, line_new)
 with open("histogram_scripts/DijetHistosCombine.C", "w") as file:
     file.write(filedata)
 
-os.system("cd histogram_scripts && root DijetHistosCombine.C")
+os.system("cd histogram_scripts")
+os.system("root -q -l -b DijetHistosCombine.C")

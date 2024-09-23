@@ -8,7 +8,7 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "mc_truth_below15_pnetregneutrino";
+string version = "mc_truth_below15_pnetregneutrino_l2l3resclosure";
 
 int debug = 1; // 1=trg, 2=dir, 3=all
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,

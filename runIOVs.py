@@ -24,36 +24,62 @@ IOV_list = (
         for file in os.listdir("input_files/")
         if "Summer23MGBPix_" in file and "all" not in file
     ]
+    + [
+        "2022C",
+        "2022D",
+        "2022E",
+        "2022F",
+        "2022G",
+        "2022C_ZB",
+        "2022D_ZB",
+        "2022E_ZB",
+        "2022F_ZB",
+        "2022G_ZB",
+    ]
+    + [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Summer22MG_" in file and "all" not in file
+    ]
+    + [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Summer22EEMG_" in file and "all" not in file
+    ]
 )
-# IOV_list = ["2023Cv123"]
+IOV_list = ["Summer22EEMG_2"]
 
 res_iovs = {
     # dataset: [memory, hours, days]
     "2023Cv4": [1, 8, ""],
-    "2023D": [5, 12, ""],  # [5, 0, "2-"],
+    "2023D": [5, 6, ""],  # [5, 0, "2-"],
     "2023Cv123": [5, 6, ""],
-    "2023Cv123_ZB": [5, 12, ""],  # [5, 0, "2-"],
-    "2023Cv4_ZB": [5, 12, ""],  # [5, 0, "2-"],
-    "2023D_ZB": [5, 12, ""],  # [5, 0, "2-"],
+    "2023Cv123_ZB": [5, 6, ""],  # [5, 0, "2-"],
+    "2023Cv4_ZB": [5, 6, ""],  # [5, 0, "2-"],
+    "2023D_ZB": [5, 6, ""],  # [5, 0, "2-"],
+    "2022C": [5, 6, ""],
+    "2022D": [5, 6, ""],
+    "2022E": [5, 6, ""],
+    "2022F": [5, 10, ""],
+    "2022G": [5, 6, ""],
+    "2022C_ZB": [5, 6, ""],
+    "2022D_ZB": [5, 6, ""],
+    "2022E_ZB": [5, 6, ""],
+    "2022F_ZB": [5, 6, ""],
+    "2022G_ZB": [5, 6, ""],
 }
 res_iovs.update(
     {
-        file.replace(".txt", "").replace("mcFiles_", ""): [5, 12, ""]
+        file.replace(".txt", "").replace("mcFiles_", ""): [5, 6, ""]
         for file in os.listdir("input_files/")
-        if ("Summer23MG_" in file or "Summer23MGBPix_" in file) and "all" not in file
+        if ("Summer" in file or "Summer" in file) and "all" not in file
     }
 )
 print(res_iovs)
 
-# Run 3 is all samples with year 2023 and 2022 from the full IOV_list
-run3_IOV_list = [x for x in IOV_list if "2023" in x or "2022" in x or "Summer22" in x]
-run3_DT = [x for x in IOV_list if "2023" in x or "2022" in x]
-run3_22_DT = [x for x in IOV_list if "2022" in x]
-run3_MC = [x for x in IOV_list if "Summer22" in x]
-summer23_MC = [x for x in IOV_list if "Summer23" in x]
-tot_23_das = [x for x in IOV_list if ("23" in x)]
+run3_23 = [x for x in IOV_list if "23" in x]
+run3_22 = [x for x in IOV_list if "22" in x]
 
-version = "v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2"
 
 IOV_input = []
 
@@ -61,33 +87,22 @@ parser = argparse.ArgumentParser(description="Run all IOVs")
 
 # The user can pass the IOV list, version, max number of files as an argument
 parser.add_argument("-i", "--IOV_list", nargs="+", default=IOV_input)
-parser.add_argument("-v", "--version", default=version)
+parser.add_argument("-v", "--version", required=True)
 parser.add_argument("-l", "--local", default=False, action="store_true")
+parser.add_argument("-d", "--debug", default=False, action="store_true")
 parser.add_argument("-n", "--neutrino", default=False, action="store_true")
 parser.add_argument("-c", "--closure", default=False, action="store_true")
 parser.add_argument("-f", "--fast", default=False, action="store_true")
-parser.add_argument("--max_files", default=9999)
+parser.add_argument("-m", "--max_files", default=9999)
 args = parser.parse_args()
 
 if args.IOV_list:
     if "all" in args.IOV_list:
         IOV_input = IOV_list
-    elif "run3" in args.IOV_list:
-        IOV_input = run3_IOV_list
-    elif "run3DT" in args.IOV_list:
-        IOV_input = run3_DT
-    elif "run3_22DT" in args.IOV_list:
-        IOV_input = run3_22_DT
-    elif "run3MC" in args.IOV_list:
-        IOV_input = run3_MC
-    elif "summer23MC" in args.IOV_list:
-        IOV_input = summer23_MC
-    elif "tot_23_das" in args.IOV_list:
-        IOV_input = tot_23_das
-    elif "test" in args.IOV_list:
-        IOV_input = run3_IOV_list[1:5]
-        max_files = 4
-        version = version + "_test"
+    elif "23" in args.IOV_list:
+        IOV_input = run3_23
+    elif "22" in args.IOV_list:
+        IOV_input = run3_22
     else:
         # Check that all IOVs passed are in the list
         for iov in args.IOV_list:
@@ -115,16 +130,16 @@ if not os.path.exists("rootfiles/" + version):
 if not os.path.exists("logs/" + version):
     os.makedirs("logs/" + version)
 
-closure=args.closure
+closure = args.closure
 if "closure" in version:
-    closure=True
+    closure = True
 
-neutrino=args.neutrino
+neutrino = args.neutrino
 if "neutrino" in version:
-    neutrino=True
+    neutrino = True
 
 if not args.fast:
-    #choose is pnetreg or pnetregneutrino
+    # choose is pnetreg or pnetregneutrino
     with open("src/DijetHistosFill.C", "r") as file:
         filedata = file.read()
 
@@ -135,12 +150,16 @@ if not args.fast:
             filedata = filedata.replace("// #define PNETREG\n", "#define PNETREG\n")
         if not "// #define PNETREGNEUTRINO\n" in filedata:
             print("commenting PNETREGNEUTRINO")
-            filedata = filedata.replace("#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n")
+            filedata = filedata.replace(
+                "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
+            )
     else:
         print("Setting up PNetReg with neutrino")
         if "// #define PNETREGNEUTRINO\n" in filedata:
             print("uncommenting PNETREGNEUTRINO")
-            filedata = filedata.replace("// #define PNETREGNEUTRINO\n", "#define PNETREGNEUTRINO\n")
+            filedata = filedata.replace(
+                "// #define PNETREGNEUTRINO\n", "#define PNETREGNEUTRINO\n"
+            )
         if not "// #define PNETREG\n" in filedata:
             print("commenting PNETREG")
             filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
@@ -165,7 +184,7 @@ if not args.fast:
 
     time.sleep(10)
 
-    #uncomment GPU
+    # uncomment GPU
     with open("make/mk_DijetHistosFill.C", "r") as file:
         filedata = file.read()
 
@@ -178,11 +197,11 @@ if not args.fast:
 
     time.sleep(10)
 
-    #clean and make
+    # clean and make
     os.system("make clean")
     os.system("make")
 
-    #comment GPU
+    # comment GPU
     with open("make/mk_DijetHistosFill.C", "r") as file:
         filedata = file.read()
 
@@ -194,7 +213,6 @@ if not args.fast:
     time.sleep(10)
 
 
-
 for iov in IOV_input:
     print(f"Process DijetHistosFill.C+g for IOV {iov}")
 
@@ -202,9 +220,13 @@ for iov in IOV_input:
         os.system(
             f'nohup time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\' > logs/{version}/log_{iov}_{version}.log &'
         )
+    elif args.debug:
+        os.system(
+            f'time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\''
+        )
     else:
         os.system(
-            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
+            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 6 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
         )
 
     print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.log'")

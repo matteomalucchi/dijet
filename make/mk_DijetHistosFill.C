@@ -99,7 +99,7 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
   // Check if dataset is supported
   if (DT_datasets.find(dataset)==DT_datasets.end() &&
       MC_datasets.find(dataset)==MC_datasets.end() &&
-      TString(dataset.c_str()).Contains("Summer23MG")==false){
+      TString(dataset.c_str()).Contains("Summer2")==false){
     cout << "Dataset " << dataset << " not supported" << endl << flush;
     cout << "Supported datasets are:" << endl;
     for (auto it=DT_datasets.begin(); it!=DT_datasets.end(); ++it) {
@@ -117,7 +117,7 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
   // Settings
   // Check if dataset is data or MC
   bool addData = (DT_datasets.find(dataset)!=DT_datasets.end());
-  bool addMC = (MC_datasets.find(dataset)!=MC_datasets.end()) || TString(dataset.c_str()).Contains("Summer23MG");
+  bool addMC = (MC_datasets.find(dataset)!=MC_datasets.end()) || TString(dataset.c_str()).Contains("Summer2");
 
   // Maybe also
   // assert(addData || addMC);

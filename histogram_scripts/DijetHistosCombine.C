@@ -8,7 +8,7 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "mc_truth_below15_pnetregneutrino_l2l3resclosure";
+string version = "mc_truth_below15_2022_pnetregneutrino";
 
 int debug = 1; // 1=trg, 2=dir, 3=all
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
@@ -20,11 +20,26 @@ void DijetHistosCombines(string file = "rootfiles/"+version+"/jmenano_data_out.r
 
 void DijetHistosCombine() {
 
-  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
-  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
-  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
-  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD_"+version+".root");
-  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD_"+version+".root");
+  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
+
+
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022C_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022D_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022CD_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022E_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022F_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022G_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_2022QCD_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_2022EEQCD_"+version+".root");
+
+
+
+
+  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022FG_JME_"+version+".root");
 
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_data_out_2023D_ZB_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_data_out_2023Cv4_ZB_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
@@ -32,15 +47,6 @@ void DijetHistosCombine() {
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_mc_out_Summer23MG_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
   // DijetHistosCombines("../rootfiles/v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2/jmenano_mc_out_Summer23MGBPix_v38_Summer23MG_NoL2L3Res_Off_reweight_jets_test2.root");
 
-
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022C_JME_"+version+".root");
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022D_JME_"+version+".root");
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022CD_JME_"+version+".root");
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022E_JME_"+version+".root");
-
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022F_JME_"+version+".root");
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022G_JME_"+version+".root");
-  //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022FG_JME_"+version+".root");
 
   //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023BCv123_JME_"+version+".root");
   //DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");

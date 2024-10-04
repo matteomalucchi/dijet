@@ -14,7 +14,7 @@ doData = True
 parser = argparse.ArgumentParser(description="Run all IOVs")
 
 # The user can pass the IOV list, version, max number of files as an argument
-# parser.add_argument("-i", '--IOV_list', nargs='+', default=IOV_input)
+parser.add_argument("-i", '--IOV_list', default="all")
 parser.add_argument("-v", "--version", default=version)
 parser.add_argument("-f", "--force", default=False, action="store_true")
 args = parser.parse_args()
@@ -39,6 +39,7 @@ IOV_list_of_lists = [
     # ["2023Cv123_ZB", "2023Cv123"],
     # ["2023Cv4_ZB", "2023Cv4"],
     # ["2023D_ZB", "2023D"],
+
     [
         file.replace(".txt", "").replace("dataFiles_", "")
         for file in os.listdir("input_files/")
@@ -54,6 +55,12 @@ IOV_list_of_lists = [
         for file in os.listdir("input_files/")
         if "2023D" in file
     ],
+    ['2022C_ZB', '2022C'],
+    ['2022D_ZB', '2022D'],
+    ['2022C_JME','2022D_JME'],
+    ['2022E_ZB', '2022E'],
+    ['2022F_ZB', '2022F'],
+    ['2022G_ZB', '2022G'],
 ]
 
 MC_list_of_lists = [
@@ -82,7 +89,40 @@ MC_list_of_lists = [
         for file in os.listdir("input_files/")
         if "Summer23MGBPix_" in file and "all" not in file
     ],
+    [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Summer22MG" in file and "all" not in file
+    ],
+    [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Summer22EEMG" in file and "all" not in file
+    ],
 ]
+
+new_IOV_list_of_lists = []
+new_MC_list_of_lists = []
+
+for year in ["22", "23"]:
+    if args.IOV_list == year:
+        print(year)
+        for i, iov_list in enumerate(IOV_list_of_lists):
+            # print(iov_list, i)
+            if year in iov_list[0]:
+                new_IOV_list_of_lists.append(iov_list)
+        for i, iov_list in enumerate(MC_list_of_lists):
+            # print(iov_list, i)
+
+            if year in iov_list[0]:
+                new_MC_list_of_lists.append(iov_list)
+
+
+IOV_list_of_lists = new_IOV_list_of_lists
+MC_list_of_lists = new_MC_list_of_lists
+print(IOV_list_of_lists)
+print(MC_list_of_lists)
+
 
 if not includeZB:
     # Drop _ZB from the list
@@ -95,7 +135,10 @@ if not includeZB:
 # os.system("ls rootfiles/"+version+"/jmenano_data_out_*_"+version+".root")
 if doData:
     for IOV_list in IOV_list_of_lists:
-        iov_string = IOV_list[0].split("_")[0] + "_JME"
+        iov_string = IOV_list[0].split("_")[0] + (IOV_list[1].split("_")[0][-1] if "JME" in IOV_list[0] else "")
+        iov_string += "_JME"
+
+
         command = (
             "hadd "
             + "rootfiles/"
@@ -121,10 +164,18 @@ if doData:
         print('"' + command + '"...')
         os.system(command)
 
+
+iov_dict={
+    "Summer23MG": "QCD",
+    "Summer23MGBPix": "QCD-BPix",
+    "Summer22MG": "2022QCD",
+    "Summer22EEMG": "2022EEQCD",
+
+}
 if doMC:
     os.system("ls rootfiles/" + version + "/jmenano_mc_out_*_" + version + ".root")
     for MC_list in MC_list_of_lists:
-        iov_string = "QCD" if "Summer23MG_" in MC_list[0] else "QCD-BPix"
+        iov_string = iov_dict[MC_list[0].split("_")[0]]
         command = (
             "hadd "
             + "rootfiles/"

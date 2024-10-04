@@ -12,8 +12,10 @@ files.sort()
 N = 10
 
 dataset_list = [
-    "mcFiles_Summer23MG_",
-    "mcFiles_Summer23MGBPix_",
+    "mcFiles_Summer22MG",
+    "mcFiles_Summer22EEMG",
+    # "mcFiles_Summer23MG_",
+    # "mcFiles_Summer23MGBPix_",
 ]
 
 

@@ -22,11 +22,11 @@
 #include <array>
 #include <string_view>
 
-// #define PNETREG
-#define PNETREGNEUTRINO
+#define PNETREG
+// #define PNETREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
-bool CLOSURE_L2L3RES = true;
+bool CLOSURE_L2L3RES = false;
 
 // Recalculate JECs
 bool redoJEC = true; //HERE true
@@ -795,26 +795,61 @@ void DijetHistosFill::Loop()
   //  https://indico.cern.ch/event/1335203/#7-update-on-l2res-for-2022-rer
   if (dataset == "2022C" || dataset == "2022C_ZB")
   {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #else
     jec = getFJC("",                                       // Winter22Run3_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                            //"Winter22Run3_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", // Mikel
                                                            // v33 and prev "Summer22_RunCD_V2_MPF_L2Residual_AK4PFPuppi");
                  // "Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
+
     //"");//"Winter22Run3_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
   }
   if (dataset == "2022D" || dataset == "2022D_ZB")
   {
-    jec = getFJC("",                                       // Winter22Run3_RunD_V2_DATA_L1FastJet_AK4PFPuppi",
-                                                           //"Winter22Run3_RunD_V2_DATA_L2Relative_AK4PFPuppi",
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22-22Sep2023_Run2022CD_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #else
+    jec = getFJC("",                                       // Winter22Run3_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
+                                                           //"Winter22Run3_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", // Mikel
                                                            // v33 and prev "Summer22_RunCD_V2_MPF_L2Residual_AK4PFPuppi");
-                 //"Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi"
+                 // "Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi");
-    //"");//"Winter22Run3_RunD_V2_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
   if (dataset == "2022E" || dataset == "2022E_ZB")
   {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022E_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022E_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022E_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022E_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #else
     jec = getFJC("",                                             // Summer22EEPrompt22_RunF_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunF_V1_DATA_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
@@ -823,10 +858,22 @@ void DijetHistosFill::Loop()
                  "Summer22EE-22Sep2023_Run2022E_V3_DATA_L2L3Residual_AK4PFPuppi");
     //"Summer22EEPrompt22_RunE_V2_L2Residual_AK4PFPuppi");
     //"");//"Summer22EEPrompt22_RunF_V1_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
   // if (dataset=="2022F" || dataset=="2022F_ZB") {
   if (TString(dataset.c_str()).Contains("2022F"))
   {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022F_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022F_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022F_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022F_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #else
     jec = getFJC("",                                             // Summer22EEPrompt22_RunF_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunF_V1_DATA_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
@@ -834,9 +881,21 @@ void DijetHistosFill::Loop()
                  // "Run22F-Prompt_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer22EEPrompt22_Run2022F_V3_DATA_L2L3Residual_AK4PFPuppi");
     //"");//"Summer22EEPrompt22_RunF_V1_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
   if (dataset == "2022G" || dataset == "2022G_ZB")
   {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022G_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022G_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022G_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022G_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #else
     jec = getFJC("",                                             // Summer22EEPrompt22_RunG_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunG_V1_DATA_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
@@ -844,6 +903,7 @@ void DijetHistosFill::Loop()
                  // "Run22G-Prompt_DATA_L2L3Residual_AK4PFPuppi"
                  "Summer22EEPrompt22_Run2022G_V3_DATA_L2L3Residual_AK4PFPuppi");
     //"");//"Summer22EEPrompt22_RunG_V1_DATA_L2L3Residual_AK4PFPuppi");
+    #endif
   }
 
   // 22/23 MC
@@ -851,10 +911,20 @@ void DijetHistosFill::Loop()
       dataset == "Summer22Flat" ||
       TString(dataset.c_str()).Contains("Summer22MG"))
   {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22Run3_V3_MC_L2Relative_AK4PFPNet",
+                 "");
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                "");
+    #else
     jec = getFJC("",                                       // Winter22Run3_V2_MC_L1FastJet_AK4PFPuppi",
                                                            //"Winter22Run3_V2_MC_L2Relative_AK4PFPuppi",
                  "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", // Mikel
                  "");                                      // Winter22Run3_V2_MC_L2L3Residual_AK4PFPuppi");
+    #endif
     jerpath = "CondFormats/JetMETObjects/data/Summer22_V1_NSCP_MC_PtResolution_ak4puppi.txt";
     jerpathsf = "CondFormats/JetMETObjects/data/Summer22EERun3_V1_MC_SF_AK4PFPuppi.txt"; // Same as Summer22EE, is ok
     useJERSFvsPt = false;
@@ -863,10 +933,20 @@ void DijetHistosFill::Loop()
       dataset == "Summer22EEFlat" ||
       TString(dataset.c_str()).Contains("Summer22EEMG"))
   {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNet",
+                 "");
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Summer22EERun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                "");
+    #else                                   // Winter22Run3_V2_MC_L2L3Residual_AK4PFPuppi");
     jec = getFJC("",                                             // Summer22EEPrompt22_V1_MC_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_V1_MC_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
                  "");                                            // Summer22EEPrompt22_V1_MC_L2L3Residual_AK4PFPuppi");
+    #endif
     jerpath = "CondFormats/JetMETObjects/data/Summer22EEVetoRun3_V1_NSCP_MC_PtResolution_ak4puppi.txt";
     jerpathsf = "CondFormats/JetMETObjects/data/Summer22EERun3_V1_MC_SF_AK4PFPuppi.txt";
     useJERSFvsPt = false;
@@ -2462,7 +2542,7 @@ void DijetHistosFill::Loop()
       Jet_CF[i] = 1.;
     } // reset Jet_CF
 
-    if (isMC && reweightPU)
+    if (isMC && reweightPU && TString(dataset.c_str()).Contains("Summer23"))
     {
       assert(pileupRatio);
       // Get the bin
@@ -2950,6 +3030,8 @@ void DijetHistosFill::Loop()
 
         // Tag and probe jet selection
         int iprobe = (itag == 0 ? 1 : 0);
+        // cout << "tag " << Jet_pt[itag] << " " << Jet_eta[itag] << " " << Jet_phi[itag] << " " << Jet_mass[itag] << endl;
+        // cout << "probe " << Jet_pt[iprobe] << " " << Jet_eta[iprobe] << " " << Jet_phi[iprobe] << " " << Jet_mass[iprobe] << endl;
         p4t.SetPtEtaPhiM(Jet_pt[itag], Jet_eta[itag], Jet_phi[itag],
                          Jet_mass[itag]);
         p4p.SetPtEtaPhiM(Jet_pt[iprobe], Jet_eta[iprobe], Jet_phi[iprobe],
@@ -3213,6 +3295,7 @@ void DijetHistosFill::Loop()
             double abseta = fabs(eta);
             h->h2pteta->Fill(abseta, ptavp2, w);
 
+            cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
             h->p2res->Fill(abseta, ptavp2, res, w);
             h->p2jsf->Fill(abseta, ptavp2, jsf, w);
             h->p2m0->Fill(abseta, ptavp2, m0b, w);

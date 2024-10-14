@@ -47,8 +47,9 @@ IOV_list = (
         if "Summer22EEMG_" in file and "all" not in file
     ]
 )
-IOV_list = ["Summer22EEMG_2"]
+# IOV_list = ["2022E"]
 
+# resources for slurm
 res_iovs = {
     # dataset: [memory, hours, days]
     "2023Cv4": [1, 8, ""],
@@ -85,11 +86,10 @@ IOV_input = []
 
 parser = argparse.ArgumentParser(description="Run all IOVs")
 
-# The user can pass the IOV list, version, max number of files as an argument
 parser.add_argument("-i", "--IOV_list", nargs="+", default=IOV_input)
 parser.add_argument("-v", "--version", required=True)
-parser.add_argument("-l", "--local", default=False, action="store_true")
-parser.add_argument("-d", "--debug", default=False, action="store_true")
+parser.add_argument("-l", "--local", default=False, action="store_true", help="Run locally in the background")
+parser.add_argument("-d", "--debug", default=False, action="store_true", help="Run locally printing the log")
 parser.add_argument("-n", "--neutrino", default=False, action="store_true")
 parser.add_argument("-c", "--closure", default=False, action="store_true")
 parser.add_argument("-f", "--fast", default=False, action="store_true")

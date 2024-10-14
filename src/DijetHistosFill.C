@@ -22,8 +22,8 @@
 #include <array>
 #include <string_view>
 
-#define PNETREG
-// #define PNETREGNEUTRINO
+// #define PNETREG
+#define PNETREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
@@ -2732,6 +2732,7 @@ void DijetHistosFill::Loop()
       p4rawmet.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
       p4t1met.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
       p4m0.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
+      // cout << "p4m0 initial" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << endl;
       // p4rawmet.SetPtEtaPhiM(PuppiMET_pt,0,PuppiMET_phi,0);
       // p4t1met.SetPtEtaPhiM(PuppiMET_pt,0,PuppiMET_phi,0);
       // p4m0.SetPtEtaPhiM(PuppiMET_pt,0,PuppiMET_phi,0);
@@ -2874,6 +2875,8 @@ void DijetHistosFill::Loop()
         p4mht -= p4;
         p4t1met += p4l1rc - p4; // same as (+raw-rcoff) -corr,
         p4m0 += p4l1rc - p4;    // same as (+raw-rcoff) -corr
+        // cout << "p4m0 after corr" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << endl;
+
       }
 
       // L2Res HDM (dijet)
@@ -3295,7 +3298,7 @@ void DijetHistosFill::Loop()
             double abseta = fabs(eta);
             h->h2pteta->Fill(abseta, ptavp2, w);
 
-            cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
+            // cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
             h->p2res->Fill(abseta, ptavp2, res, w);
             h->p2jsf->Fill(abseta, ptavp2, jsf, w);
             h->p2m0->Fill(abseta, ptavp2, m0b, w);
@@ -3358,9 +3361,17 @@ void DijetHistosFill::Loop()
       // double ptavp3 defined earlier, as is p4b3
 
       // Projection to transverse plane (is this necessary?)
+      // cout << "p4m0 before zeros" << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;
       p4m0.SetPtEtaPhiM(p4m0.Pt(), 0., p4m0.Phi(), 0.);
       p4m3.SetPtEtaPhiM(p4m3.Pt(), 0., p4m3.Phi(), 0.);
       p4mn3.SetPtEtaPhiM(p4mn3.Pt(), 0., p4mn3.Phi(), 0.);
+      // cout << "p4m0 after zeros " << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;
+      
+      if (isnan(p4m0.Pt()) || isnan(p4m0.Eta()) || isnan(p4m0.Phi()) || isnan(p4m0.M()))
+      {
+        cout << "skipping event due to nan " << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;
+        continue;
+      }
 
       // Bisector axis p4b3 defined earlier (equal angles)
       double m0b = 1 + (p4m0.Vect().Dot(p4b3.Vect())) / ptave;
@@ -3445,6 +3456,7 @@ void DijetHistosFill::Loop()
         h->pmna->Fill(ptavp3, mnb, w);
         h->pmua->Fill(ptavp3, mub, w);
 
+        // if (trg == "HLT_PFJet500") cout << "m0m " << m0m << " ptave " << ptave << " w " << w << endl;
         h->pm0m->Fill(ptave, m0m, w);
         h->pm2m->Fill(ptave, m3m, w);
         h->pmnm->Fill(ptave, mnm, w);

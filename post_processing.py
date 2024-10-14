@@ -20,6 +20,14 @@ for line in filedata.split("\n"):
 # modify line
 filedata = filedata.replace(line, line_new)
 
+# find line that starts with string YEAR
+for line in filedata.split("\n"):
+    if line.startswith("string YEAR"):
+        line_new = f"string YEAR = \"{args.IOV_list}\";"
+        break
+# modify line
+filedata = filedata.replace(line, line_new)
+
 # print(filedata[:1000])
 
 with open("histogram_scripts/DijetHistosCombine.C", "w") as file:

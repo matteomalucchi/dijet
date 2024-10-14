@@ -14,7 +14,7 @@ doData = True
 parser = argparse.ArgumentParser(description="Run all IOVs")
 
 # The user can pass the IOV list, version, max number of files as an argument
-parser.add_argument("-i", '--IOV_list', default="all")
+parser.add_argument("-i", "--IOV_list", default="all")
 parser.add_argument("-v", "--version", default=version)
 parser.add_argument("-f", "--force", default=False, action="store_true")
 args = parser.parse_args()
@@ -39,7 +39,7 @@ IOV_list_of_lists = [
     # ["2023Cv123_ZB", "2023Cv123"],
     # ["2023Cv4_ZB", "2023Cv4"],
     # ["2023D_ZB", "2023D"],
-
+    #
     [
         file.replace(".txt", "").replace("dataFiles_", "")
         for file in os.listdir("input_files/")
@@ -61,6 +61,7 @@ IOV_list_of_lists = [
     ['2022E_ZB', '2022E'],
     ['2022F_ZB', '2022F'],
     ['2022G_ZB', '2022G'],
+    ["2022F_JME", "2022G_JME"],
 ]
 
 MC_list_of_lists = [
@@ -79,6 +80,7 @@ MC_list_of_lists = [
     #     "Summer23MG_5",
     #     "Summer23MG_6",
     # ],
+    #
     [
         file.replace(".txt", "").replace("mcFiles_", "")
         for file in os.listdir("input_files/")
@@ -104,7 +106,7 @@ MC_list_of_lists = [
 new_IOV_list_of_lists = []
 new_MC_list_of_lists = []
 
-for year in ["22", "23"]:
+for year in ["2022", "2023"]:
     if args.IOV_list == year:
         print(year)
         for i, iov_list in enumerate(IOV_list_of_lists):
@@ -135,9 +137,10 @@ if not includeZB:
 # os.system("ls rootfiles/"+version+"/jmenano_data_out_*_"+version+".root")
 if doData:
     for IOV_list in IOV_list_of_lists:
-        iov_string = IOV_list[0].split("_")[0] + (IOV_list[1].split("_")[0][-1] if "JME" in IOV_list[0] else "")
+        iov_string = IOV_list[0].split("_")[0] + (
+            IOV_list[1].split("_")[0][-1] if "JME" in IOV_list[0] else ""
+        )
         iov_string += "_JME"
-
 
         command = (
             "hadd "
@@ -165,12 +168,11 @@ if doData:
         os.system(command)
 
 
-iov_dict={
+iov_dict = {
     "Summer23MG": "QCD",
     "Summer23MGBPix": "QCD-BPix",
     "Summer22MG": "2022QCD",
     "Summer22EEMG": "2022EEQCD",
-
 }
 if doMC:
     os.system("ls rootfiles/" + version + "/jmenano_mc_out_*_" + version + ".root")
@@ -201,12 +203,3 @@ if doMC:
         print('"' + command + '"...')
         os.system(command)
 
-# for iov in IOV_list:
-#    print "Process GamHistFill.C for IOV "+iov
-#    os.system("ls -ltrh files/GamHistosFill_mc_"+iov+".root")
-#    os.system("ls -ltrh files/GamHistosFill_data_"+iov+".root")
-#    os.system("ls -ltrh log_"+iov+"_"+version+".txt")
-#    os.system("root -l -b -q 'mk_GamHistosFill.C(\""+iov+"\")' > log_"+iov+"_"+version+".txt &")
-#    os.system("fs flush")
-#    wait()
-#    time.sleep(sleep_time)

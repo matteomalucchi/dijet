@@ -8,7 +8,8 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "mc_truth_below15_2022_pnetregneutrino";
+string version = "mc_truth_below15_2022_pnetreg";
+string YEAR = "2022";
 
 int debug = 1; // 1=trg, 2=dir, 3=all
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
@@ -19,23 +20,25 @@ bool copyBin(string trg, string folder, string histo, double pt, double eta);
 void DijetHistosCombines(string file = "rootfiles/"+version+"/jmenano_data_out.root");
 
 void DijetHistosCombine() {
+  if (YEAR == "2023" || YEAR == "all"){
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
+  }
 
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD_"+version+".root");
-  // DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
-
-
+  if (YEAR == "2022" || YEAR == "all"){
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022C_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022D_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022CD_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022E_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022F_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022G_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022FG_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_2022QCD_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_2022EEQCD_"+version+".root");
-
+  }
 
 
 
@@ -171,15 +174,18 @@ void DijetHistosCombines(string file) {
   loopOverDirectories(dir,fout,"none","");
 
   // Then copy stuff over
+  cout << "Copying histograms" << endl;
   for (int i = 1; i != htrg->GetNbinsX()+1; ++i) {
 
     string trg = htrg->GetXaxis()->GetBinLabel(i);
     fin->cd(trg.c_str());
     dir = gDirectory;
     if (debug>0) cout << "Process " << trg << " in "
-		      << dir->GetName() << endl << flush;
+		      << dir->GetName() << "    " << i << endl << flush;
     loopOverDirectories(dir,fout,trg.c_str(),"");
   }
+
+  cout<< "Writing to " << file2 << endl;
 
   //mergeDijet(fin, fout);
 
@@ -275,6 +281,9 @@ void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 		  (*p2o->GetSumw2())[ibin];
 		p2o->SetBinEntries(ibin, p2->GetBinEntries(ibin) +
 				   p2o->GetBinEntries(ibin));
+    if (isnan(p2->GetBinEntries(ibin)) || isnan(p2o->GetBinEntries(ibin))) {
+      cout << "nan in " << key->GetName() << " bin " << ibin << " " << p2->GetBinEntries(ibin) << " " << p2o->GetBinEntries(ibin) << endl;
+    }
 		// copy (if needed) bin sum of weight square
 		if ( p2->GetBinSumw2()->fN > ibin ) {
 		  //p2o->Sumw2();
@@ -287,6 +296,9 @@ void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 		(*p2o)[ibin] = (*p2)[ibin]; // copy bin y values
 		(*p2o->GetSumw2())[ibin] = (*p2->GetSumw2())[ibin]; // copy y*y
 		p2o->SetBinEntries(ibin, p2->GetBinEntries(ibin));  // entries
+    if (isnan(p2->GetBinEntries(ibin))) {
+      cout << "nan in " << key->GetName() << " bin " << ibin << " " << p2->GetBinEntries(ibin) << endl;
+    }
 		// copy (if needed) bin sum of weight square
 		if ( p2->GetBinSumw2()->fN > ibin ) {
 		  //p2o->Sumw2();
@@ -322,11 +334,17 @@ void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 	      if (folder=="Jetveto") {
 		h2o->SetBinContent(ibin, h2o->GetBinContent(ibin)+
 				   h2->GetBinContent(ibin));
+    if (isnan(h2->GetBinContent(ibin)) || isnan(h2o->GetBinContent(ibin))) {
+      cout << "nan in " << key->GetName() << " bin " << ibin << " " << h2->GetBinContent(ibin) << " " << h2o->GetBinContent(ibin) << endl;
+    }
 		h2o->SetBinError(ibin, sqrt(pow(h2o->GetBinError(ibin),2)+
 					    pow(h2->GetBinError(ibin),2)));
 	      }
 	      else {
 		h2o->SetBinContent(ibin, h2->GetBinContent(ibin));
+    if (isnan(h2->GetBinContent(ibin))) {
+      cout << "nan in " << key->GetName() << " bin " << ibin << " " << h2->GetBinContent(ibin) << endl;
+    }
 		h2o->SetBinError(ibin, h2->GetBinError(ibin));
 	      }
 	    }
@@ -341,6 +359,7 @@ void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 	  outdir->cd();
 	  po = (TProfile*)p->Clone(key->GetName());
 	  po->Reset();
+    // cout<< "resetting " << key->GetName() << endl;
 	}
 
 	// https://root-forum.cern.ch/t/copy-entries-of-tprofile/11828
@@ -350,12 +369,17 @@ void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 	    (*po)[ibin] = (*p)[ibin]; // copy bin y values
 	    (*po->GetSumw2())[ibin] = (*p->GetSumw2())[ibin]; // copy bin y*y
 	    po->SetBinEntries(ibin, p->GetBinEntries(ibin));  // copy entries
+      // if (isnan(p->GetBinEntries(ibin))) {
+        // cout << "nan in " << key->GetName() << " bin " << ibin << " " << p->GetBinEntries(ibin) << endl;
+      // }
 	    // copy (if needed) bin sum of weight square
 	    if ( p->GetBinSumw2()->fN > ibin ) {
 	      //po->Sumw2(); // already copied when cloning
 	      (*po->GetBinSumw2())[ibin] = (*p->GetBinSumw2())[ibin];
 	    }
 	  }
+
+    // if (string(key->GetName()) == "pm0m" && string(trg) == "HLT_PFJet500") cout << trg << " " << key->GetName() << " bin " << ibin << " " << po->GetBinEntries(ibin) << endl;
 	} // for ibin
       } // TProfile
       else if (obj->InheritsFrom("TH1D")) {
@@ -372,6 +396,9 @@ void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
 	  if (copyBin(trg, folder, key->GetName(),
 		      ho->GetBinCenter(ibin),0.1*ieta)) {
 	    ho->SetBinContent(ibin, h->GetBinContent(ibin));
+      if (isnan(h->GetBinContent(ibin))) {
+        cout << "nan in " << key->GetName() << " bin " << ibin << " " << h->GetBinContent(ibin) << endl;
+      }
 	    ho->SetBinError(ibin, h->GetBinError(ibin));
 	  }
 	} // for ibin

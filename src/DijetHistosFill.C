@@ -23,13 +23,14 @@
 #include <string_view>
 
 // #define PNETREG
-#define PNETREGNEUTRINO
+// #define PNETREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
+bool RESCALE_MASS= false;
 
 // Recalculate JECs
-bool redoJEC = true; //HERE true
+bool redoJEC = true;
 
 // MC triggers (slow) or not (faster)
 bool doMCtrigOnly = true;
@@ -46,7 +47,7 @@ bool reweightPU = true;
 
 // Activate modules
 bool doJetveto = true; // eta-phi maps
-bool doMCtruth = true;
+bool doMCtruth = false;
 bool doIncjet = true;   // inclusive jets
 bool doDijet = true;    // dijet selection
 bool doDijet2 = true;   // dijet selection (DESY style)
@@ -809,9 +810,10 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                       // Winter22Run3_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                            //"Winter22Run3_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", // Mikel
+                CLOSURE_L2L3RES ? "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer22-22Sep2023_Run2022CD_V3_DATA_L2Residual_AK4PFPuppi" : ""));
                                                            // v33 and prev "Summer22_RunCD_V2_MPF_L2Residual_AK4PFPuppi");
                  // "Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi");
     #endif
 
     //"");//"Winter22Run3_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
@@ -832,9 +834,10 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                       // Winter22Run3_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                            //"Winter22Run3_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", // Mikel
+                CLOSURE_L2L3RES ? "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer22-22Sep2023_Run2022CD_V3_DATA_L2Residual_AK4PFPuppi" : ""));
                                                            // v33 and prev "Summer22_RunCD_V2_MPF_L2Residual_AK4PFPuppi");
                  // "Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi");
     #endif
   }
   if (dataset == "2022E" || dataset == "2022E_ZB")
@@ -853,9 +856,10 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                             // Summer22EEPrompt22_RunF_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunF_V1_DATA_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022E_V3_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022E_V3_DATA_L2Residual_AK4PFPuppi" : ""));
                                                                  // v33 and prev "Summer22EE_RunE_V2_MPF_L2Residual_AK4PFPuppi");
                  // "Run22E-22Sep2023_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer22EE-22Sep2023_Run2022E_V3_DATA_L2L3Residual_AK4PFPuppi");
     //"Summer22EEPrompt22_RunE_V2_L2Residual_AK4PFPuppi");
     //"");//"Summer22EEPrompt22_RunF_V1_DATA_L2L3Residual_AK4PFPuppi");
     #endif
@@ -877,9 +881,10 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                             // Summer22EEPrompt22_RunF_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunF_V1_DATA_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
+                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022F_V3_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022F_V3_DATA_L2Residual_AK4PFPuppi" : ""));
                                                                  //"Summer22EEPrompt22_RunF_V2_L2Residual_AK4PFPuppi"
                  // "Run22F-Prompt_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer22EEPrompt22_Run2022F_V3_DATA_L2L3Residual_AK4PFPuppi");
     //"");//"Summer22EEPrompt22_RunF_V1_DATA_L2L3Residual_AK4PFPuppi");
     #endif
   }
@@ -899,9 +904,10 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                             // Summer22EEPrompt22_RunG_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunG_V1_DATA_L2Relative_AK4PFPuppi",
                  "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI", // Mikel
+                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022G_V3_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022G_V3_DATA_L2Residual_AK4PFPuppi" : ""));
                                                                  // "Summer22EEPrompt22_RunG_V2_L2Residual_AK4PFPuppi"
                  // "Run22G-Prompt_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer22EEPrompt22_Run2022G_V3_DATA_L2L3Residual_AK4PFPuppi");
     //"");//"Summer22EEPrompt22_RunG_V1_DATA_L2L3Residual_AK4PFPuppi");
     #endif
   }
@@ -1039,8 +1045,9 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                                               // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                    //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer23Run3_V1_MC_L2Relative_AK4PUPPI",                         // Mikel
+                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023Cv123_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023Cv123_V1_DATA_L2Residual_AK4PFPuppi" : ""));
                                                                                    // "Run23C123-Prompt_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer23Prompt23_Run2023Cv123_V1_DATA_L2L3Residual_AK4PFPuppi"); //"Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
     #endif
   }
 
@@ -1060,8 +1067,9 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                                             // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                  //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer23Run3_V1_MC_L2Relative_AK4PUPPI",                       // Mikel
+                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023Cv4_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023Cv4_V1_DATA_L2Residual_AK4PFPuppi" : ""));
                                                                                  //"Run23C4-Prompt_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer23Prompt23_Run2023Cv4_V1_DATA_L2L3Residual_AK4PFPuppi"); //"Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
     #endif
   }
 
@@ -1081,8 +1089,9 @@ void DijetHistosFill::Loop()
     jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
                  "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI",                     // Mikel
+                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023D_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023D_V1_DATA_L2Residual_AK4PFPuppi" : ""));
                                                                                //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
-                 "Summer23Prompt23_Run2023D_V1_DATA_L2L3Residual_AK4PFPuppi"); //"Winter23Prompt23_RunC_V2_DATA_L2L3Residual_AK4PFPuppi");
     #endif
   }
 
@@ -2458,7 +2467,7 @@ void DijetHistosFill::Loop()
       if (redoJEC)
       {
         double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i])* Jet_PNetRegPtRawCorrTotal;
-        double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
+        double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i])* (RESCALE_MASS? Jet_PNetRegPtRawCorrTotal : 1.0);
 
 
         jec->setJetPt(rawJetPt);
@@ -2482,9 +2491,9 @@ void DijetHistosFill::Loop()
         Jet_pt[i] = corr * rawJetPt;
 
         #ifdef PNETREG
-        Jet_mass[i] = rawJetMass;
+        Jet_mass[i] = rawJetMass * (RESCALE_MASS? corr : 1.0);
         #elif defined PNETREGNEUTRINO
-        Jet_mass[i] = rawJetMass;
+        Jet_mass[i] = rawJetMass * (RESCALE_MASS? corr : 1.0);
         #else
         Jet_mass[i] = corr * rawJetMass;
         #endif
@@ -2553,6 +2562,13 @@ void DijetHistosFill::Loop()
 
     if (isMC && smearJets)
     {
+      #ifdef PNETREGNEUTRINO
+        cout << "The smearing requires to get the genjet associated to the reco jet.\n" <<
+        "When considering the PNet regression including neutrinos, the 4vec of the neutrinos should be added to the one of the genjet.\n" <<
+        "This is not implemented yet!" << endl;
+        assert(false)
+      #endif
+
 
       for (int i = 0; i != njet; ++i)
       {
@@ -2652,6 +2668,12 @@ void DijetHistosFill::Loop()
     // Calculate MC truth right after JEC and smearing to test closure
     if (isMC && doMCtruth)
     {
+      #ifdef PNETREGNEUTRINO
+        cout << "The MC Truth requires to get the genjet associated to the reco jet.\n" <<
+        "When considering the PNet regression including neutrinos, the 4vec of the neutrinos should be added to the one of the genjet.\n" <<
+        "This is not implemented yet!" << endl;
+        assert(false)
+      #endif
 
       mctruthHistos *h = mhmc["HLT_MC"];
 
@@ -3366,7 +3388,7 @@ void DijetHistosFill::Loop()
       p4m3.SetPtEtaPhiM(p4m3.Pt(), 0., p4m3.Phi(), 0.);
       p4mn3.SetPtEtaPhiM(p4mn3.Pt(), 0., p4mn3.Phi(), 0.);
       // cout << "p4m0 after zeros " << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;
-      
+
       if (isnan(p4m0.Pt()) || isnan(p4m0.Eta()) || isnan(p4m0.Phi()) || isnan(p4m0.M()))
       {
         cout << "skipping event due to nan " << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;

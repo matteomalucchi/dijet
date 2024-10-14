@@ -47,7 +47,7 @@ IOV_list = (
         if "Summer22EEMG_" in file and "all" not in file
     ]
 )
-# IOV_list = ["2022E"]
+IOV_list = ["2022G", "2022G_ZB"]
 
 # resources for slurm
 res_iovs = {
@@ -76,7 +76,6 @@ res_iovs.update(
         if ("Summer" in file or "Summer" in file) and "all" not in file
     }
 )
-print(res_iovs)
 
 run3_23 = [x for x in IOV_list if "23" in x]
 run3_22 = [x for x in IOV_list if "22" in x]
@@ -88,8 +87,21 @@ parser = argparse.ArgumentParser(description="Run all IOVs")
 
 parser.add_argument("-i", "--IOV_list", nargs="+", default=IOV_input)
 parser.add_argument("-v", "--version", required=True)
-parser.add_argument("-l", "--local", default=False, action="store_true", help="Run locally in the background")
-parser.add_argument("-d", "--debug", default=False, action="store_true", help="Run locally printing the log")
+parser.add_argument(
+    "-l",
+    "--local",
+    default=False,
+    action="store_true",
+    help="Run locally in the background",
+)
+parser.add_argument(
+    "-d",
+    "--debug",
+    default=False,
+    action="store_true",
+    help="Run locally printing the log",
+)
+parser.add_argument("-p", "--pnetreg", default=False, action="store_true")
 parser.add_argument("-n", "--neutrino", default=False, action="store_true")
 parser.add_argument("-c", "--closure", default=False, action="store_true")
 parser.add_argument("-f", "--fast", default=False, action="store_true")
@@ -130,20 +142,25 @@ if not os.path.exists("rootfiles/" + version):
 if not os.path.exists("logs/" + version):
     os.makedirs("logs/" + version)
 
-closure = args.closure
-if "closure" in version:
-    closure = True
+pnetreg = args.pnetreg
+if "pnetreg" in version:
+    pnetreg = True
 
 neutrino = args.neutrino
 if "neutrino" in version:
     neutrino = True
 
+closure = args.closure
+if "closure" in version:
+    closure = True
+
+
 if not args.fast:
-    # choose is pnetreg or pnetregneutrino
+    # choose if pnetreg or pnetregneutrino
     with open("src/DijetHistosFill.C", "r") as file:
         filedata = file.read()
 
-    if not neutrino:
+    if pnetreg and not neutrino:
         print("Setting up PNetReg without neutrino")
         if "// #define PNETREG\n" in filedata:
             print("uncommenting PNETREG")
@@ -153,7 +170,7 @@ if not args.fast:
             filedata = filedata.replace(
                 "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
             )
-    else:
+    elif pnetreg and neutrino:
         print("Setting up PNetReg with neutrino")
         if "// #define PNETREGNEUTRINO\n" in filedata:
             print("uncommenting PNETREGNEUTRINO")
@@ -163,6 +180,16 @@ if not args.fast:
         if not "// #define PNETREG\n" in filedata:
             print("commenting PNETREG")
             filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
+    else:
+        print("Using standard jet pT")
+        if not "// #define PNETREG\n" in filedata:
+            print("commenting PNETREG")
+            filedata = filedata.replace("#define PNETREG\n", "// #define PNETREG\n")
+        if not "// #define PNETREGNEUTRINO\n" in filedata:
+            print("commenting PNETREGNEUTRINO")
+            filedata = filedata.replace(
+                "#define PNETREGNEUTRINO\n", "// #define PNETREGNEUTRINO\n"
+            )
 
     # find line that starts with bool CLOSURE_L2L3RES
     for line in filedata.split("\n"):

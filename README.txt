@@ -1,3 +1,39 @@
+# dijet
+CMS dijet analysis
+
+Quick starter guide:
+
+`root -l -b -q mk_CondFormats.C`
+
+`root -l -b -q mk_DijetHistosFill.C\(\"ERA\"\)\,\(\"VERSION\"\)`
+[or 'python runIOVs.py'] ['hadd' files by hand if using runIOVs.py]
+
+`root -l -b -q DijetHistosCombine.C+g`
+
+`root -l -b -q DijetHistosJER.C+g`
+
+`root -l -b -q DijetHistosOverlay.C+g`
+
+Aim of this package is to consolidate multiple analyses done with JetMET and ZeroBias primary data sets together with the corresponding QCD dijet MC. These include: MC truth JEC, jet veto maps, Jet ID, JER pT-dependent scale factors, dijet eta-dependent JEC (L2Res), multijet pT-dependent JEC (L3Res), PF jet composition (JEC global fit), inclusive jet cross section (physics analysis).
+
+The general core design principles are:
+- use (JME)NANO files as input (local data storage)
+- use TTree::MakeClass as template (beginner-friendly code, re-freshable header)
+- use standalone ROOT (quick prototyping)
+- store results in hadd'able format, e.g TH2D, TProfile2D (allow partial re-processing)
+- utilize TProfile2D over TH3D whenever possible (fast and small)
+- combine triggers and eras in post-processing (superfast iteration)
+- store each analysis in separate folder (parallel development, switching on/off)
+- provide post-processing tools (e.g. JER extraction, unfolding)
+- aspire for linear processing (no loops, e.g. L2Res->JER SF->L2Res again)
+- provide paper quality plotting (e.g. DP Notes)
+
+Ultimate goal would be to run mature JetMET analyses automatically and directly after Prompt Reco (JEC4Prompt) for each fill of ~1/fb within 24h, to ensure best possible time-stability and DQM monitoring with robust, physics-relevant standard candles (JEC, JER, jet cross section).
+
+
+
+
+
 How to RUN on Hefaistos:
 ------------------------
 (try mosh to not drop connection)
@@ -24,7 +60,7 @@ Copy files locally for further processing
 Hadd files together as needed (either JetMET+ZB, or parts of IOV)
 - python addAllIOVs.py
 
-After producing the jmenano_[data,mc]_out_v[X].root root files and hadding: 
+After producing the jmenano_[data,mc]_out_v[X].root root files and hadding:
 - root -l -b -q DijetHistosCombine.C+g   [merge triggers]
 - root -l -b -q DijetHistosJER.C+g       [JER SF]
 - root -l -b -q DijetHistosL2Res.C+g     [dijet L2Res]
@@ -61,14 +97,14 @@ From Fikri, 31 March 2023:
 I don't thinkFlag_METFilters is defined at Nano production level. Its defined at Mini production level [1]
 As for Jet_jetId, JMENanoV9 uses the same release as the central NanoAODv9, which is 10_6_26. The jetId decisions should follow the recommendations [2] .
 [1] https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_26/PhysicsTools/PatAlgos/python/slimming/metFilterPaths_cff.py#L49
-[2] https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL#Preliminary_Recommendations_for 
+[2] https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL#Preliminary_Recommendations_for
 
 Bugs:
 - mpfu in multijet large compared to mpfn. Why? => sign error
 - MC genWeight seems not to be working. Why? => w was set before reading event
 - Wrong MC: Summer19UL16_V7 -> Summer20UL16_V1
 
-(To do: add 40to70 to Summer22EEMG, filter out bad files). 
+(To do: add 40to70 to Summer22EEMG, filter out bad files).
 (To-do: Downdload Summer23 and ReReco samples. Not yet done for ZeroBias at least)
 (To-do: QG SFs and response)
 

@@ -106,8 +106,8 @@ MC_list_of_lists = [
 new_IOV_list_of_lists = []
 new_MC_list_of_lists = []
 
-for year in ["2022", "2023"]:
-    if args.IOV_list == year:
+for year in ["22", "23"]:
+    if year in args.IOV_list:
         print(year)
         for i, iov_list in enumerate(IOV_list_of_lists):
             # print(iov_list, i)
@@ -202,4 +202,3 @@ if doMC:
             )
         print('"' + command + '"...')
         os.system(command)
-

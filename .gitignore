@@ -14,3 +14,4 @@ foo/
 badfiles_tmp
 *.nfs*
 *log*
+slurm-*

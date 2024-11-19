@@ -47,7 +47,7 @@ IOV_list = (
         if "Summer22EEMG_" in file and "all" not in file
     ]
 )
-IOV_list = ["2022G", "2022G_ZB"]
+# IOV_list = ["2022F"]
 
 # resources for slurm
 res_iovs = {
@@ -61,7 +61,7 @@ res_iovs = {
     "2022C": [5, 6, ""],
     "2022D": [5, 6, ""],
     "2022E": [5, 6, ""],
-    "2022F": [5, 10, ""],
+    "2022F": [15, 12, ""],
     "2022G": [5, 6, ""],
     "2022C_ZB": [5, 6, ""],
     "2022D_ZB": [5, 6, ""],
@@ -81,11 +81,10 @@ run3_23 = [x for x in IOV_list if "23" in x]
 run3_22 = [x for x in IOV_list if "22" in x]
 
 
-IOV_input = []
 
 parser = argparse.ArgumentParser(description="Run all IOVs")
 
-parser.add_argument("-i", "--IOV_list", nargs="+", default=IOV_input)
+parser.add_argument("-i", "--IOV_list", required=True)
 parser.add_argument("-v", "--version", required=True)
 parser.add_argument(
     "-l",
@@ -253,7 +252,7 @@ for iov in IOV_input:
         )
     else:
         os.system(
-            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 6 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
+            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
         )
 
     print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.log'")

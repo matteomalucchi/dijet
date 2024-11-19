@@ -8,8 +8,8 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "mc_truth_below15_2022_pnetreg";
-string YEAR = "2022";
+string version = "standardJetPt";
+string YEAR = "2023";
 
 int debug = 1; // 1=trg, 2=dir, 3=all
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,

@@ -1,11 +1,13 @@
 #define DijetHistosFill_cxx
 #include "../interface/DijetHistosFill.h"
 #include <TH2.h>
+#include <TH3.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 
 #include "TLorentzVector.h"
 #include "TH2D.h"
+#include "TH3D.h"
 #include "TProfile.h"
 #include "TProfile2D.h"
 #include "TStopwatch.h"
@@ -22,7 +24,7 @@
 #include <array>
 #include <string_view>
 
-// #define PNETREG
+#define PNETREG
 // #define PNETREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
@@ -67,6 +69,19 @@ bool doJetID = false;    // add JetID class
 
 bool debug = false;      // general debug
 bool debugevent = false; // per-event debug
+
+
+// Create a vector of evenly spaced numbers.
+void range_array(double min, double max, double * range_a, int N) {
+    double delta = (max-min)/double(N-1);
+    cout << "delta = " << delta << endl;
+    cout << "N = " << N << endl;
+    for(int i=0; i<N; i++) {
+      range_a[i] = min + i*delta;
+      cout << "min + i*delta = " << min + i*delta << endl;
+      cout << "range_a[" << i << "] = " << range_a[i] << endl;
+    }
+}
 
 // Maximum asymmetry of 2/3 corresponds to x2 ratio of tag and probe
 // Permit ~0.7 extra scaling to allow for HF L3Res
@@ -247,6 +262,8 @@ public:
 
   // Smearing controls
   TProfile2D *p2jsf, *p2jsftc, *p2jsfpf;
+
+  TH3D *h3m0, *h3m0tc, *h3m0pf;
 };
 
 class multijetHistos
@@ -1292,6 +1309,18 @@ void DijetHistosFill::Loop()
       {0., 0.261, 0.522, 0.783, 1.044, 1.305, 1.479, 1.653, 1.93, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.314, 3.489, 3.839, 4.013, 4.583, 5.191};
   const int nxd = sizeof(vxd) / sizeof(vxd[0]) - 1;
 
+  const int vjec_size = 100;
+  double * vjec = new double[vjec_size];
+  range_array(0.,3.,vjec, vjec_size);
+  const int njec = vjec_size - 1;
+
+  cout << "njec = " << njec << endl;
+  for (int i = 0; i < njec; i++)
+  {
+    cout << "vjec[" << i << "] = " << vjec[i] << endl;
+  }
+
+
   const int ny = 800;
   double vy[ny + 1];
   for (int i = 0; i != ny + 1; ++i)
@@ -1939,6 +1968,13 @@ void DijetHistosFill::Loop()
                                  nxd, vxd, nptd, vptd);
       h->p2mupf = new TProfile2D("p2mupf", ";#eta;p_{T,probe} (GeV);MPFu",
                                  nxd, vxd, nptd, vptd);
+
+      h->h3m0 = new TH3D("h3m0", ";#eta;p_{T,avp} (GeV);MPF0;N_{events}",
+                         nxd, vxd, nptd, vptd, njec, vjec);
+      h->h3m0tc = new TH3D("h3m0tc", ";#eta;p_{T,tag} (GeV);MPF0;N_{events}",
+                           nxd, vxd, nptd, vptd, njec, vjec);
+      h->h3m0pf = new TH3D("h3m0pf", ";#eta;p_{T,probe} (GeV);MPF0;N_{events}",
+                            nxd, vxd, nptd, vptd, njec, vjec);
 
       if (doDijet2NM)
       {
@@ -3320,7 +3356,10 @@ void DijetHistosFill::Loop()
             double abseta = fabs(eta);
             h->h2pteta->Fill(abseta, ptavp2, w);
 
-            // cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
+            if (!(m0b>-10 && m0b<10)){
+              cout << "m0b" << m0b << endl;
+              // cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
+            }
             h->p2res->Fill(abseta, ptavp2, res, w);
             h->p2jsf->Fill(abseta, ptavp2, jsf, w);
             h->p2m0->Fill(abseta, ptavp2, m0b, w);
@@ -3352,6 +3391,10 @@ void DijetHistosFill::Loop()
             h->p2m2pf->Fill(abseta, ptprobe, m2f, w);
             h->p2mnpf->Fill(abseta, ptprobe, mnf, w);
             h->p2mupf->Fill(abseta, ptprobe, muf, w);
+
+            h->h3m0->Fill(abseta, ptavp2, m0b, w);
+            h->h3m0tc->Fill(abseta, pttag, m0c, w);
+            h->h3m0pf->Fill(abseta, ptprobe, m0f, w);
           } // doDijet2
 
         } // for itrg

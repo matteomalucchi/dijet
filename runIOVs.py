@@ -81,10 +81,9 @@ run3_23 = [x for x in IOV_list if "23" in x]
 run3_22 = [x for x in IOV_list if "22" in x]
 
 
-
 parser = argparse.ArgumentParser(description="Run all IOVs")
 
-parser.add_argument("-i", "--IOV_list", required=True)
+parser.add_argument("-i", "--IOV_list", required=True, type=str, nargs="+")
 parser.add_argument("-v", "--version", required=True)
 parser.add_argument(
     "-l",
@@ -107,12 +106,13 @@ parser.add_argument("-f", "--fast", default=False, action="store_true")
 parser.add_argument("-m", "--max_files", default=9999)
 args = parser.parse_args()
 
+IOV_input = []
 if args.IOV_list:
     if "all" in args.IOV_list:
         IOV_input = IOV_list
-    elif "23" in args.IOV_list:
+    elif "23" in args.IOV_list and args.IOV_list[0].isdigit():
         IOV_input = run3_23
-    elif "22" in args.IOV_list:
+    elif "22" in args.IOV_list and args.IOV_list[0].isdigit():
         IOV_input = run3_22
     else:
         # Check that all IOVs passed are in the list

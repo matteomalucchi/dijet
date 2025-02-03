@@ -1,7 +1,7 @@
 import os
 import argparse
 
-parser = argparse.ArgumentParser(description="Move files")
+parser = argparse.ArgumentParser(description="Post processing for dijet")
 parser.add_argument("-v", "--version", required=True)
 parser.add_argument("-f", "--force", default=False, action="store_true")
 parser.add_argument("-i", '--IOV_list', default="all")

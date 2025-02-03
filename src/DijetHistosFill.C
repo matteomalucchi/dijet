@@ -29,7 +29,7 @@
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
-bool RESCALE_MASS= false;
+bool RESCALE_MASS= true;
 
 // Recalculate JECs
 bool redoJEC = true;
@@ -74,12 +74,12 @@ bool debugevent = false; // per-event debug
 // Create a vector of evenly spaced numbers.
 void range_array(double min, double max, double * range_a, int N) {
     double delta = (max-min)/double(N-1);
-    cout << "delta = " << delta << endl;
-    cout << "N = " << N << endl;
+    // cout << "delta = " << delta << endl;
+    // cout << "N = " << N << endl;
     for(int i=0; i<N; i++) {
       range_a[i] = min + i*delta;
-      cout << "min + i*delta = " << min + i*delta << endl;
-      cout << "range_a[" << i << "] = " << range_a[i] << endl;
+      // cout << "min + i*delta = " << min + i*delta << endl;
+      // cout << "range_a[" << i << "] = " << range_a[i] << endl;
     }
 }
 
@@ -263,7 +263,7 @@ public:
   // Smearing controls
   TProfile2D *p2jsf, *p2jsftc, *p2jsfpf;
 
-  TH3D *h3m0, *h3m0tc, *h3m0pf;
+  // TH3D *h3m0, *h3m0tc, *h3m0pf;
 };
 
 class multijetHistos
@@ -1309,16 +1309,16 @@ void DijetHistosFill::Loop()
       {0., 0.261, 0.522, 0.783, 1.044, 1.305, 1.479, 1.653, 1.93, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.314, 3.489, 3.839, 4.013, 4.583, 5.191};
   const int nxd = sizeof(vxd) / sizeof(vxd[0]) - 1;
 
-  const int vjec_size = 100;
-  double * vjec = new double[vjec_size];
-  range_array(0.,3.,vjec, vjec_size);
-  const int njec = vjec_size - 1;
+  // const int vjec_size = 100;
+  // double * vjec = new double[vjec_size];
+  // range_array(0.,3.,vjec, vjec_size);
+  // const int njec = vjec_size - 1;
 
-  cout << "njec = " << njec << endl;
-  for (int i = 0; i < njec; i++)
-  {
-    cout << "vjec[" << i << "] = " << vjec[i] << endl;
-  }
+  // cout << "njec = " << njec << endl;
+  // for (int i = 0; i < njec; i++)
+  // {
+  //   cout << "vjec[" << i << "] = " << vjec[i] << endl;
+  // }
 
 
   const int ny = 800;
@@ -1969,12 +1969,12 @@ void DijetHistosFill::Loop()
       h->p2mupf = new TProfile2D("p2mupf", ";#eta;p_{T,probe} (GeV);MPFu",
                                  nxd, vxd, nptd, vptd);
 
-      h->h3m0 = new TH3D("h3m0", ";#eta;p_{T,avp} (GeV);MPF0;N_{events}",
-                         nxd, vxd, nptd, vptd, njec, vjec);
-      h->h3m0tc = new TH3D("h3m0tc", ";#eta;p_{T,tag} (GeV);MPF0;N_{events}",
-                           nxd, vxd, nptd, vptd, njec, vjec);
-      h->h3m0pf = new TH3D("h3m0pf", ";#eta;p_{T,probe} (GeV);MPF0;N_{events}",
-                            nxd, vxd, nptd, vptd, njec, vjec);
+      // h->h3m0 = new TH3D("h3m0", ";#eta;p_{T,avp} (GeV);MPF0;N_{events}",
+      //                    nxd, vxd, nptd, vptd, njec, vjec);
+      // h->h3m0tc = new TH3D("h3m0tc", ";#eta;p_{T,tag} (GeV);MPF0;N_{events}",
+      //                      nxd, vxd, nptd, vptd, njec, vjec);
+      // h->h3m0pf = new TH3D("h3m0pf", ";#eta;p_{T,probe} (GeV);MPF0;N_{events}",
+      //                       nxd, vxd, nptd, vptd, njec, vjec);
 
       if (doDijet2NM)
       {
@@ -2444,6 +2444,10 @@ void DijetHistosFill::Loop()
                            Flag_eeBadScFilter &&
                            Flag_ecalBadCalibFilter);
 
+    if (debugevent)
+      cout << "Check MET filters " << pass_METfilter << endl
+           << flush;
+
     // Check if any triggers fired and make histogram of them
     if (doTrigger)
     {
@@ -2475,6 +2479,7 @@ void DijetHistosFill::Loop()
     // Do not re-sort (for now)
     bool allJetsGood(true);
     int njet = nJet;
+    bool skip_event = false;
     for (int i = 0; i != njet; ++i)
     {
 
@@ -2487,18 +2492,20 @@ void DijetHistosFill::Loop()
       double Jet_PNetRegPtRawCorrTotal = 1.;
       #endif
 
-      if ((Jet_PNetRegPtRawCorrTotal==0) && (fabs(Jet_eta[i])>4.7)){
+      if ((Jet_PNetRegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[i])>4.69) && !(Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.1)){
         Jet_PNetRegPtRawCorrTotal = 1.;
       }
-
-      if ((Jet_PNetRegPtRawCorrTotal==0) && (Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.5)){
+      else if ((Jet_PNetRegPtRawCorrTotal<1e-6)){
         // exit loop
-        continue;
+        if (i<2) {
+          skip_event = true;
+          break;
+        }
+        Jet_PNetRegPtRawCorrTotal=1e-5;
+        if (debugevent) cout << "Jet_PNetRegPtRawCorrTotal " << Jet_PNetRegPtRawCorrTotal << " for jet " << i << " with pt " << Jet_pt[i] << " and eta " << Jet_eta[i] << endl;
+        // continue;
       }
 
-      // if (i==0){
-      // cout << " Jet_PNetRegPtRawCorrTotal = " << Jet_PNetRegPtRawCorrTotal << endl;
-      // }
 
       if (redoJEC)
       {
@@ -2576,6 +2583,11 @@ void DijetHistosFill::Loop()
         allJetsGood = false;
       // NB: should move this after smearing. Separate loop for type-I MET?
     } // for njet
+
+    if (skip_event){
+      // cout << "Skipping event " << jentry << " due to low pT of leading jet" << endl;
+      continue;
+    }
 
     // Apply JER smearing to MC immediately after JEC. Don't change order.
     // Need after JEC to ensure mean is at 1, but ideally should recalculate
@@ -2790,7 +2802,7 @@ void DijetHistosFill::Loop()
       p4rawmet.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
       p4t1met.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
       p4m0.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
-      // cout << "p4m0 initial" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << endl;
+      if (debugevent) cout << "p4m0 initial" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << endl;
       // p4rawmet.SetPtEtaPhiM(PuppiMET_pt,0,PuppiMET_phi,0);
       // p4t1met.SetPtEtaPhiM(PuppiMET_pt,0,PuppiMET_phi,0);
       // p4m0.SetPtEtaPhiM(PuppiMET_pt,0,PuppiMET_phi,0);
@@ -2829,6 +2841,16 @@ void DijetHistosFill::Loop()
       p4l1rc.SetPtEtaPhiM(Jet_pt[i] / (smearJets && Jet_CF[i] ? Jet_CF[i] : 1) * (1.0 - Jet_l1rcFactor[i]),
                           Jet_eta[i], Jet_phi[i],
                           Jet_mass[i] / (smearJets && Jet_CF[i] ? Jet_CF[i] : 1) * (1.0 - Jet_l1rcFactor[i]));
+      if  (debugevent){
+      cout << "\np4 " << i << " " << p4.Pt() << " " << p4.Eta() << " " << p4.Phi() << " " << p4.M() << endl;
+      cout << "p4l1rc " << i << " " << p4l1rc.Pt() << " " << p4l1rc.Eta() << " " << p4l1rc.Phi() << " " << p4l1rc.M() << endl;
+      cout << "Jet_l1rcFactor" << i << " " << Jet_l1rcFactor[i] << endl;
+      }
+      // if (!(p4l1rc.Pt()<1000 && Jet_l1rcFactor[i]<10)){
+      // cout << "p4 " << i << " " << p4.Pt() << " " << p4.Eta() << " " << p4.Phi() << " " << p4.M() << endl;
+      // cout << "p4l1rc " << i << " " << p4l1rc.Pt() << " " << p4l1rc.Eta() << " " << p4l1rc.Phi() << " " << p4l1rc.M() << endl;
+      // cout << "Jet_l1rcFactor" << i << " " << Jet_l1rcFactor[i] << endl;
+      // }
 
       // Jet veto maps
       if (doJetveto)
@@ -2932,8 +2954,9 @@ void DijetHistosFill::Loop()
       {
         p4mht -= p4;
         p4t1met += p4l1rc - p4; // same as (+raw-rcoff) -corr,
+        // if (!(p4m0.Pt()>0.1 && p4m0.Pt()<1000))        cout << "p4m0 before corr" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << endl;
         p4m0 += p4l1rc - p4;    // same as (+raw-rcoff) -corr
-        // cout << "p4m0 after corr" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << endl;
+        // if (!(p4m0.Pt()>0.1 && p4m0.Pt()<1000))        cout << "p4m0 after corr" << " " << p4m0.Pt() << " " <<p4m0.Eta() << " " <<p4m0.Phi() << " " << p4m0.M() << "\n\n" << endl;
 
       }
 
@@ -3085,6 +3108,8 @@ void DijetHistosFill::Loop()
         cout << "Dijet analysis" << endl
              << flush;
 
+      bool skipEvent = false;
+
       // Both leading jets act as tag and probe in turn
       for (int itag = 0; itag != 2; ++itag)
       {
@@ -3115,6 +3140,9 @@ void DijetHistosFill::Loop()
         p4b += p4bt;
         p4b -= p4bp;
         p4b.SetPtEtaPhiM(p4b.Pt(), 0., p4b.Phi(), 0.);
+        // NOTE: the nan come from here. if the phi of p4bt and p4bp
+        // are the same then p4b=0 and when you divide by p4b.Pt()
+        //  it gives the nan
         p4b *= 1. / p4b.Pt();
         p4bx.SetPtEtaPhiM(p4b.Pt(), 0., p4b.Phi() + 0.5 * TMath::Pi(), 0.);
 
@@ -3209,6 +3237,22 @@ void DijetHistosFill::Loop()
                          //! Jet_jetveto[itag] && !Jet_jetveto[iprobe] && //!
                          allJetsGood && //!
                          pass_METfilter > 0);
+
+        if (isnan(m0b) || isnan(m0c)|| isnan(m0f))
+        {
+          cout << "\n\n skipping event " << jentry << " due to nan " << "m0b " << m0b << " m0c " << m0c << " m0f " << m0f << endl;
+          cout << " p4m0 pt " << p4m0.Pt() << " eta " << p4m0.Eta() << " phi " << p4m0.Phi() << " m " << p4m0.M() << endl;
+          cout << " p4b pt " << p4b.Pt() << " eta " << p4b.Eta() << " phi " << p4b.Phi() << " m " << p4b.M() << endl;
+          cout << " p4c pt " << p4c.Pt() << " eta " << p4c.Eta() << " phi " << p4c.Phi() << " m " << p4c.M() << endl;
+          cout << " p4f pt " << p4f.Pt() << " eta " << p4f.Eta() << " phi " << p4f.Phi() << " m " << p4f.M() << endl;
+          cout << " p4t pt " << p4t.Pt() << " eta " << p4t.Eta() << " phi " << p4t.Phi() << " m " << p4t.M() << endl;
+          cout << " p4p pt " << p4p.Pt() << " eta " << p4p.Eta() << " phi " << p4p.Phi() << " m " << p4p.M() << endl;
+          cout << " ptavp2 pt " << ptavp2 << endl;
+          skipEvent = true;
+          break;
+          // continue;
+        }
+
 
         for (int itrg = 0; itrg != ntrg; ++itrg)
         {
@@ -3356,10 +3400,12 @@ void DijetHistosFill::Loop()
             double abseta = fabs(eta);
             h->h2pteta->Fill(abseta, ptavp2, w);
 
-            if (!(m0b>-10 && m0b<10)){
-              cout << "m0b" << m0b << endl;
-              // cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
-            }
+            // if (!(m0b>-10 && m0b<10) || isnan(m0b)){
+            //   cout << "m0b" << m0b << endl;
+
+            //   // cout << abseta << " " << ptavp2 << " " << w << " " << res << " " << jsf << " " << m0b << " "  << m0c << " "  << m0f << " " << m2b << " " << mnb << " " << mub  << endl;
+            // }
+
             h->p2res->Fill(abseta, ptavp2, res, w);
             h->p2jsf->Fill(abseta, ptavp2, jsf, w);
             h->p2m0->Fill(abseta, ptavp2, m0b, w);
@@ -3392,9 +3438,9 @@ void DijetHistosFill::Loop()
             h->p2mnpf->Fill(abseta, ptprobe, mnf, w);
             h->p2mupf->Fill(abseta, ptprobe, muf, w);
 
-            h->h3m0->Fill(abseta, ptavp2, m0b, w);
-            h->h3m0tc->Fill(abseta, pttag, m0c, w);
-            h->h3m0pf->Fill(abseta, ptprobe, m0f, w);
+            // h->h3m0->Fill(abseta, ptavp2, m0b, w);
+            // h->h3m0tc->Fill(abseta, pttag, m0c, w);
+            // h->h3m0pf->Fill(abseta, ptprobe, m0f, w);
           } // doDijet2
 
         } // for itrg
@@ -3409,6 +3455,7 @@ void DijetHistosFill::Loop()
           }
         }
       } // for itag
+      if (skipEvent) continue;
     }   // njet>=2
 
     // Multijet selection
@@ -3432,11 +3479,6 @@ void DijetHistosFill::Loop()
       p4mn3.SetPtEtaPhiM(p4mn3.Pt(), 0., p4mn3.Phi(), 0.);
       // cout << "p4m0 after zeros " << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;
 
-      if (isnan(p4m0.Pt()) || isnan(p4m0.Eta()) || isnan(p4m0.Phi()) || isnan(p4m0.M()))
-      {
-        cout << "skipping event due to nan " << p4m0.Pt() << " " << p4m0.Eta() << " " << p4m0.Phi() << " " << p4m0.M() << endl;
-        continue;
-      }
 
       // Bisector axis p4b3 defined earlier (equal angles)
       double m0b = 1 + (p4m0.Vect().Dot(p4b3.Vect())) / ptave;
@@ -3475,6 +3517,23 @@ void DijetHistosFill::Loop()
       double m3r = 1 + (p4m3.Vect().Dot(p4r.Vect())) / ptrecoil;
       double mnr = 0 + (p4mn3.Vect().Dot(p4r.Vect())) / ptrecoil;
       double mur = 0 + (p4mu3.Vect().Dot(p4r.Vect())) / ptrecoil;
+
+      if (isnan(m0m) || isnan(m3m)|| isnan(mnm) || isnan(mum))
+      {
+        cout <<  "\n\n skipping event " << jentry << " due to nan " << "m0m " << m0m << " m3m " << m3m << " mnm " << mnm << " mum " << mum  << endl;
+        cout << " p4m0 pt " << p4m0.Pt() << " eta " << p4m0.Eta() << " phi " << p4m0.Phi() << " m " << p4m0.M() << endl;
+        cout << " p4m3 pt " << p4m3.Pt() << " eta " << p4m3.Eta() << " phi " << p4m3.Phi() << " m " << p4m3.M() << endl;
+        cout << " p4mn3 pt " << p4mn3.Pt() << " eta " << p4mn3.Eta() << " phi " << p4mn3.Phi() << " m " << p4mn3.M() << endl;
+        cout << " p4mu3 pt " << p4mu3.Pt() << " eta " << p4mu3.Eta() << " phi " << p4mu3.Phi() << " m " << p4mu3.M() << endl;
+        cout << " p4m pt " << p4m.Pt() << " eta " << p4m.Eta() << " phi " << p4m.Phi() << " m " << p4m.M() << endl;
+        cout << " p4lead " << p4lead.Pt() << " eta " << p4lead.Eta() << " phi " << p4lead.Phi() << " m " << p4lead.M() << endl;
+        cout << " p4recoil " << p4recoil.Pt() << " eta " << p4recoil.Eta() << " phi " << p4recoil.Phi() << " m " << p4recoil.M() << endl;
+
+        cout << " p4b3 pt " << p4b3.Pt() << " eta " << p4b3.Eta() << " phi " << p4b3.Phi() << " m " << p4b3.M() << endl;
+        cout << " p4l pt " << p4l.Pt() << " eta " << p4l.Eta() << " phi " << p4l.Phi() << " m " << p4l.M() << endl;
+        cout << " p4r pt " << p4r.Pt() << " eta " << p4r.Eta() << " phi " << p4r.Phi() << " m " << p4r.M() << endl;
+        continue;
+      }
 
       for (int itrg = 0; itrg != ntrg; ++itrg)
       {

@@ -103,25 +103,26 @@ MC_list_of_lists = [
     ],
 ]
 
-new_IOV_list_of_lists = []
-new_MC_list_of_lists = []
 
+IOV_list_of_lists_year = IOV_list_of_lists
+MC_list_of_lists_year = MC_list_of_lists
 for year in ["22", "23"]:
     if year in args.IOV_list:
         print(year)
         for i, iov_list in enumerate(IOV_list_of_lists):
             # print(iov_list, i)
             if year in iov_list[0]:
-                new_IOV_list_of_lists.append(iov_list)
+                IOV_list_of_lists_year.append(iov_list)
         for i, iov_list in enumerate(MC_list_of_lists):
             # print(iov_list, i)
 
             if year in iov_list[0]:
-                new_MC_list_of_lists.append(iov_list)
+                MC_list_of_lists_year.append(iov_list)
 
 
-IOV_list_of_lists = new_IOV_list_of_lists
-MC_list_of_lists = new_MC_list_of_lists
+IOV_list_of_lists = IOV_list_of_lists_year
+MC_list_of_lists = MC_list_of_lists_year
+
 print(IOV_list_of_lists)
 print(MC_list_of_lists)
 

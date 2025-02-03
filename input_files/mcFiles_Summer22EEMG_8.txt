@@ -1,3 +1,4 @@
+/pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/610000/93fecdce-1db2-4c89-a957-05314076346b.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/50000/33483202-f819-4256-bb9a-daa62d92b664.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/50000/44626631-405a-4744-a874-21c53a832627.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/50000/54380fea-976a-45fc-a678-c2e672543670.root
@@ -29,7 +30,6 @@
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/60000/dae02775-860b-4582-91ca-8371f190bfec.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/60000/eb4cd642-80e2-477a-a2bd-acc09af05043.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/610000/4e28228a-1d60-4368-8063-15fc670165bd.root
-/pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/610000/93fecdce-1db2-4c89-a957-05314076346b.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/2520000/0199794f-2e7d-4bf6-b730-03b4afb4ed44.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/2520000/2b8d81e8-b825-4c6a-9454-0d00bc783c08.root
 /pnfs/psi.ch/cms/trivcat/store/mc/Run3Summer22EENanoAODv12/QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/2520000/346497f9-a312-4117-b655-ae693cda821e.root

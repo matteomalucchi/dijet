@@ -71,7 +71,7 @@ res_iovs = {
 }
 res_iovs.update(
     {
-        file.replace(".txt", "").replace("mcFiles_", ""): [5, 6, ""]
+        file.replace(".txt", "").replace("mcFiles_", ""): [2, 5, ""]
         for file in os.listdir("input_files/")
         if ("Summer" in file or "Summer" in file) and "all" not in file
     }
@@ -103,6 +103,7 @@ parser.add_argument("-p", "--pnetreg", default=False, action="store_true")
 parser.add_argument("-n", "--neutrino", default=False, action="store_true")
 parser.add_argument("-c", "--closure", default=False, action="store_true")
 parser.add_argument("-f", "--fast", default=False, action="store_true")
+parser.add_argument("-of", "--only-failed", default=False, action="store_true")
 parser.add_argument("-m", "--max_files", default=9999)
 args = parser.parse_args()
 
@@ -132,14 +133,36 @@ if (args.version) and ("test" not in args.IOV_list):
 if args.max_files and ("test" not in args.IOV_list):
     max_files = args.max_files
 
-print("IOVs to run: ", IOV_input)
+
+if args.only_failed:
+    # check the size of IOV root file
+    print("Total IOVs: ", IOV_input)
+    IOV_input_failed=[]
+    for iov in IOV_input:
+        type_dataset= "mc" if "Summer" in iov else "data"
+        file_name =f"rootfiles/{version}/jmenano_{type_dataset}_out_{iov}_{version}.root"
+        if os.path.exists(file_name):
+            size = os.path.getsize(file_name)
+            print(f"Checking IOV {iov}")
+            if size < 2000:
+                print(f"IOV {iov} has size {size} bytes, will rerun")
+                IOV_input_failed.append(iov)
+            else:
+                print(f"IOV {iov} has size {size} bytes, will not rerun")
+        else:
+            print(f"IOV {iov} does not exist, will rerun")
+            IOV_input_failed.append(iov)
+
+    IOV_input=IOV_input_failed
+
+print("IOVs to run: ", IOV_input, len(IOV_input))
 
 # Check that the version directory exists, if not create it
 if not os.path.exists("rootfiles/" + version):
     os.makedirs("rootfiles/" + version)
 
-if not os.path.exists("logs/" + version):
-    os.makedirs("logs/" + version)
+if not os.path.exists("/work/mmalucch/logs_L2L3Res/dijet_logs/" + version):
+    os.makedirs("/work/mmalucch/logs_L2L3Res/dijet_logs/" + version)
 
 pnetreg = args.pnetreg
 if "pnetreg" in version:
@@ -244,7 +267,7 @@ for iov in IOV_input:
 
     if args.local:
         os.system(
-            f'nohup time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\' > logs/{version}/log_{iov}_{version}.log &'
+            f'nohup time root -l -b -q \'make/mk_DijetHistosFill.C("{iov}","{version}",{max_files})\' > /work/mmalucch/logs_L2L3Res/dijet_logs/{version}/log_{iov}_{version}.log &'
         )
     elif args.debug:
         os.system(
@@ -252,7 +275,7 @@ for iov in IOV_input:
         )
     else:
         os.system(
-            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
+            f"sbatch --job-name=dijet_{iov}_{version} -p {'long' if (res_iovs[iov][1] > 12 or res_iovs[iov][2]) else 'standard'} --time={res_iovs[iov][2]}0{res_iovs[iov][1]}:00:00 --ntasks=1 --cpus-per-task=1 --mem={res_iovs[iov][0]}gb --output=/work/mmalucch/logs_L2L3Res/dijet_logs/{version}/log_{iov}_{version}.log submit_slurm.sh {iov} {version} {max_files}"
         )
 
-    print(f" => Follow logging with 'tail -f logs/{version}/log_{iov}_{version}.log'")
+    print(f" => Follow logging with 'tail -f /work/mmalucch/logs_L2L3Res/dijet_logs/{version}/log_{iov}_{version}.log'")

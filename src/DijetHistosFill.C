@@ -24,11 +24,11 @@
 #include <array>
 #include <string_view>
 
-#define PNETREG
-// #define PNETREGNEUTRINO
+// #define PNETREG
+#define PNETREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
-bool CLOSURE_L2L3RES = false;
+bool CLOSURE_L2L3RES = true;
 bool RESCALE_MASS= true;
 
 // Recalculate JECs
@@ -887,13 +887,13 @@ void DijetHistosFill::Loop()
     #ifdef PNETREG
     jec = getFJC("",
                 "Summer22EERun3_V3_MC_L2Relative_AK4PFPNet",
-                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022F_V2_DATA_L2L3Residual_AK4PFPNet" :
-                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022F_V2_DATA_L2Residual_AK4PFPNet" : ""));
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022F_V2_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022F_V2_DATA_L2Residual_AK4PFPNet" : ""));
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
                 "Summer22EERun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
-                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022F_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
-                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022F_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022F_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022F_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
     #else
     jec = getFJC("",                                             // Summer22EEPrompt22_RunF_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunF_V1_DATA_L2Relative_AK4PFPuppi",
@@ -910,13 +910,13 @@ void DijetHistosFill::Loop()
     #ifdef PNETREG
     jec = getFJC("",
                 "Summer22EERun3_V3_MC_L2Relative_AK4PFPNet",
-                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022G_V2_DATA_L2L3Residual_AK4PFPNet" :
-                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022G_V2_DATA_L2Residual_AK4PFPNet" : ""));
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022G_V2_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022G_V2_DATA_L2Residual_AK4PFPNet" : ""));
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
                 "Summer22EERun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
-                CLOSURE_L2L3RES ? "Summer22EEPrompt22_Run2022G_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
-                (CLOSURE_L2RES ? "Summer22EEPrompt22_Run2022G_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+                CLOSURE_L2L3RES ? "Summer22EE-22Sep2023_Run2022G_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer22EE-22Sep2023_Run2022G_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
     #else
     jec = getFJC("",                                             // Summer22EEPrompt22_RunG_V1_DATA_L1FastJet_AK4PFPuppi",
                                                                  //"Summer22EEPrompt22_RunG_V1_DATA_L2Relative_AK4PFPuppi",
@@ -1051,13 +1051,13 @@ void DijetHistosFill::Loop()
     #ifdef PNETREG
     jec = getFJC("",
                 "Summer23Run3_V3_MC_L2Relative_AK4PFPNet",
-                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023Cv123_V2_DATA_L2L3Residual_AK4PFPNet" :
-                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023Cv123_V2_DATA_L2Residual_AK4PFPNet" : ""));
+                CLOSURE_L2L3RES ? "Summer23-22Sep2023_Run2023Cv123_V2_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer23-22Sep2023_Run2023Cv123_V2_DATA_L2Residual_AK4PFPNet" : ""));
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
                 "Summer23Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
-                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023Cv123_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
-                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023Cv123_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+                CLOSURE_L2L3RES ? "Summer23-22Sep2023_Run2023Cv123_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer23-22Sep2023_Run2023Cv123_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
     #else
     jec = getFJC("",                                                               // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                    //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
@@ -1073,13 +1073,13 @@ void DijetHistosFill::Loop()
     #ifdef PNETREG
     jec = getFJC("",
                 "Summer23Run3_V3_MC_L2Relative_AK4PFPNet",
-                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023Cv4_V2_DATA_L2L3Residual_AK4PFPNet" :
-                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023Cv4_V2_DATA_L2Residual_AK4PFPNet" : ""));
+                CLOSURE_L2L3RES ? "Summer23-22Sep2023_Run2023Cv4_V2_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer23-22Sep2023_Run2023Cv4_V2_DATA_L2Residual_AK4PFPNet" : ""));
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
                 "Summer23Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
-                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023Cv4_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
-                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023Cv4_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+                CLOSURE_L2L3RES ? "Summer23-22Sep2023_Run2023Cv4_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer23-22Sep2023_Run2023Cv4_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
     #else
     jec = getFJC("",                                                             // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                  //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
@@ -1095,13 +1095,13 @@ void DijetHistosFill::Loop()
     #ifdef PNETREG
     jec = getFJC("",
                 "Summer23BPixRun3_V3_MC_L2Relative_AK4PFPNet",
-                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPNet" :
-                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023D_V2_DATA_L2Residual_AK4PFPNet" : ""));
+                CLOSURE_L2L3RES ? "Summer23BPix-22Sep2023_Run2023D_V2_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Summer23BPix-22Sep2023_Run2023D_V2_DATA_L2Residual_AK4PFPNet" : ""));
     #elif defined PNETREGNEUTRINO
     jec = getFJC("",
                 "Summer23BPixRun3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
-                CLOSURE_L2L3RES ? "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
-                (CLOSURE_L2RES ? "Summer23Prompt23_Run2023D_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+                CLOSURE_L2L3RES ? "Summer23BPix-22Sep2023_Run2023D_V2_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Summer23BPix-22Sep2023_Run2023D_V2_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
     #else
     jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
                                                                                //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
@@ -2183,6 +2183,9 @@ void DijetHistosFill::Loop()
     fjv = new TFile("rootfiles/jetveto2023D.root", "READ");
   assert(fjv);
 
+  cout << "Loaded jet veto maps" << endl
+       << flush;
+
   // Veto lists for different years (NB: extra MC map for UL16):
   // h2hot_ul16_plus_hbm2_hbp12_qie11 + h2hot_mc (for UL16)
   // h2hot_ul17_plus_hep17_plus_hbpw89 (UL17)
@@ -2614,7 +2617,7 @@ void DijetHistosFill::Loop()
         cout << "The smearing requires to get the genjet associated to the reco jet.\n" <<
         "When considering the PNet regression including neutrinos, the 4vec of the neutrinos should be added to the one of the genjet.\n" <<
         "This is not implemented yet!" << endl;
-        assert(false)
+        assert(false);
       #endif
 
 
@@ -2720,7 +2723,7 @@ void DijetHistosFill::Loop()
         cout << "The MC Truth requires to get the genjet associated to the reco jet.\n" <<
         "When considering the PNet regression including neutrinos, the 4vec of the neutrinos should be added to the one of the genjet.\n" <<
         "This is not implemented yet!" << endl;
-        assert(false)
+        assert(false);
       #endif
 
       mctruthHistos *h = mhmc["HLT_MC"];

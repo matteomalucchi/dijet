@@ -144,7 +144,7 @@ if args.only_failed:
         if os.path.exists(file_name):
             size = os.path.getsize(file_name)
             print(f"Checking IOV {iov}")
-            if size < 2000:
+            if size < 1e5:
                 print(f"IOV {iov} has size {size} bytes, will rerun")
                 IOV_input_failed.append(iov)
             else:

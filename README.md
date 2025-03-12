@@ -25,7 +25,7 @@ This script executes the following actions:
 Once the jobs are completed, to do the post processing run:
 
 ```bash
-python post_processing.py  -i all -v version
+sbatch -p standard --account=t3 --time=00:30:00 --mem 30gb --cpus-per-task=1 --wrap="python post_processing.py  -i all -v version"
 ```
 
 This script executes the following actions:

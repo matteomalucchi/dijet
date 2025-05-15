@@ -8,7 +8,7 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "rescaleMass_removeCorrectEvents_removeNAN_StandardPt_mctruth15_NewRunCrabSkim";
+string version = "rescaleMass_removeCorrectEvents_removeNAN_pnetreg_mctruth15_NewRunCrabSkim_closure";
 string YEAR = "2022";
 
 int debug = 1; // 1=trg, 2=dir, 3=all

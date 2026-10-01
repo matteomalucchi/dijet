@@ -26,8 +26,8 @@
 
 // #define PNETREG
 // #define PNETREGNEUTRINO
-// #define UPARTREG
-#define UPARTREGNEUTRINO
+#define UPARTREG
+// #define UPARTREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
@@ -2955,7 +2955,7 @@ void DijetHistosFill::Loop()
         // continue;
       }
 
-      if ((Jet_UparTRegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[i])>4.69) && !(Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.1)){
+      if ((Jet_UparTRegPtRawCorrTotal<1e-6) && (fabs(Jet_eta[i])>2.5) && !(Jet_pt[i] * (1.0 - Jet_rawFactor[i])<15.1)){
         Jet_UparTRegPtRawCorrTotal = 1.;
       }
       else if ((Jet_UparTRegPtRawCorrTotal<1e-6)){

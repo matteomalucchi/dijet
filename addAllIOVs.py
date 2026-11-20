@@ -69,6 +69,11 @@ IOV_list_of_lists = [
     ["2024G_ZB", "2024G"],
     ["2024H_ZB", "2024H"],
     ["2024I_ZB", "2024I"],
+    ["2025C_ZB", "2025C"],
+    ["2025D_ZB", "2025D"],
+    ["2025E_ZB", "2025E"],
+    ["2025F_ZB", "2025F"],
+    ["2025G_ZB", "2025G"],
 ]
 
 MC_list_of_lists = [
@@ -113,12 +118,17 @@ MC_list_of_lists = [
         for file in os.listdir("input_files/")
         if "Summer24MG" in file and "all" not in file
     ],
+    [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Winter25MG" in file and "all" not in file
+    ],
 ]
 
 
 IOV_list_of_lists_year = IOV_list_of_lists
 MC_list_of_lists_year = MC_list_of_lists
-for year in ["22", "23", "24"]:
+for year in ["22", "23", "24", "25"]:
     if year in args.IOV_list:
         print(year)
         IOV_list_of_lists_year=[]
@@ -184,6 +194,7 @@ if doData:
 
 
 iov_dict = {
+    "Winter25MG": "2025QCD",
     "Summer24MG": "2024QCD",
     "Summer23MG": "QCD",
     "Summer23MGBPix": "QCD-BPix",

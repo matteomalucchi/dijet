@@ -250,6 +250,36 @@ FactorizedJetCorrector *selectJECEra(string dataset) {
                  "Summer24_Run2024I_V1_DATA_L2L3Residual");
   }
 
+  if (dataset == "2025C") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025C_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025D") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025D_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025E") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025E_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025F") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025F_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025G") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025G_V1_DATA_L2L3Residual");
+  }
+
   assert(jec);
   return jec;
 }
@@ -274,6 +304,10 @@ TH2D *getJVM(string dataset) {
       dataset == "2024F" || dataset == "2024G" || dataset == "2024H" ||
       dataset == "2024I") {
     fjv = new TFile("files/jetveto2024BCDEFGHI.root", "READ");
+  }
+  if (dataset == "2025C" || dataset == "2025D" || dataset == "2025E" ||
+      dataset == "2025F" || dataset == "2025G") {
+        fjv = new TFile("files/jetveto2025BCDEFG_V3M.root", "READ");
   }
   assert(fjv);
   

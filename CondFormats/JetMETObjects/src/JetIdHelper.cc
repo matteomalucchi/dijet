@@ -61,7 +61,7 @@ const std::vector<UChar_t>& InitJetId(
     const Float_t Jet_chEmEF[],
     const UChar_t Jet_jetId[]
 ){
-    bool isNanoAODv15 = (TString(dataset.c_str()).Contains("Winter25") || TString(dataset.c_str()).Contains("Summer24") || TString(dataset.c_str()).Contains("2024"));
+    bool isNanoAODv15 = (TString(dataset.c_str()).Contains("Winter25") || TString(dataset.c_str()).Contains("Summer24") || TString(dataset.c_str()).Contains("2024") || TString(dataset.c_str()).Contains("2025"));
     /* Check for different files.
     if (isNanoAODv15)
     {

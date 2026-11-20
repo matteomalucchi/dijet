@@ -26,8 +26,8 @@
 
 // #define PNETREG
 // #define PNETREGNEUTRINO
-#define UPARTREG
-// #define UPARTREGNEUTRINO
+// #define UPARTREG
+#define UPARTREGNEUTRINO
 
 bool CLOSURE_L2RES = false;
 bool CLOSURE_L2L3RES = false;
@@ -97,7 +97,8 @@ std::set<std::string> mcIOV = {"Summer22",
                                "2023BCv123_ZB", "2023Cv4", "2023Cv4_ZB", "2023D", "2023D_ZB",
                                "Summer22MG", "Summer22EEMG", "Summer22MG1", "Summer22MG2",
                                "Summer22EEMG1", "Summer22EEMG2", "Summer22EEMG3", "Summer22EEMG4",
-                               "Summer24", "Summer24Flat", "Summer24MG"};
+                               "Summer24", "Summer24Flat", "Summer24MG",
+                               "Winter25", "Winter25Flat", "Winter25MG"};
 
 // UTILITIES
 double DELTAPHI(double phi1, double phi2)
@@ -1511,6 +1512,211 @@ void DijetHistosFill::Loop()
     #endif
   }
 
+  if (dataset == "Winter25" ||
+      dataset == "Winter25Flat" || dataset == "Winter25MG" ||
+      TString(dataset.c_str()).Contains("Winter25"))
+  {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNet",
+                "");
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                "");
+    #elif defined UPARTREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparT",
+                "");
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                "");
+    #else
+    jec = getFJC("",
+                "Winter25Prompt25_V1_MC_L2Relative_AK4PFPuppi",
+                "");
+    #endif
+
+    //jec = getFJC("", // Winter23Prompt23_V2_MC_L1FastJet_AK4PFPuppi",
+    //             "Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi",
+    //             "");                                                                                   // Winter23Prompt23_V2_MC_L2L3Residual_AK4PFPuppi");
+    jerpath = "CondFormats/JetMETObjects/data/Summer22EEVetoRun3_V1_NSCP_MC_PtResolution_ak4puppi.txt"; // Same as Summer22EE, until updated
+    jerpathsf = "CondFormats/JetMETObjects/data/Summer22EERun3_V1_MC_SF_AK4PFPuppi.txt";                // Same as Summer22EE, until updated
+    useJERSFvsPt = false;
+
+    if (reweightPU)
+    {
+        TFile f("PileUp/dataPileupHistogram-2024BCDEFGHI-69200ub.root"); //To update (we should not use PU reweight for dijet analysis in our case)
+        pileupRatio = (TH1D *)f.Get("pileup");
+        pileupRatio->SetDirectory(0);
+        // Print mean, min weight, max weight
+        cout << "Pileup ratio mean = " << pileupRatio->GetMean() << endl;
+        cout << "Pileup ratio min = " << pileupRatio->GetMinimum() << endl;
+        cout << "Pileup ratio max = " << pileupRatio->GetMaximum() << endl;
+    }
+  }
+
+  if (dataset == "2025C" || dataset == "2025C_ZB")
+  {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Winter25_Run2025C_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Winter25_Run2025C_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025C_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025C_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #elif defined UPARTREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparT",
+                CLOSURE_L2L3RES ? "Winter25_Run2025C_V1_DATA_L2L3Residual_AK4PFUparT" :
+                (CLOSURE_L2RES ? "Winter25_Run2025C_V1_DATA_L2Residual_AK4PFUparT" : ""));
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025C_V1_DATA_L2L3Residual_AK4PFUparTPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025C_V1_DATA_L2Residual_AK4PFUparTPlusNeutrino" : ""));
+    #else
+    jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
+                                                                               //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
+                 "Winter25Prompt25_V1_MC_L2Relative_AK4PFPuppi",                     // Mikel
+                CLOSURE_L2L3RES ? "Winter25Prompt25_Run2025C_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Winter25Prompt25_Run2025C_V1_DATA_L2Residual_AK4PFPuppi" : ""));
+                                                                               //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
+    #endif
+  }
+
+  if (dataset == "2025D" || dataset == "2025D_ZB")
+  {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Winter25_Run2025D_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Winter25_Run2025D_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025D_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025D_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #elif defined UPARTREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparT",
+                CLOSURE_L2L3RES ? "Winter25_Run2025D_V1_DATA_L2L3Residual_AK4PFUparT" :
+                (CLOSURE_L2RES ? "Winter25_Run2025D_V1_DATA_L2Residual_AK4PFUparT" : ""));
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025D_V1_DATA_L2L3Residual_AK4PFUparTPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025D_V1_DATA_L2Residual_AK4PFUparTPlusNeutrino" : ""));
+    #else
+    jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
+                                                                               //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
+                 "Winter25Prompt25_V1_MC_L2Relative_AK4PFPuppi",                     // Mikel
+                CLOSURE_L2L3RES ? "Winter25Prompt25_Run2025D_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Winter25Prompt25_Run2025D_V1_DATA_L2Residual_AK4PFPuppi" : ""));
+                                                                               //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
+    #endif
+  }
+
+  if (dataset == "2025E" || dataset == "2025E_ZB")
+  {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Winter25_Run2025E_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Winter25_Run2025E_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025E_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025E_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #elif defined UPARTREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparT",
+                CLOSURE_L2L3RES ? "Winter25_Run2025E_V1_DATA_L2L3Residual_AK4PFUparT" :
+                (CLOSURE_L2RES ? "Winter25_Run2025E_V1_DATA_L2Residual_AK4PFUparT" : ""));
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025E_V1_DATA_L2L3Residual_AK4PFUparTPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025E_V1_DATA_L2Residual_AK4PFUparTPlusNeutrino" : ""));
+    #else
+    jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
+                                                                               //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
+                 "Winter25Prompt25_V1_MC_L2Relative_AK4PFPuppi",                     // Mikel
+                CLOSURE_L2L3RES ? "Winter25Prompt25_Run2025E_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Winter25Prompt25_Run2025E_V1_DATA_L2Residual_AK4PFPuppi" : ""));
+                                                                               //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
+    #endif
+  }
+
+  if (dataset == "2025F" || dataset == "2025F_ZB")
+  {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Winter25_Run2025F_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Winter25_Run2025F_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025F_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025F_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #elif defined UPARTREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparT",
+                CLOSURE_L2L3RES ? "Winter25_Run2025F_V1_DATA_L2L3Residual_AK4PFUparT" :
+                (CLOSURE_L2RES ? "Winter25_Run2025F_V1_DATA_L2Residual_AK4PFUparT" : ""));
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025F_V1_DATA_L2L3Residual_AK4PFUparTPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025F_V1_DATA_L2Residual_AK4PFUparTPlusNeutrino" : ""));
+    #else
+    jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
+                                                                               //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
+                 "Winter25Prompt25_V1_MC_L2Relative_AK4PFPuppi",                     // Mikel
+                CLOSURE_L2L3RES ? "Winter25Prompt25_Run2025F_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Winter25Prompt25_Run2025F_V1_DATA_L2Residual_AK4PFPuppi" : ""));
+                                                                               //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
+    #endif
+  }
+
+  if (dataset == "2025G" || dataset == "2025G_ZB")
+  {
+    #ifdef PNETREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNet",
+                CLOSURE_L2L3RES ? "Winter25_Run2025G_V1_DATA_L2L3Residual_AK4PFPNet" :
+                (CLOSURE_L2RES ? "Winter25_Run2025G_V1_DATA_L2Residual_AK4PFPNet" : ""));
+    #elif defined PNETREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFPNetPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025G_V1_DATA_L2L3Residual_AK4PFPNetPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025G_V1_DATA_L2Residual_AK4PFPNetPlusNeutrino" : ""));
+    #elif defined UPARTREG
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparT",
+                CLOSURE_L2L3RES ? "Winter25_Run2025G_V1_DATA_L2L3Residual_AK4PFUparT" :
+                (CLOSURE_L2RES ? "Winter25_Run2025G_V1_DATA_L2Residual_AK4PFUparT" : ""));
+    #elif defined UPARTREGNEUTRINO
+    jec = getFJC("",
+                "Winter25Run3_V3_MC_L2Relative_AK4PFUparTPlusNeutrino",
+                CLOSURE_L2L3RES ? "Winter25_Run2025G_V1_DATA_L2L3Residual_AK4PFUparTPlusNeutrino" :
+                (CLOSURE_L2RES ? "Winter25_Run2025G_V1_DATA_L2Residual_AK4PFUparTPlusNeutrino" : ""));
+    #else
+    jec = getFJC("",                                                           // Winter23Prompt23_RunC_V2_DATA_L1FastJet_AK4PFPuppi",
+                                                                               //"Winter23Prompt23_RunC_V2_DATA_L2Relative_AK4PFPuppi",
+                 "Winter25Prompt25_V1_MC_L2Relative_AK4PFPuppi",                     // Mikel
+                CLOSURE_L2L3RES ? "Winter25Prompt25_Run2025G_V1_DATA_L2L3Residual_AK4PFPuppi" :
+                (CLOSURE_L2RES ? "Winter25Prompt25_Run2025G_V1_DATA_L2Residual_AK4PFPuppi" : ""));
+                                                                               //"Run23D-Prompt_DATA_L2L3Residual_AK4PFPuppi"
+    #endif
+  }
+
   if ((isRun2 && (!jec || !jecl1rc)) || (isRun3 && !jec))
     cout << "Missing files for " << dataset << endl
          << flush;
@@ -1806,6 +2012,8 @@ void DijetHistosFill::Loop()
       LoadJSON("files/Cert_Collisions2023_366442_370790_Golden.json");
     if (TString(dataset.c_str()).Contains("2024"))
       LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json");
+    if (TString(dataset.c_str()).Contains("2025"))
+      LoadJSON("files/Cert_Collisions2025_391658_398903_Golden.json");
   }
   int _nbadevts_json(0);
 
@@ -2591,6 +2799,13 @@ void DijetHistosFill::Loop()
       dataset == "2024I" || dataset == "2024I_ZB" ||
       TString(dataset.c_str()).Contains("Summer24MG"))
     fjv = new TFile("files/jetveto2024BCDEFGHI.root", "READ");
+  if (dataset == "2025C" || dataset == "2025C_ZB" ||
+      dataset == "2025D" || dataset == "2025D_ZB" ||
+      dataset == "2025E" || dataset == "2025E_ZB" ||
+      dataset == "2025F" || dataset == "2025F_ZB" ||
+      dataset == "2025G" || dataset == "2025G_ZB" ||
+      TString(dataset.c_str()).Contains("Winter25MG"))
+    fjv = new TFile("files/jetveto2025CDEFG_V3M.root", "READ");
   assert(fjv);
 
   cout << "Loaded jet veto maps" << endl
@@ -2642,6 +2857,13 @@ void DijetHistosFill::Loop()
       dataset == "2024H" || dataset == "2024H_ZB" ||
       dataset == "2024I" || dataset == "2024I_ZB" ||
       TString(dataset.c_str()).Contains("Summer24MG"))
+    h2jv = (TH2D *)fjv->Get("jetvetomap");
+  if (dataset == "2025C" || dataset == "2025C_ZB" ||
+      dataset == "2025D" || dataset == "2025D_ZB" ||
+      dataset == "2025E" || dataset == "2025E_ZB" ||
+      dataset == "2025F" || dataset == "2025F_ZB" ||
+      dataset == "2025G" || dataset == "2025G_ZB" ||
+      TString(dataset.c_str()).Contains("Winter25MG"))
     h2jv = (TH2D *)fjv->Get("jetvetomap");
   assert(h2jv);
 

@@ -3576,7 +3576,9 @@ DijetHistosFill::DijetHistosFill(TTree *tree, int itype, string datasetname, str
 	    TString(datasetname.c_str()).Contains("Summer22") ||
 	    TString(datasetname.c_str()).Contains("Summer23") ||
        TString(datasetname.c_str()).Contains("2024") ||
-       TString(datasetname.c_str()).Contains("Summer24"));
+       TString(datasetname.c_str()).Contains("Summer24") ||
+       TString(datasetname.c_str()).Contains("2025") ||
+       TString(datasetname.c_str()).Contains("Winter25"));
   assert(isRun2 || isRun3);
   assert(!(isRun2 && isRun3));
   isZB = (TString(datasetname.c_str()).Contains("_ZB"));

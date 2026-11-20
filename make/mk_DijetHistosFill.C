@@ -86,7 +86,8 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
      "Summer23MGBPix_1", "Summer23MGBPix_2", "Summer23MGBPix_3", "Summer23MGBPix_4", "Summer23MGBPix",
      "Summer23MG_test", "Summer23MGBPix_test",
      "Summer23MG_new_1", "Summer23MG_new_2", "Summer23MG_new_3", "Summer23MG_new_4",
-     "Summer24MG_1", "Summer24MG_2", "Summer24MG_3", "Summer24MG_4", "Summer24MG_5", "Summer24MG_6", "Summer24MG_7","Summer24MG_8", "Summer24MG_9", "Summer24MG_10", "Summer24MG"
+     "Summer24MG_1", "Summer24MG_2", "Summer24MG_3", "Summer24MG_4", "Summer24MG_5", "Summer24MG_6", "Summer24MG_7","Summer24MG_8", "Summer24MG_9", "Summer24MG_10", "Summer24MG",
+     "Winter25MG_1", "Winter25MG_2", "Winter25MG_3", "Winter25MG_4", "Winter25MG_5", "Winter25MG_6", "Winter25MG_7","Winter25MG_8", "Winter25MG_9", "Winter25MG_10", "Winter25MG"
      };
 
   std::unordered_set<std::string> DT_datasets = {"UL2016BCD",
@@ -100,7 +101,9 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
   "2023D", "2022C_ZB", "2022D_ZB", "2022E_ZB", "2022F_ZB", "2022G_ZB",
   "2023BCv123_ZB", "2023Cv4_ZB", "2023D_ZB",
   "2024C", "2024D", "2024E", "2024F", "2024G", "2024H", "2024I",
-  "2024C_ZB", "2024D_ZB", "2024E_ZB", "2024F_ZB", "2024G_ZB", "2024H_ZB", "2024I_ZB"
+  "2024C_ZB", "2024D_ZB", "2024E_ZB", "2024F_ZB", "2024G_ZB", "2024H_ZB", "2024I_ZB",
+  "2025C", "2025D", "2025E", "2025F", "2025G",
+  "2025C_ZB", "2025D_ZB", "2025E_ZB", "2025F_ZB", "2025G_ZB"
   };
 
   // Check if dataset is supported

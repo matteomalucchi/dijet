@@ -7,6 +7,23 @@ max_files = 9999
 
 IOV_list = (
     [
+        "2025C",
+        "2025D",
+        "2025E",
+        "2025F",
+        "2025G",
+        "2025C_ZB",
+        "2025D_ZB",
+        "2025E_ZB",
+        "2025F_ZB",
+        "2025G_ZB",
+    ]
+    + [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Winter25MG_" in file and "all" not in file
+    ]
+    + [
         "2024C",
         "2024D",
         "2024E",
@@ -73,6 +90,16 @@ IOV_list = (
 # resources for slurm
 res_iovs = {
     # dataset: [memory, hours, days]
+    "2025C": [5, 8, ""],
+    "2025D": [5, 8, ""],
+    "2025E": [5, 8, ""],
+    "2025F": [5, 8, ""],
+    "2025G": [5, 8, ""],
+    "2025C_ZB": [5, 8, ""],
+    "2025D_ZB": [5, 8, ""],
+    "2025E_ZB": [5, 8, ""],
+    "2025F_ZB": [5, 8, ""],
+    "2025G_ZB": [5, 8, ""],
     "2024C": [5, 8, ""],
     "2024D": [5, 8, ""],
     "2024E": [5, 8, ""],
@@ -112,6 +139,7 @@ res_iovs.update(
     }
 )
 
+run3_25 = [x for x in IOV_list if "25" in x]
 run3_24 = [x for x in IOV_list if "24" in x]
 run3_23 = [x for x in IOV_list if "23" in x]
 run3_22 = [x for x in IOV_list if "22" in x]
@@ -150,6 +178,8 @@ IOV_input = []
 if args.IOV_list:
     if "all" in args.IOV_list:
         IOV_input = IOV_list
+    elif "25" in args.IOV_list and args.IOV_list[0].isdigit():
+        IOV_input = run3_25
     elif "24" in args.IOV_list and args.IOV_list[0].isdigit():
         IOV_input = run3_24
     elif "23" in args.IOV_list and args.IOV_list[0].isdigit():

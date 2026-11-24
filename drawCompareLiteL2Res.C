@@ -10,7 +10,7 @@ TFile *_fout(0);
 void drawCompareLiteL2Res() {
 
   TDirectory *curdir = gDirectory;
-  _fout = new TFile("rootfiles/compareLiteEras.root","UPDATE");
+  _fout = new TFile("files/compareLiteEras.root","UPDATE");
   curdir->cd();
   
   drawCompareLiteL2Res_runs("2022C");
@@ -36,9 +36,9 @@ void drawCompareLiteL2Res_runs(string run) {
   TDirectory *curdir = gDirectory;
 
   const char *cr = run.c_str();
-  //TFile *f = new TFile("rootfiles/compareLite_2022D_Henning_v2.root","READ");
+  //TFile *f = new TFile("files/compareLite_2022D_Henning_v2.root","READ");
   TFile *f = new TFile(Form("rootfiles/Henning_v2/compareLite_%s.root",cr),"READ");
-  //TFile *f = new TFile("rootfiles/compareLite_2023D_withJESReapplied.root","READ");
+  //TFile *f = new TFile("files/compareLite_2023D_withJESReapplied.root","READ");
   assert(f && !f->IsZombie());
 
   // For L2Res compareLiteEras.root

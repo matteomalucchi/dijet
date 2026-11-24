@@ -1,0 +1,8 @@
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_1of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_2of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_3of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_4of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_5of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_6of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_7of8.root
+/eos/cms/store/group/phys_b2g/HHbbgg/jdaniel/JME/Skimmed_files_datasets/MultiJet/2024/Data/2024C_ZB/date-21Jan2026_time-210026_commit-f000665/Data_2024C_MultiJet_ZeroBias_Skim_8of8.root

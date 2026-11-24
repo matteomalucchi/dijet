@@ -14,6 +14,7 @@
 
 #include "../CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "../CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "../CondFormats/JetMETObjects/interface/JetIdHelper.h"
 #include "../CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
 #include "../CondFormats/JetMETObjects/interface/JetResolutionObject.h"
@@ -294,12 +295,16 @@ public :
    Float_t         Jet_rawFactor[nJetMax];   //[nJet]
    Float_t         Jet_PNetRegPtRawCorr[nJetMax];   //[nJet]
    Float_t         Jet_PNetRegPtRawCorrNeutrino[nJetMax];   //[nJet]
+   Float_t         Jet_UParTAK4RegPtRawCorr[nJetMax];   //[nJet]
+   Float_t         Jet_UParTAK4RegPtRawCorrNeutrino[nJetMax];   //[nJet]
    Int_t           Jet_electronIdx1[nJetMax];   //[nJet]
    Int_t           Jet_electronIdx2[nJetMax];   //[nJet]
    Int_t           Jet_hfadjacentEtaStripsSize[nJetMax];   //[nJet]
    Int_t           Jet_hfcentralEtaStripSize[nJetMax];   //[nJet]
   // Int_t           Jet_jetId[nJetMax];   //[nJet] // NanoV10,11
    UChar_t         Jet_jetId[nJetMax];   //[nJet] // NanoV12
+   UChar_t         Jet_chMultiplicity[nJetMax];   //[nJet] // NanoV15
+   UChar_t         Jet_neMultiplicity[nJetMax];   //[nJet] // NanoV15
    Int_t           Jet_muonIdx1[nJetMax];   //[nJet]
    Int_t           Jet_muonIdx2[nJetMax];   //[nJet]
    Int_t           Jet_nConstChHads[nJetMax];   //[nJet]
@@ -2041,11 +2046,15 @@ public :
    TBranch        *b_Jet_rawFactor;   //!
    TBranch        *b_Jet_PNetRegPtRawCorr;   //!
    TBranch        *b_Jet_PNetRegPtRawCorrNeutrino;   //!
+   TBranch        *b_Jet_UParTAK4RegPtRawCorr;   //!
+   TBranch        *b_Jet_UParTAK4RegPtRawCorrNeutrino;   //!
    TBranch        *b_Jet_electronIdx1;   //!
    TBranch        *b_Jet_electronIdx2;   //!
    TBranch        *b_Jet_hfadjacentEtaStripsSize;   //!
    TBranch        *b_Jet_hfcentralEtaStripSize;   //!
    TBranch        *b_Jet_jetId;   //!
+   TBranch        *b_Jet_chMultiplicity;   //!
+   TBranch        *b_Jet_neMultiplicity;   //!
    TBranch        *b_Jet_muonIdx1;   //!
    TBranch        *b_Jet_muonIdx2;   //!
    //   TBranch        *b_Jet_nConstChHads;   //!
@@ -3565,7 +3574,11 @@ DijetHistosFill::DijetHistosFill(TTree *tree, int itype, string datasetname, str
   isRun3 = (TString(datasetname.c_str()).Contains("2022") ||
 	    TString(datasetname.c_str()).Contains("2023") ||
 	    TString(datasetname.c_str()).Contains("Summer22") ||
-	    TString(datasetname.c_str()).Contains("Summer23"));
+	    TString(datasetname.c_str()).Contains("Summer23") ||
+       TString(datasetname.c_str()).Contains("2024") ||
+       TString(datasetname.c_str()).Contains("Summer24") ||
+       TString(datasetname.c_str()).Contains("2025") ||
+       TString(datasetname.c_str()).Contains("Winter25"));
   assert(isRun2 || isRun3);
   assert(!(isRun2 && isRun3));
   isZB = (TString(datasetname.c_str()).Contains("_ZB"));
@@ -4330,11 +4343,15 @@ void DijetHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
    fChain->SetBranchAddress("Jet_PNetRegPtRawCorr", Jet_PNetRegPtRawCorr, &b_Jet_PNetRegPtRawCorr);
    fChain->SetBranchAddress("Jet_PNetRegPtRawCorrNeutrino", Jet_PNetRegPtRawCorrNeutrino, &b_Jet_PNetRegPtRawCorrNeutrino);
+   fChain->SetBranchAddress("Jet_UParTAK4RegPtRawCorr", Jet_UParTAK4RegPtRawCorr, &b_Jet_UParTAK4RegPtRawCorr);
+   fChain->SetBranchAddress("Jet_UParTAK4RegPtRawCorrNeutrino", Jet_UParTAK4RegPtRawCorrNeutrino, &b_Jet_UParTAK4RegPtRawCorrNeutrino);
    fChain->SetBranchAddress("Jet_electronIdx1", Jet_electronIdx1, &b_Jet_electronIdx1);
    fChain->SetBranchAddress("Jet_electronIdx2", Jet_electronIdx2, &b_Jet_electronIdx2);
    fChain->SetBranchAddress("Jet_hfadjacentEtaStripsSize", Jet_hfadjacentEtaStripsSize, &b_Jet_hfadjacentEtaStripsSize);
    fChain->SetBranchAddress("Jet_hfcentralEtaStripSize", Jet_hfcentralEtaStripSize, &b_Jet_hfcentralEtaStripSize);
    fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);
+   fChain->SetBranchAddress("Jet_chMultiplicity", Jet_chMultiplicity, &b_Jet_chMultiplicity);
+   fChain->SetBranchAddress("Jet_neMultiplicity", Jet_neMultiplicity, &b_Jet_neMultiplicity);
    fChain->SetBranchAddress("Jet_muonIdx1", Jet_muonIdx1, &b_Jet_muonIdx1);
    fChain->SetBranchAddress("Jet_muonIdx2", Jet_muonIdx2, &b_Jet_muonIdx2);
    //   fChain->SetBranchAddress("Jet_nConstChHads", Jet_nConstChHads, &b_Jet_nConstChHads);

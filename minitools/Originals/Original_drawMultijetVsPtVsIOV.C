@@ -158,7 +158,7 @@ void drawMultijetVsPtVsIOVs(string so, string var, string name,
       assert(false);
     }
     else {
-      fd = new TFile(Form("../rootfiles/jmenano_data_cmb_%s_JME_%s.root",ciov,cid));
+      fd = new TFile(Form("../files/jmenano_data_cmb_%s_JME_%s.root",ciov,cid));
     }
     assert(fd && !fd->IsZombie());
     if (iovs[i]=="2018ABCD") {
@@ -166,7 +166,7 @@ void drawMultijetVsPtVsIOVs(string so, string var, string name,
       assert(false);
     }
     else {
-      fm = new TFile(Form("../rootfiles/jmenano_mc_out_%s_%s.root",cmc,cid));
+      fm = new TFile(Form("../files/jmenano_mc_out_%s_%s.root",cmc,cid));
     }
     assert(fm && !fm->IsZombie());
 

@@ -7,6 +7,9 @@
 #include "../CondFormats/JetMETObjects/interface/SimpleJetCorrector.h"
 #include "../CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 
+#include "../CondFormats/JetMETObjects/interface/JetIdHelper.h" // Substitute of JetId branch for NANOAODV15. Nestor, April 7.
+
+
 #include "../CondFormats/JetMETObjects/interface/SimpleJetCorrectionUncertainty.h"
 #include "../CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
@@ -50,6 +53,7 @@ R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/JetCorrectionUncertainty.cc+)
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/JetCorrectorParameters_cc)
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/SimpleJetCorrector_cc)
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/FactorizedJetCorrector_cc)
+R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/JetIdHelper_cc) //Substitute of JetId branch for NANOAODV15. Nestor, April 7.
 
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/SimpleJetCorrectionUncertainty_cc)
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/JetCorrectionUncertainty_cc)
@@ -81,7 +85,9 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
      "Summer23MG_1", "Summer23MG_2", "Summer23MG_3", "Summer23MG_4","Summer23MG_5","Summer23MG_6", "Summer23MG",
      "Summer23MGBPix_1", "Summer23MGBPix_2", "Summer23MGBPix_3", "Summer23MGBPix_4", "Summer23MGBPix",
      "Summer23MG_test", "Summer23MGBPix_test",
-     "Summer23MG_new_1", "Summer23MG_new_2", "Summer23MG_new_3", "Summer23MG_new_4"
+     "Summer23MG_new_1", "Summer23MG_new_2", "Summer23MG_new_3", "Summer23MG_new_4",
+     "Summer24MG_1", "Summer24MG_2", "Summer24MG_3", "Summer24MG_4", "Summer24MG_5", "Summer24MG_6", "Summer24MG_7","Summer24MG_8", "Summer24MG_9", "Summer24MG_10", "Summer24MG",
+     "Winter25MG_1", "Winter25MG_2", "Winter25MG_3", "Winter25MG_4", "Winter25MG_5", "Winter25MG_6", "Winter25MG_7","Winter25MG_8", "Winter25MG_9", "Winter25MG_10", "Winter25MG"
      };
 
   std::unordered_set<std::string> DT_datasets = {"UL2016BCD",
@@ -93,7 +99,11 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
   "UL2018C_ZB", "UL2018D_ZB", "2022C", "2022D", "2022E",
   "2022F", "2022G", "2022F1", "2022F2", "2023BCv123", "2023B", "2023Cv123", "2023Cv123_ZB","2023Cv4",
   "2023D", "2022C_ZB", "2022D_ZB", "2022E_ZB", "2022F_ZB", "2022G_ZB",
-  "2023BCv123_ZB", "2023Cv4_ZB", "2023D_ZB"
+  "2023BCv123_ZB", "2023Cv4_ZB", "2023D_ZB",
+  "2024C", "2024D", "2024E", "2024F", "2024G", "2024H", "2024I",
+  "2024C_ZB", "2024D_ZB", "2024E_ZB", "2024F_ZB", "2024G_ZB", "2024H_ZB", "2024I_ZB",
+  "2025C", "2025D", "2025E", "2025F", "2025G",
+  "2025C_ZB", "2025D_ZB", "2025E_ZB", "2025F_ZB", "2025G_ZB"
   };
 
   // Check if dataset is supported
@@ -136,7 +146,7 @@ void mk_DijetHistosFill(string dataset = "X", string version = "vX", int nFilesM
   // Compile these libraries into *.so first with root -l -b -q mk_CondFormats.C
   // Compile .cc files in CondFormats/JetMETObjects/src
   std::set<std::string> files = {"Utilities.cc", "JetCorrectorParameters.cc", "SimpleJetCorrector.cc", "FactorizedJetCorrector.cc",
-  "SimpleJetCorrectionUncertainty.cc", "JetCorrectionUncertainty.cc", "JetResolutionObject.cc"};
+  "JetIdHelper.cc", "SimpleJetCorrectionUncertainty.cc", "JetCorrectionUncertainty.cc", "JetResolutionObject.cc"};
 
   for (auto it=files.begin(); it!=files.end(); ++it) {
     gROOT->ProcessLine(Form(".L CondFormats/JetMETObjects/src/%s+",it->c_str()));

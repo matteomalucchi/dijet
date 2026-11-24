@@ -218,16 +218,16 @@ TH2D *getJVM(string dataset) {
 
   TFile *fjv(0);
   if (dataset == "2022C" || dataset == "2022D") {
-    fjv = new TFile("rootfiles/jetveto2022CD.root", "READ");
+    fjv = new TFile("files/jetveto2022CD.root", "READ");
   }
   if (dataset == "2022E" || dataset == "2022F" || dataset == "2022G") {
-    fjv = new TFile("rootfiles/jetveto2022EFG.root", "READ");
+    fjv = new TFile("files/jetveto2022EFG.root", "READ");
   }
   if (dataset == "2023C" || dataset == "2023Cv123" || dataset == "2023Cv4") {
-    fjv = new TFile("rootfiles/jetveto2023BC.root", "READ");
+    fjv = new TFile("files/jetveto2023BC.root", "READ");
   }
   if (dataset == "2023D") {
-    fjv = new TFile("rootfiles/jetveto2023D.root", "READ");
+    fjv = new TFile("files/jetveto2023D.root", "READ");
   }
   assert(fjv);
   
@@ -255,8 +255,8 @@ void compareLiteHLT(string run="2023D") {
   //cout << "A is 19Dec2023" << endl;
   cout << "A is 22Sep2023" << endl;
   {
-    LoadJSON("rootfiles/Cert_Collisions2022_355100_362760_Golden.json");
-    LoadJSON("rootfiles/Cert_Collisions2023_366442_370790_Golden.json");
+    LoadJSON("files/Cert_Collisions2022_355100_362760_Golden.json");
+    LoadJSON("files/Cert_Collisions2023_366442_370790_Golden.json");
 
 
     //string filename = Form("input_files/dataFiles_%s.txt.19Dec2023.%sv12", crun, OneRun==true ? "OneRun." : "");
@@ -618,7 +618,7 @@ void compareLiteHLT(string run="2023D") {
   const int ny = sizeof(vy) / sizeof(vy[0]) - 1;
   
   // Open file for outputting results
-  TFile *f = new TFile(Form("rootfiles/compareLiteHLT_%s.root",run.c_str()),
+  TFile *f = new TFile(Form("files/compareLiteHLT_%s.root",run.c_str()),
 		       "RECREATE");
   f->mkdir("2D");
   f->mkdir("PF");

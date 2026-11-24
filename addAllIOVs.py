@@ -62,6 +62,18 @@ IOV_list_of_lists = [
     ['2022F_ZB', '2022F'],
     ['2022G_ZB', '2022G'],
     ["2022F_JME", "2022G_JME"],
+    ["2024C_ZB", "2024C"],
+    ["2024D_ZB", "2024D"],
+    ["2024E_ZB", "2024E"],
+    ["2024F_ZB", "2024F"],
+    ["2024G_ZB", "2024G"],
+    ["2024H_ZB", "2024H"],
+    ["2024I_ZB", "2024I"],
+    ["2025C_ZB", "2025C"],
+    ["2025D_ZB", "2025D"],
+    ["2025E_ZB", "2025E"],
+    ["2025F_ZB", "2025F"],
+    ["2025G_ZB", "2025G"],
 ]
 
 MC_list_of_lists = [
@@ -101,12 +113,22 @@ MC_list_of_lists = [
         for file in os.listdir("input_files/")
         if "Summer22EEMG" in file and "all" not in file
     ],
+    [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Summer24MG" in file and "all" not in file
+    ],
+    [
+        file.replace(".txt", "").replace("mcFiles_", "")
+        for file in os.listdir("input_files/")
+        if "Winter25MG" in file and "all" not in file
+    ],
 ]
 
 
 IOV_list_of_lists_year = IOV_list_of_lists
 MC_list_of_lists_year = MC_list_of_lists
-for year in ["22", "23"]:
+for year in ["22", "23", "24", "25"]:
     if year in args.IOV_list:
         print(year)
         IOV_list_of_lists_year=[]
@@ -147,6 +169,7 @@ if doData:
 
         command = (
             "hadd "
+            + ("-f " if args.force else "")
             + "rootfiles/"
             + version
             + "/jmenano_data_out_"
@@ -154,7 +177,6 @@ if doData:
             + "_"
             + version
             + ".root "
-            + ("-f " if args.force else "")
         )
         for iov in IOV_list:
             command = (
@@ -172,6 +194,8 @@ if doData:
 
 
 iov_dict = {
+    "Winter25MG": "2025QCD",
+    "Summer24MG": "2024QCD",
     "Summer23MG": "QCD",
     "Summer23MGBPix": "QCD-BPix",
     "Summer22MG": "2022QCD",
@@ -183,6 +207,7 @@ if doMC:
         iov_string = iov_dict[MC_list[0].split("_")[0]]
         command = (
             "hadd "
+            + ("-f " if args.force else "")
             + "rootfiles/"
             + version
             + "/jmenano_mc_out_"
@@ -190,7 +215,6 @@ if doMC:
             + "_"
             + version
             + ".root "
-            + ("-f " if args.force else "")
         )
         for mc in MC_list:
             command = (

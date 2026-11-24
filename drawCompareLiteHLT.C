@@ -100,7 +100,7 @@ void drawCompareLiteHLT(string run = "2022F_ZB_v2") {
   TDirectory *curdir = gDirectory;
 
   const char *crun = run.c_str();
-  TFile *f = new TFile(Form("rootfiles/compareLiteHLT_%s.root",crun),"READ");
+  TFile *f = new TFile(Form("files/compareLiteHLT_%s.root",crun),"READ");
   assert(f && !f->IsZombie());
 
   string sA = "22Sep2023";;
@@ -218,7 +218,7 @@ void drawCompareLiteHLT_IOVs() {
   double xmin = 15;//600;
   double xmax = 4000;//3500;
 
-  TFile *fout = new TFile(Form("rootfiles/compareLite_%s_vs_%s.root",
+  TFile *fout = new TFile(Form("files/compareLite_%s_vs_%s.root",
 			       sB.c_str(),sA.c_str()), "RECREATE");
   
   TFile *f2 = new TFile("../l1tau/compareLite/HB_SiPM_down_1M.root","READ"); // hbsipm
@@ -378,7 +378,7 @@ void drawCompareLiteHLT_IOVs() {
     string run = viov[iov];
     const char *crun = run.c_str();
     const char *cfile = file[run];
-    TFile *f = new TFile(Form("rootfiles/compareLite_%s.root",cfile),"READ");
+    TFile *f = new TFile(Form("files/compareLite_%s.root",cfile),"READ");
     assert(f && !f->IsZombie());
 
     // Direct match

@@ -129,16 +129,16 @@ void DijetHistosOverlay() {
   //DijetHistosOverlayJES("../jecsys3/../rootfiles/Iita_20230814/jmenano_data_cmb_2022C_v1.root","../rootfiles/jmenano_mc_cmb_UL2018MG_v26.root","2022C_v1_vs_UL18_v26"); // before JER SF
 
   // Run3 (v29->v34b)
-  DijetHistosOverlayJES("../rootfiles/jmenano_data_cmb_2022CD_JME_v34b.root","../rootfiles/jmenano_mc_cmb_Summer22MG_v34b.root","2022CD_v34b");
-  DijetHistosOverlayJES("../rootfiles/jmenano_data_cmb_2022E_JME_v34b.root","../rootfiles/jmenano_mc_cmb_Summer22MG_v34b.root","2022E_v34b"); // tbd: 22EE
-  DijetHistosOverlayJES("../rootfiles/jmenano_data_cmb_2022FG_JME_v34b.root","../rootfiles/jmenano_mc_cmb_Summer22MG_v34b.root","2022FG_v34b"); // tbd: 22EE
-  DijetHistosOverlayJES("../rootfiles/jmenano_data_cmb_2023BCv123_JME_v34b.root","../rootfiles/jmenano_mc_cmb_Summer22MG_v34b.root","2023BCv123_v34b"); // tbd: 23
-  DijetHistosOverlayJES("../rootfiles/jmenano_data_cmb_2023Cv4_JME_v34b.root","../rootfiles/jmenano_mc_cmb_Summer22MG_v34b.root","2023Cv4_v34b"); // tbd: 23
-  DijetHistosOverlayJES("../rootfiles/jmenano_data_cmb_2023D_JME_v34b.root","../rootfiles/jmenano_mc_cmb_Summer22MG_v34b.root","2023D_v34b"); // tbd: 23
+  DijetHistosOverlayJES("../files/jmenano_data_cmb_2022CD_JME_v34b.root","../files/jmenano_mc_cmb_Summer22MG_v34b.root","2022CD_v34b");
+  DijetHistosOverlayJES("../files/jmenano_data_cmb_2022E_JME_v34b.root","../files/jmenano_mc_cmb_Summer22MG_v34b.root","2022E_v34b"); // tbd: 22EE
+  DijetHistosOverlayJES("../files/jmenano_data_cmb_2022FG_JME_v34b.root","../files/jmenano_mc_cmb_Summer22MG_v34b.root","2022FG_v34b"); // tbd: 22EE
+  DijetHistosOverlayJES("../files/jmenano_data_cmb_2023BCv123_JME_v34b.root","../files/jmenano_mc_cmb_Summer22MG_v34b.root","2023BCv123_v34b"); // tbd: 23
+  DijetHistosOverlayJES("../files/jmenano_data_cmb_2023Cv4_JME_v34b.root","../files/jmenano_mc_cmb_Summer22MG_v34b.root","2023Cv4_v34b"); // tbd: 23
+  DijetHistosOverlayJES("../files/jmenano_data_cmb_2023D_JME_v34b.root","../files/jmenano_mc_cmb_Summer22MG_v34b.root","2023D_v34b"); // tbd: 23
 
   
   //DijetHistosOverlayJES("haddfiles/jmenano_data_cmb_UL2017_v26.root",
-  //			"../rootfiles/jmenano_mc_cmb_UL2017MG_v27.root",
+  //			"../files/jmenano_mc_cmb_UL2017MG_v27.root",
   //			"UL2017_ZB_v27");
 } // DijetHistosOverlay
 
@@ -157,18 +157,18 @@ void DijetHistosOverlays(string obs, string data, string spt,
   const char *cpt = spt.c_str();
 
   TFile *f1(0), *f12(0), *f13(0);
-  if (data=="data") f1 = new TFile("../rootfiles/jmenano_data_cmb_v22ul16.root","READ");
-  if (data=="mc") f1 = new TFile("../rootfiles/jmenano_mc_cmb_v23ul16mg.root","READ");
-  //if (data=="mc") f1 = new TFile("../rootfiles/jmenano_mc_cmb_v23ul16flat.root","READ");
-  //if (data=="data") f1 = new TFile("../rootfiles/jmenano_data_cmb_v21ul16.root","READ");
-  //if (data=="mc") f1 = new TFile("../rootfiles/jmenano_mc_cmb_v20ul16flatmc.root","READ");
-  //if (data=="data") f1 = new TFile("../rootfiles/jmenano_data_cmb.root","READ");
-  //if (data=="mc") f1 = new TFile("../rootfiles/jmenano_mc_cmb.root","READ");
+  if (data=="data") f1 = new TFile("../files/jmenano_data_cmb_v22ul16.root","READ");
+  if (data=="mc") f1 = new TFile("../files/jmenano_mc_cmb_v23ul16mg.root","READ");
+  //if (data=="mc") f1 = new TFile("../files/jmenano_mc_cmb_v23ul16flat.root","READ");
+  //if (data=="data") f1 = new TFile("../files/jmenano_data_cmb_v21ul16.root","READ");
+  //if (data=="mc") f1 = new TFile("../files/jmenano_mc_cmb_v20ul16flatmc.root","READ");
+  //if (data=="data") f1 = new TFile("../files/jmenano_data_cmb.root","READ");
+  //if (data=="mc") f1 = new TFile("../files/jmenano_mc_cmb.root","READ");
 
   if (data3) {
-    f1 = new TFile("../rootfiles/dijet2_a_dijet_cmb.root","READ");
-    f12 = new TFile("../rootfiles/dijet2_b_asymm_cmb.root","READ");
-    f13 = new TFile("../rootfiles/dijet2_c_allgood_cmb.root","READ");
+    f1 = new TFile("../files/dijet2_a_dijet_cmb.root","READ");
+    f12 = new TFile("../files/dijet2_b_asymm_cmb.root","READ");
+    f13 = new TFile("../files/dijet2_c_allgood_cmb.root","READ");
     assert(f12 && !f12->IsZombie());
     assert(f13 && !f13->IsZombie());
   }
@@ -217,9 +217,9 @@ void DijetHistosOverlays(string obs, string data, string spt,
   }
   
   
-  // TFile *f2 = new TFile("../jecsys2020/../rootfiles/CombinationFiles-Run2016FGH-3.root","READ");
-  //TFile *f2 = new TFile(Form("../rootfiles/CombinationFiles-Run2016FGH-%s.root",cpt),"READ");
-  TFile *f2 = new TFile(Form("../rootfiles/CombinationFiles-Run2016FGH-%s.root",spt=="PtAve" ? "PtAVP" : cpt),"READ");
+  // TFile *f2 = new TFile("../jecsys2020/../files/CombinationFiles-Run2016FGH-3.root","READ");
+  //TFile *f2 = new TFile(Form("../files/CombinationFiles-Run2016FGH-%s.root",cpt),"READ");
+  TFile *f2 = new TFile(Form("../files/CombinationFiles-Run2016FGH-%s.root",spt=="PtAve" ? "PtAVP" : cpt),"READ");
   assert(f2 && !f2->IsZombie());
 
   f2->cd(data.c_str());//"data");
@@ -407,11 +407,11 @@ void DijetHistosOverlayPtBins(string obs) {
   const char *cera = "2016GH";
 
   TFile *f1(0), *f1m(0), *f1p(0);
-  f1 = new TFile("../rootfiles/jmenano_data_cmb_v22ul16.root","READ");
+  f1 = new TFile("../files/jmenano_data_cmb_v22ul16.root","READ");
   assert(f1 && !f1->IsZombie());
-  f1m = new TFile("../rootfiles/jmenano_mc_cmb_v23ul16mg.root","READ");
+  f1m = new TFile("../files/jmenano_mc_cmb_v23ul16mg.root","READ");
   assert(f1m && !f1m->IsZombie());
-  //f1p = new TFile("../rootfiles/jmenano_mc_cmb_v23ul16flat.root","READ");
+  //f1p = new TFile("../files/jmenano_mc_cmb_v23ul16flat.root","READ");
   //assert(f1p && !f1p->IsZombie());
 
   TProfile2D *p2a(0), *p2t(0), *p2p(0);

@@ -50,7 +50,7 @@ void drawMultijets(string epoch, string version) {
   // Load requested data file
   const char *ce = epoch.c_str();
   const char *cv = version.c_str();
-  TFile *fd = new TFile(Form("../rootfiles/jmenano_data_cmb_%s_JME_%s.root",ce,cv));
+  TFile *fd = new TFile(Form("../files/jmenano_data_cmb_%s_JME_%s.root",ce,cv));
   assert(fd && !fd->IsZombie());
 
   // Find matching MC
@@ -64,7 +64,7 @@ void drawMultijets(string epoch, string version) {
   mc["2023D"] = "Summer22MG1";
   mc["Run3"] = "Summer22MG1";
   const char *cm = mc[ce];
-  TFile *fm = new TFile(Form("../rootfiles/jmenano_mc_out_%s_%s.root",cm,cv));
+  TFile *fm = new TFile(Form("../files/jmenano_mc_out_%s_%s.root",cm,cv));
   assert(fm && !fm->IsZombie());
   // Print the file name
   cout << "Data: " << fd->GetName() << endl;

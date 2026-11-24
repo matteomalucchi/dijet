@@ -38,10 +38,10 @@ void MPFXIntro() {
   bool isMC = true;
   
   lumi_13TeV = "UL2016 MadGraph MC";
-  TFile *fm = new TFile("rootfiles/jmenano_mc_cmb_v22ul16mg.root","READ");
+  TFile *fm = new TFile("files/jmenano_mc_cmb_v22ul16mg.root","READ");
   if (!isMC) {
     lumi_13TeV = "UL2016GH, 16.8 fb^{-1}";
-    fm = new TFile("rootfiles/jmenano_data_cmb_v22ul16.root","READ");
+    fm = new TFile("files/jmenano_data_cmb_v22ul16.root","READ");
   }
   assert(fm && !fm->IsZombie());
 
@@ -483,10 +483,10 @@ void MPFXIntro() {
   ////////////////////////////////////////////////////////////////////////
 
   // Dijet alpha extrapolation
-  TFile *fa = new TFile("rootfiles/dijet_balance_UL18_Summer19UL18_V5_AK4CHS.root","READ");
+  TFile *fa = new TFile("files/dijet_balance_UL18_Summer19UL18_V5_AK4CHS.root","READ");
   assert(fa && !fa->IsZombie());
 
-  TFile *fz = new TFile("rootfiles/zjet_balance_UL2018_jetpt_nominal_small.root","READ");
+  TFile *fz = new TFile("files/zjet_balance_UL2018_jetpt_nominal_small.root","READ");
   assert(fz && !fz->IsZombie());
 
   TGraphAsymmErrors *ga(0), *gz(0);

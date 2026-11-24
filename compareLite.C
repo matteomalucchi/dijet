@@ -208,6 +208,78 @@ FactorizedJetCorrector *selectJECEra(string dataset) {
                  "Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual");
   }
 
+  if (dataset == "2024C") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024C_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2024D") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024D_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2024E") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024E_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2024F") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024F_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2024G") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024G_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2024H") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024H_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2024I") {
+    jec = getFJC("",
+                 "Summer24Run3_V1_MC_L2Relative",
+                 "Summer24_Run2024I_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025C") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025C_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025D") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025D_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025E") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025E_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025F") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025F_V1_DATA_L2L3Residual");
+  }
+
+  if (dataset == "2025G") {
+    jec = getFJC("",
+                 "Winter25Run3_V1_MC_L2Relative",
+                 "Winter25_Run2025G_V1_DATA_L2L3Residual");
+  }
+
   assert(jec);
   return jec;
 }
@@ -217,16 +289,25 @@ TH2D *getJVM(string dataset) {
 
   TFile *fjv(0);
   if (dataset == "2022C" || dataset == "2022D") {
-    fjv = new TFile("rootfiles/jetveto2022CD.root", "READ");
+    fjv = new TFile("files/jetveto2022CD.root", "READ");
   }
   if (dataset == "2022E" || dataset == "2022F" || dataset == "2022G") {
-    fjv = new TFile("rootfiles/jetveto2022EFG.root", "READ");
+    fjv = new TFile("files/jetveto2022EFG.root", "READ");
   }
   if (dataset == "2023C" || dataset == "2023Cv123" || dataset == "2023Cv4") {
-    fjv = new TFile("rootfiles/jetveto2023BC.root", "READ");
+    fjv = new TFile("files/jetveto2023BC.root", "READ");
   }
   if (dataset == "2023D") {
-    fjv = new TFile("rootfiles/jetveto2023D.root", "READ");
+    fjv = new TFile("files/jetveto2023D.root", "READ");
+  }
+  if (dataset == "2024C" || dataset == "2024D" || dataset == "2024E" ||
+      dataset == "2024F" || dataset == "2024G" || dataset == "2024H" ||
+      dataset == "2024I") {
+    fjv = new TFile("files/jetveto2024BCDEFGHI.root", "READ");
+  }
+  if (dataset == "2025C" || dataset == "2025D" || dataset == "2025E" ||
+      dataset == "2025F" || dataset == "2025G") {
+        fjv = new TFile("files/jetveto2025BCDEFG_V3M.root", "READ");
   }
   assert(fjv);
   
@@ -253,8 +334,8 @@ void compareLite(string run="2023D") {
   TChain *c_tA = new TChain("Events");
   cout << "A is 19Dec2023" << endl;
   {
-    LoadJSON("rootfiles/Cert_Collisions2022_355100_362760_Golden.json");
-    LoadJSON("rootfiles/Cert_Collisions2023_366442_370790_Golden.json");
+    LoadJSON("files/Cert_Collisions2022_355100_362760_Golden.json");
+    LoadJSON("files/Cert_Collisions2023_366442_370790_Golden.json");
 
 
     string filename = Form("input_files/dataFiles_%s.txt.19Dec2023.%sv12", crun, OneRun==true ? "OneRun." : "");
@@ -601,7 +682,7 @@ void compareLite(string run="2023D") {
   const int ny = sizeof(vy) / sizeof(vy[0]) - 1;
   
   // Open file for outputting results
-  TFile *f = new TFile(Form("rootfiles/compareLite_%s.root",run.c_str()),
+  TFile *f = new TFile(Form("files/compareLite_%s.root",run.c_str()),
 		       "RECREATE");
   f->mkdir("2D");
   f->mkdir("PF");

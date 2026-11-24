@@ -1198,15 +1198,15 @@ void DijetHistosFill::Loop()
 
     // Load JSON files
     if (TString(dataset.c_str()).Contains("2016"))
-      LoadJSON("rootfiles/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt");
+      LoadJSON("files/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt");
     if (TString(dataset.c_str()).Contains("2017"))
-      LoadJSON("rootfiles/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt");
+      LoadJSON("files/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt");
     if (TString(dataset.c_str()).Contains("2018"))
-      LoadJSON("rootfiles/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt");
+      LoadJSON("files/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt");
     if (TString(dataset.c_str()).Contains("2022"))
-      LoadJSON("rootfiles/Cert_Collisions2022_355100_362760_Golden.json");
+      LoadJSON("files/Cert_Collisions2022_355100_362760_Golden.json");
     if (TString(dataset.c_str()).Contains("2023"))
-      LoadJSON("rootfiles/Cert_Collisions2023_366442_370790_Golden.json");
+      LoadJSON("files/Cert_Collisions2023_366442_370790_Golden.json");
   }
   int _nbadevts_json(0);
 
@@ -1950,32 +1950,32 @@ void DijetHistosFill::Loop()
   // JECDatabase/jet_veto_maps/Summer19UL18_V1/hotjets-UL18.root
   TFile *fjv(0);
   if (isRun2 == 1 || isRun2 == 2) // TString(ds.c_str()).Contains("2016"))
-    fjv = new TFile("rootfiles/hotjets-UL16.root", "READ");
+    fjv = new TFile("files/hotjets-UL16.root", "READ");
   if (isRun2 == 3) // TString(ds.c_str()).Contains("2017"))
-    fjv = new TFile("rootfiles/hotjets-UL17_v2.root", "READ");
+    fjv = new TFile("files/hotjets-UL17_v2.root", "READ");
   if (isRun2 == 4) // TString(ds.c_str()).Contains("2018"))
-    fjv = new TFile("rootfiles/hotjets-UL18.root", "READ");
+    fjv = new TFile("files/hotjets-UL18.root", "READ");
   if (dataset == "2022C" || dataset == "2022D" || dataset == "2022C_ZB" ||
       dataset == "2022D_ZB" || dataset == "Summer22" ||
       dataset == "Summer22Flat" ||
       TString(dataset.c_str()).Contains("Summer22MG"))
-    fjv = new TFile("rootfiles/jetveto2022CD.root", "READ");
+    fjv = new TFile("files/jetveto2022CD.root", "READ");
   if (dataset == "2022E" || dataset == "2022F" || dataset == "2022G" ||
       dataset == "2022F1" || dataset == "2022F2" ||
       dataset == "2022E_ZB" || dataset == "2022F_ZB" || dataset == "2022G_ZB" ||
       dataset == "Summer22EE" ||
       dataset == "Summer22EEFlat" ||
       TString(dataset.c_str()).Contains("Summer22EEMG"))
-    fjv = new TFile("rootfiles/jetveto2022EFG.root", "READ");
+    fjv = new TFile("files/jetveto2022EFG.root", "READ");
   if (dataset == "2023B" || dataset == "2023C" || dataset == "2023BCv123" ||
       dataset == "2023Cv123" || dataset == "2023Cv4" ||
       dataset == "2023B_ZB" || dataset == "2023C_ZB" || dataset == "2023BCv123_ZB" ||
       dataset == "2023Cv123_ZB" || dataset == "2023Cv4_ZB" ||
       (TString(dataset.c_str()).Contains("Summer23MG") && ! TString(dataset.c_str()).Contains("MGBPix")))
-    fjv = new TFile("rootfiles/jetveto2023BC.root", "READ");
+    fjv = new TFile("files/jetveto2023BC.root", "READ");
   if (dataset == "2023D" || dataset == "2023D_ZB" ||
       TString(dataset.c_str()).Contains("Summer23MGBPix"))
-    fjv = new TFile("rootfiles/jetveto2023D.root", "READ");
+    fjv = new TFile("files/jetveto2023D.root", "READ");
   assert(fjv);
 
   // Veto lists for different years (NB: extra MC map for UL16):
@@ -3616,32 +3616,32 @@ bool DijetHistosFill::LoadJSON()
     // - /eos/user/c/cmsdqm/www/CAF/certification/Collisions22/
 
     // Golden 1.44/fb
-    // string json = "rootfiles/Cert_Collisions2022_355100_356615_Golden.json";
+    // string json = "files/Cert_Collisions2022_355100_356615_Golden.json";
     // Golden JSON, 4.86/fb
-    //string json = "rootfiles/Cert_Collisions2022_355100_357550_Golden..json";
+    //string json = "files/Cert_Collisions2022_355100_357550_Golden..json";
     // Golden JSON, 7.67/fb
-    //string json = "rootfiles/Cert_Collisions2022_355100_357900_Golden.json";
+    //string json = "files/Cert_Collisions2022_355100_357900_Golden.json";
     // Golden JSON BCDEF, 9.71/fb
-    //string json = "rootfiles/Cert_Collisions2022_355100_359812_Golden.json";
+    //string json = "files/Cert_Collisions2022_355100_359812_Golden.json";
     // Golden JSON BCDEF, 14.6/fb
-    string json = "rootfiles/Cert_Collisions2022_355100_360491_Golden.json";
+    string json = "files/Cert_Collisions2022_355100_360491_Golden.json";
     // Golden JSON RunB, 0.0846/fb
-    //string json = "rootfiles/Cert_Collisions2022_eraB_355100_355769_Golden.json";
+    //string json = "files/Cert_Collisions2022_eraB_355100_355769_Golden.json";
     // Golden JSON RunC, 4.84/fb
-    //string json = "rootfiles/Cert_Collisions2022_eraC_355862_357482_Golden.json"
+    //string json = "files/Cert_Collisions2022_eraC_355862_357482_Golden.json"
     // Golden JSON RunD, 2.74/fb
-    //string json = "rootfiles/Cert_Collisions2022_eraD_357538_357900_Golden.json";
+    //string json = "files/Cert_Collisions2022_eraD_357538_357900_Golden.json";
     if (isRun2==1 || isRun2==2)
-      json="rootfiles/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt";
+      json="files/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt";
     if (isRun2==3)
-      json="rootfiles/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt";
+      json="files/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt";
     if (isRun2==4)
-      json="rootfiles/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt";
+      json="files/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt";
 
     if (TString(dataset.c_str()).Contains("2022"))
-      json = "rootfiles/Cert_Collisions2022_355100_362760_Golden.json";
+      json = "files/Cert_Collisions2022_355100_362760_Golden.json";
     if (TString(dataset.c_str()).Contains("2023"))
-      json = "rootfiles/Cert_Collisions2023_366442_370790_Golden.json";
+      json = "files/Cert_Collisions2023_366442_370790_Golden.json";
 
   cout << "Processing LoadJSON() with " + json + " ..." << flush;
   ifstream file(json, ios::in);

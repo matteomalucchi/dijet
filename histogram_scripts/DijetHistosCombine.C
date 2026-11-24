@@ -8,8 +8,8 @@
 #include "TProfile2D.h"
 #include <iostream>
 
-string version = "rescaleMass_removeCorrectEvents_removeNAN_pnetreg_mctruth15_NewRunCrabSkim_closure";
-string YEAR = "2022";
+string version = "pnetreg_neutrino_v1";
+string YEAR = "25";
 
 int debug = 1; // 1=trg, 2=dir, 3=all
 void loopOverDirectories(TDirectory *dir, TDirectory *outdir,
@@ -20,7 +20,27 @@ bool copyBin(string trg, string folder, string histo, double pt, double eta);
 void DijetHistosCombines(string file = "rootfiles/"+version+"/jmenano_data_out.root");
 
 void DijetHistosCombine() {
-  if (YEAR == "2023" || YEAR == "all"){
+  if (YEAR == "25" ||YEAR == "2025" || YEAR == "all"){
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2025C_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2025D_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2025E_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2025F_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2025G_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_2025QCD_"+version+".root");
+  }
+
+  if (YEAR == "24" ||YEAR == "2024" || YEAR == "all"){
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024C_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024D_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024E_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024F_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024G_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024H_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2024I_JME_"+version+".root");
+  DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_2024QCD_"+version+".root");
+  }
+
+  if (YEAR == "23" || YEAR == "2023" || YEAR == "all"){
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023D_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv4_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2023Cv123_JME_"+version+".root");
@@ -28,7 +48,7 @@ void DijetHistosCombine() {
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_mc_out_QCD-BPix_"+version+".root");
   }
 
-  if (YEAR == "2022" || YEAR == "all"){
+  if (YEAR == "22" ||YEAR == "2022" || YEAR == "all"){
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022C_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022D_JME_"+version+".root");
   DijetHistosCombines("../rootfiles/"+version+"/jmenano_data_out_2022CD_JME_"+version+".root");
@@ -190,6 +210,11 @@ void DijetHistosCombines(string file) {
   //mergeDijet(fin, fout);
 
   fout->Write();
+  cout<< "Writing to " << file2 << " finished. Closing files..." << endl;
+  fout->Close();
+  fin->Close();
+  delete fout;
+  delete fin;
 } // DijetHistosCombines
 
 
